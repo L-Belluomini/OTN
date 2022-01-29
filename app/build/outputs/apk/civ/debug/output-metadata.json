@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "artifactType": {
+    "type": "APK",
+    "kind": "Directory"
+  },
+  "applicationId": "com.atakmap.android.OTN.plugin",
+  "variantName": "civDebug",
+  "elements": [
+    {
+      "type": "SINGLE",
+      "filters": [],
+      "properties": [],
+      "versionCode": 1,
+      "versionName": "1.0 (1) - [4.4.0]",
+      "enabled": true,
+      "outputFile": "ATAK-Plugin-OTN-1.0-1-4.4.0-civ-debug.apk"
+    }
+  ]
+}

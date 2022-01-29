@@ -1,0 +1,10 @@
+#Fri Jan 28 17:54:38 CET 2022
+base.2=/home/developer0/Downloads/atak-civ-sdk-4.4.0.0/atak-civ/plugin-examples/OTN/app/build/intermediates/dex/civDebug/mergeExtDexCivDebug/classes2.dex
+path.2=classes2.dex
+base.1=/home/developer0/Downloads/atak-civ-sdk-4.4.0.0/atak-civ/plugin-examples/OTN/app/build/intermediates/dex/civDebug/mergeProjectDexCivDebug/classes.dex
+path.1=classes.dex
+base.0=/home/developer0/Downloads/atak-civ-sdk-4.4.0.0/atak-civ/plugin-examples/OTN/app/build/intermediates/dex/civDebug/mergeExtDexCivDebug/classes.dex
+renamed.2=classes3.dex
+renamed.1=classes2.dex
+renamed.0=classes.dex
+path.0=classes.dex

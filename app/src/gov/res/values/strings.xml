@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_desc">Open TAK Navigation</string>
+
+    <!-- will be wired in for 4.4 if the above is deemed acceptable -->
+    <string name="app_distro_statement"> </string>
+
+
+</resources>

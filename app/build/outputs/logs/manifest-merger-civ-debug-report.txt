@@ -1,0 +1,70 @@
+-- Merging decision tree log ---
+meta-data#plugin-api
+INJECTED from /home/developer0/Downloads/atak-civ-sdk-4.4.0.0/atak-civ/plugin-examples/OTN/app/src/main/AndroidManifest.xml:15:9-81
+	android:value
+		INJECTED from /home/developer0/Downloads/atak-civ-sdk-4.4.0.0/atak-civ/plugin-examples/OTN/app/src/main/AndroidManifest.xml
+		ADDED from /home/developer0/Downloads/atak-civ-sdk-4.4.0.0/atak-civ/plugin-examples/OTN/app/src/main/AndroidManifest.xml:15:46-79
+	android:name
+		ADDED from /home/developer0/Downloads/atak-civ-sdk-4.4.0.0/atak-civ/plugin-examples/OTN/app/src/main/AndroidManifest.xml:15:20-45
+manifest
+ADDED from /home/developer0/Downloads/atak-civ-sdk-4.4.0.0/atak-civ/plugin-examples/OTN/app/src/main/AndroidManifest.xml:1:1-22:12
+INJECTED from /home/developer0/Downloads/atak-civ-sdk-4.4.0.0/atak-civ/plugin-examples/OTN/app/src/main/AndroidManifest.xml:1:1-22:12
+INJECTED from /home/developer0/Downloads/atak-civ-sdk-4.4.0.0/atak-civ/plugin-examples/OTN/app/src/main/AndroidManifest.xml:1:1-22:12
+INJECTED from /home/developer0/Downloads/atak-civ-sdk-4.4.0.0/atak-civ/plugin-examples/OTN/app/src/main/AndroidManifest.xml:1:1-22:12
+INJECTED from /home/developer0/Downloads/atak-civ-sdk-4.4.0.0/atak-civ/plugin-examples/OTN/app/src/main/AndroidManifest.xml:1:1-22:12
+INJECTED from /home/developer0/Downloads/atak-civ-sdk-4.4.0.0/atak-civ/plugin-examples/OTN/app/src/main/AndroidManifest.xml:1:1-22:12
+INJECTED from /home/developer0/Downloads/atak-civ-sdk-4.4.0.0/atak-civ/plugin-examples/OTN/app/src/main/AndroidManifest.xml:1:1-22:12
+	package
+		ADDED from /home/developer0/Downloads/atak-civ-sdk-4.4.0.0/atak-civ/plugin-examples/OTN/app/src/main/AndroidManifest.xml:3:5-45
+		INJECTED from /home/developer0/Downloads/atak-civ-sdk-4.4.0.0/atak-civ/plugin-examples/OTN/app/src/main/AndroidManifest.xml
+		INJECTED from /home/developer0/Downloads/atak-civ-sdk-4.4.0.0/atak-civ/plugin-examples/OTN/app/src/main/AndroidManifest.xml
+	android:versionName
+		INJECTED from /home/developer0/Downloads/atak-civ-sdk-4.4.0.0/atak-civ/plugin-examples/OTN/app/src/main/AndroidManifest.xml
+		ADDED from /home/developer0/Downloads/atak-civ-sdk-4.4.0.0/atak-civ/plugin-examples/OTN/app/src/main/AndroidManifest.xml:1:1-22:12
+		INJECTED from /home/developer0/Downloads/atak-civ-sdk-4.4.0.0/atak-civ/plugin-examples/OTN/app/src/main/AndroidManifest.xml
+	xmlns:tools
+		ADDED from /home/developer0/Downloads/atak-civ-sdk-4.4.0.0/atak-civ/plugin-examples/OTN/app/src/main/AndroidManifest.xml:2:5-51
+	android:versionCode
+		INJECTED from /home/developer0/Downloads/atak-civ-sdk-4.4.0.0/atak-civ/plugin-examples/OTN/app/src/main/AndroidManifest.xml
+		ADDED from /home/developer0/Downloads/atak-civ-sdk-4.4.0.0/atak-civ/plugin-examples/OTN/app/src/main/AndroidManifest.xml:1:1-22:12
+		INJECTED from /home/developer0/Downloads/atak-civ-sdk-4.4.0.0/atak-civ/plugin-examples/OTN/app/src/main/AndroidManifest.xml
+	xmlns:android
+		ADDED from /home/developer0/Downloads/atak-civ-sdk-4.4.0.0/atak-civ/plugin-examples/OTN/app/src/main/AndroidManifest.xml:1:11-69
+	tools:ignore
+		ADDED from /home/developer0/Downloads/atak-civ-sdk-4.4.0.0/atak-civ/plugin-examples/OTN/app/src/main/AndroidManifest.xml:4:5-44
+uses-permission#android.permission.READ_EXTERNAL_STORAGE
+ADDED from /home/developer0/Downloads/atak-civ-sdk-4.4.0.0/atak-civ/plugin-examples/OTN/app/src/main/AndroidManifest.xml:5:5-80
+	android:name
+		ADDED from /home/developer0/Downloads/atak-civ-sdk-4.4.0.0/atak-civ/plugin-examples/OTN/app/src/main/AndroidManifest.xml:5:22-77
+uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
+ADDED from /home/developer0/Downloads/atak-civ-sdk-4.4.0.0/atak-civ/plugin-examples/OTN/app/src/main/AndroidManifest.xml:6:5-81
+	android:name
+		ADDED from /home/developer0/Downloads/atak-civ-sdk-4.4.0.0/atak-civ/plugin-examples/OTN/app/src/main/AndroidManifest.xml:6:22-78
+application
+ADDED from /home/developer0/Downloads/atak-civ-sdk-4.4.0.0/atak-civ/plugin-examples/OTN/app/src/main/AndroidManifest.xml:8:5-20:19
+	android:extractNativeLibs
+		ADDED from /home/developer0/Downloads/atak-civ-sdk-4.4.0.0/atak-civ/plugin-examples/OTN/app/src/main/AndroidManifest.xml:13:9-41
+	android:label
+		ADDED from /home/developer0/Downloads/atak-civ-sdk-4.4.0.0/atak-civ/plugin-examples/OTN/app/src/main/AndroidManifest.xml:11:9-41
+	android:icon
+		ADDED from /home/developer0/Downloads/atak-civ-sdk-4.4.0.0/atak-civ/plugin-examples/OTN/app/src/main/AndroidManifest.xml:10:9-45
+	android:allowBackup
+		ADDED from /home/developer0/Downloads/atak-civ-sdk-4.4.0.0/atak-civ/plugin-examples/OTN/app/src/main/AndroidManifest.xml:9:9-36
+	android:description
+		ADDED from /home/developer0/Downloads/atak-civ-sdk-4.4.0.0/atak-civ/plugin-examples/OTN/app/src/main/AndroidManifest.xml:12:9-47
+	android:theme
+		ADDED from /home/developer0/Downloads/atak-civ-sdk-4.4.0.0/atak-civ/plugin-examples/OTN/app/src/main/AndroidManifest.xml:14:9-40
+meta-data#app_desc
+ADDED from /home/developer0/Downloads/atak-civ-sdk-4.4.0.0/atak-civ/plugin-examples/OTN/app/src/main/AndroidManifest.xml:16:9-78
+	android:value
+		ADDED from /home/developer0/Downloads/atak-civ-sdk-4.4.0.0/atak-civ/plugin-examples/OTN/app/src/main/AndroidManifest.xml:16:44-76
+	android:name
+		ADDED from /home/developer0/Downloads/atak-civ-sdk-4.4.0.0/atak-civ/plugin-examples/OTN/app/src/main/AndroidManifest.xml:16:20-43
+uses-sdk
+INJECTED from /home/developer0/Downloads/atak-civ-sdk-4.4.0.0/atak-civ/plugin-examples/OTN/app/src/main/AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from /home/developer0/Downloads/atak-civ-sdk-4.4.0.0/atak-civ/plugin-examples/OTN/app/src/main/AndroidManifest.xml
+INJECTED from /home/developer0/Downloads/atak-civ-sdk-4.4.0.0/atak-civ/plugin-examples/OTN/app/src/main/AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from /home/developer0/Downloads/atak-civ-sdk-4.4.0.0/atak-civ/plugin-examples/OTN/app/src/main/AndroidManifest.xml
+		ADDED from /home/developer0/Downloads/atak-civ-sdk-4.4.0.0/atak-civ/plugin-examples/OTN/app/src/main/AndroidManifest.xml
+		INJECTED from /home/developer0/Downloads/atak-civ-sdk-4.4.0.0/atak-civ/plugin-examples/OTN/app/src/main/AndroidManifest.xml

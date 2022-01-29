@@ -1,0 +1,26 @@
+[
+    {
+        "merged": "/home/developer0/Downloads/atak-civ-sdk-4.4.0.0/atak-civ/plugin-examples/OTN/app/build/intermediates/res/merged/civ/debug/drawable_new_dark_button_selected.xml.flat",
+        "source": "/home/developer0/Downloads/atak-civ-sdk-4.4.0.0/atak-civ/plugin-examples/OTN/app/src/main/res/drawable/new_dark_button_selected.xml"
+    },
+    {
+        "merged": "/home/developer0/Downloads/atak-civ-sdk-4.4.0.0/atak-civ/plugin-examples/OTN/app/build/intermediates/res/merged/civ/debug/layout_main_layout.xml.flat",
+        "source": "/home/developer0/Downloads/atak-civ-sdk-4.4.0.0/atak-civ/plugin-examples/OTN/app/src/main/res/layout/main_layout.xml"
+    },
+    {
+        "merged": "/home/developer0/Downloads/atak-civ-sdk-4.4.0.0/atak-civ/plugin-examples/OTN/app/build/intermediates/res/merged/civ/debug/drawable_ic_launcher.png.flat",
+        "source": "/home/developer0/Downloads/atak-civ-sdk-4.4.0.0/atak-civ/plugin-examples/OTN/app/src/main/res/drawable/ic_launcher.png"
+    },
+    {
+        "merged": "/home/developer0/Downloads/atak-civ-sdk-4.4.0.0/atak-civ/plugin-examples/OTN/app/build/intermediates/res/merged/civ/debug/drawable_new_dark_button_disabled.xml.flat",
+        "source": "/home/developer0/Downloads/atak-civ-sdk-4.4.0.0/atak-civ/plugin-examples/OTN/app/src/main/res/drawable/new_dark_button_disabled.xml"
+    },
+    {
+        "merged": "/home/developer0/Downloads/atak-civ-sdk-4.4.0.0/atak-civ/plugin-examples/OTN/app/build/intermediates/res/merged/civ/debug/drawable_new_dark_button_bg.xml.flat",
+        "source": "/home/developer0/Downloads/atak-civ-sdk-4.4.0.0/atak-civ/plugin-examples/OTN/app/src/main/res/drawable/new_dark_button_bg.xml"
+    },
+    {
+        "merged": "/home/developer0/Downloads/atak-civ-sdk-4.4.0.0/atak-civ/plugin-examples/OTN/app/build/intermediates/res/merged/civ/debug/drawable_btn_gray.xml.flat",
+        "source": "/home/developer0/Downloads/atak-civ-sdk-4.4.0.0/atak-civ/plugin-examples/OTN/app/src/main/res/drawable/btn_gray.xml"
+    }
+]
