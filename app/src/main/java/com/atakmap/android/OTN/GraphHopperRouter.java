@@ -52,6 +52,7 @@ public class GraphHopperRouter implements RoutePlannerInterface {
      */
     public RouteGenerationTask getRouteGenerationTask(
             RouteGenerationTask.RouteGenerationEventListener routeGenerationEventListener){
+        // return (  new OTNroutingTask( routeGenerationEventListener, config ) );
      return ( new OTNroutingTask( routeGenerationEventListener ) );
     }
 

@@ -16,6 +16,7 @@ import com.graphhopper.config.CHProfile;
 import com.graphhopper.config.Profile;
 import com.graphhopper.util.InstructionList;
 import com.graphhopper.util.PointList;
+import com.graphhopper.util.Translation;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -25,49 +26,68 @@ import java.util.Map;
 
 public class OTNroutingTask extends RouteGenerationTask{
     private GraphHopper _hopper;
+    private final String osmFile = "/sdcard/atak/tools/OTN/centro-latest.osm.pbf";
+    private final String cacheLoc = "/sdcard/atak/tools/OTN/";
+    private final String Vehicle = "car";
+    private final String Profile = "car";
 
     public OTNroutingTask(RouteGenerationEventListener listener) {
+        super(listener);
+    }
+    public OTNroutingTask(RouteGenerationEventListener listener, String test ) {
+
         super(listener);
     }
 
     @Override
     public RoutePointPackage generateRoute(SharedPreferences prefs, GeoPoint origin, GeoPoint dest, List<GeoPoint> byWayOff) {
-        GraphHopper _hopper = new GraphHopper();
-        _hopper.setOSMFile("/sdcard/atak/tools/OTN/centro-latest.osm.pbf");
-        _hopper.setGraphHopperLocation("/sdcard/atak/tools/OTN/");
-        _hopper.setProfiles ( new Profile( "car" ) .setVehicle ( "car" ) .setWeighting ( "fastest" ).setTurnCosts ( false ) );
-        _hopper.getCHPreparationHandler( ).setCHProfiles(new CHProfile( "car" ) );
-        _hopper.importOrLoad();
         // cumulative cycle results
         List<PointMapItem> waypoint = new LinkedList<PointMapItem>()  ;
         Map<String , NavigationCue> waycue = new HashMap<>();
+        // aux variable for cicle
+        GeoPoint point = null;
+        int cueIndex = 0;
+        String cue = "";
+        NavigationCue navcue = null;
+
+
+        GraphHopper _hopper = new GraphHopper();
+        _hopper.setOSMFile ( osmFile );
+        _hopper.setGraphHopperLocation ( cacheLoc );
+        _hopper.setProfiles ( new Profile ( Profile ) .setVehicle ( Vehicle ) .setWeighting ( "fastest" ).setTurnCosts ( false ) );
+        _hopper.getCHPreparationHandler( ).setCHProfiles( new CHProfile ( Profile ) );
+        _hopper.importOrLoad();
+
 
         GHRequest request = new GHRequest(origin.getLatitude() , origin.getLongitude() , dest.getLatitude() ,dest.getLongitude())
-                .setProfile("car")
-                .setLocale(Locale.ENGLISH);
+                .setProfile ( Profile )
+                .setLocale ( Locale.ENGLISH );
 
         ResponsePath  hopResponse = _hopper.route ( request ).getBest()  ;
-
+        _hopper.close();
         if ( hopResponse.hasErrors() ) {
             throw new RuntimeException( hopResponse.getErrors().toString());
         }
 
         InstructionList instructionList = hopResponse.getInstructions();
+        final Translation translation = instructionList.getTr();
 
-        // aux variable for cicle
-        GeoPoint point = null;
-        OTNresponse mapitem = null;
 
-        for ( int index = 0 ; index < hopResponse.getPoints().size() ; index ++) {
-            point = new GeoPoint( hopResponse.getPoints().getLat ( index ) , hopResponse.getPoints().getLon ( index ) );
-            waypoint.add ( new OTNresponse( point , "OTN"+ index ) ); // TODO: find already used mapitem
 
-            //if ( index + 1 == hopResponse.getPoints().size() ) {
-                waycue.put("OTN"+index , new NavigationCue("OTN" + index , "in arrivo", "in arrivo" ) );
-            //} else {
-            //waycue.put("OTN"+index , new NavigationCue("OTN" + index , instructionList.get( index ).getTurnDescription ( instructionList.getTr( ) ) , instructionList.get( index ).getTurnDescription ( instructionList.getTr( ) ) ) );
-            //}
-            _hopper.close();
+
+        for ( int pointIndex = 0 ; pointIndex < hopResponse.getPoints().size() ; pointIndex ++) {
+            point = new GeoPoint( hopResponse.getPoints().getLat ( pointIndex ) , hopResponse.getPoints().getLon ( pointIndex ) );
+            waypoint.add ( new OTNresponse( point , "OTN"+ pointIndex ) ); // TODO: find already used mapitem
+            if ( hopResponse.getPoints().getLat ( pointIndex ) == instructionList.get( cueIndex ).getPoints().getLat(0) &&
+                    hopResponse.getPoints().getLon ( pointIndex ) == instructionList.get( cueIndex ).getPoints().getLon(0) ) {
+                cue = instructionList.get(cueIndex).getTurnDescription(translation);
+                navcue = new NavigationCue("OTN" + pointIndex, cue,cue ) ;
+                navcue.addCue(NavigationCue.TriggerMode.DISTANCE , 50 );
+                waycue.put("OTN" + cueIndex, navcue );
+                cueIndex ++;
+                navcue= null;
+            }
+
         }
         return new RoutePointPackage( waypoint , waycue );
     }
