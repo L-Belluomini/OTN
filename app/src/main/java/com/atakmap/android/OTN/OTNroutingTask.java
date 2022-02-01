@@ -2,11 +2,13 @@ package com.atakmap.android.OTN;
 
 import android.content.SharedPreferences;
 
-import com.atakmap.android.maps.MapItem;
+
+
 import com.atakmap.android.maps.PointMapItem;
 import com.atakmap.android.routes.RouteGenerationTask;
 import com.atakmap.android.routes.RoutePointPackage;
 import com.atakmap.android.routes.nav.NavigationCue;
+import com.atakmap.coremap.maps.conversion.EGM96;
 import com.atakmap.coremap.maps.coords.GeoPoint;
 import com.graphhopper.GHRequest;
 import com.graphhopper.GHResponse;
@@ -15,7 +17,6 @@ import com.graphhopper.ResponsePath;
 import com.graphhopper.config.CHProfile;
 import com.graphhopper.config.Profile;
 import com.graphhopper.util.InstructionList;
-import com.graphhopper.util.PointList;
 import com.graphhopper.util.Translation;
 
 import java.util.HashMap;
@@ -23,6 +24,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.UUID;
 
 public class OTNroutingTask extends RouteGenerationTask{
     private GraphHopper _hopper;
@@ -46,9 +48,12 @@ public class OTNroutingTask extends RouteGenerationTask{
         Map<String , NavigationCue> waycue = new HashMap<>();
         // aux variable for cicle
         GeoPoint point = null;
+        GeoPoint tmppoint = null;
         int cueIndex = 0;
         String cue = "";
         NavigationCue navcue = null;
+        String tmpuid = "";
+        OTNresponse tmpmappoint = null;
 
 
         GraphHopper _hopper = new GraphHopper();
@@ -72,20 +77,24 @@ public class OTNroutingTask extends RouteGenerationTask{
         InstructionList instructionList = hopResponse.getInstructions();
         final Translation translation = instructionList.getTr();
 
-
-
-
         for ( int pointIndex = 0 ; pointIndex < hopResponse.getPoints().size() ; pointIndex ++) {
-            point = new GeoPoint( hopResponse.getPoints().getLat ( pointIndex ) , hopResponse.getPoints().getLon ( pointIndex ) );
-            waypoint.add ( new OTNresponse( point , "OTN"+ pointIndex ) ); // TODO: find already used mapitem
+            tmppoint = new GeoPoint( hopResponse.getPoints().getLat ( pointIndex ) , hopResponse.getPoints().getLon ( pointIndex ) );
+            point = new GeoPoint( tmppoint.getLatitude() , tmppoint.getLongitude() , 100 );
+            tmpuid = UUID.randomUUID().toString();
+            tmpmappoint = new OTNresponse( point , tmpuid  ) ;// TODO: find already used pointmapitem ?
+            tmpmappoint.setMetaString("type" , "b-m-p-c" );
+            waypoint.add ( tmpmappoint );
+
             if ( hopResponse.getPoints().getLat ( pointIndex ) == instructionList.get( cueIndex ).getPoints().getLat(0) &&
                     hopResponse.getPoints().getLon ( pointIndex ) == instructionList.get( cueIndex ).getPoints().getLon(0) ) {
+                // set point as waypoint
+                waypoint.get(pointIndex).setMetaString("type" , "b-m-p-w" );
+                // set relative nav cue
                 cue = instructionList.get(cueIndex).getTurnDescription(translation);
-                navcue = new NavigationCue("OTN" + pointIndex, cue,cue ) ;
+                navcue = new NavigationCue(UUID.randomUUID().toString() , cue , cue ) ;
                 navcue.addCue(NavigationCue.TriggerMode.DISTANCE , 50 );
-                waycue.put("OTN" + cueIndex, navcue );
+                waycue.put(tmpuid , navcue );
                 cueIndex ++;
-                navcue= null;
             }
 
         }
