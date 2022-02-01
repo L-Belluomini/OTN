@@ -46,14 +46,14 @@ public class OTNroutingTask extends RouteGenerationTask{
         // cumulative cycle results
         List<PointMapItem> waypoint = new LinkedList<PointMapItem>()  ;
         Map<String , NavigationCue> waycue = new HashMap<>();
-        // aux variable for cicle
+        // aux variable for cycle
         GeoPoint point = null;
-        GeoPoint tmppoint = null;
+        GeoPoint tmpPoint = null;
         int cueIndex = 0;
         String cue = "";
-        NavigationCue navcue = null;
-        String tmpuid = "";
-        OTNresponse tmpmappoint = null;
+        NavigationCue navCue = null;
+        String tmpUid = "";
+        OTNresponse tmpMapPoint = null;
 
 
         GraphHopper _hopper = new GraphHopper();
@@ -78,12 +78,12 @@ public class OTNroutingTask extends RouteGenerationTask{
         final Translation translation = instructionList.getTr();
 
         for ( int pointIndex = 0 ; pointIndex < hopResponse.getPoints().size() ; pointIndex ++) {
-            tmppoint = new GeoPoint( hopResponse.getPoints().getLat ( pointIndex ) , hopResponse.getPoints().getLon ( pointIndex ) );
-            point = new GeoPoint( tmppoint.getLatitude() , tmppoint.getLongitude() , 100 );
-            tmpuid = UUID.randomUUID().toString();
-            tmpmappoint = new OTNresponse( point , tmpuid  ) ;// TODO: find already used pointmapitem ?
-            tmpmappoint.setMetaString("type" , "b-m-p-c" );
-            waypoint.add ( tmpmappoint );
+            tmpPoint = new GeoPoint( hopResponse.getPoints().getLat ( pointIndex ) , hopResponse.getPoints().getLon ( pointIndex ) );
+            point = new GeoPoint( tmpPoint.getLatitude() , tmpPoint.getLongitude() , 100 ); // todo: fix altitude
+            tmpUid = UUID.randomUUID().toString();
+            tmpMapPoint = new OTNresponse( point , tmpUid  ) ;// TODO: find already used pointmapitem ?
+            tmpMapPoint.setMetaString("type" , "b-m-p-c" );
+            waypoint.add ( tmpMapPoint );
 
             if ( hopResponse.getPoints().getLat ( pointIndex ) == instructionList.get( cueIndex ).getPoints().getLat(0) &&
                     hopResponse.getPoints().getLon ( pointIndex ) == instructionList.get( cueIndex ).getPoints().getLon(0) ) {
@@ -91,9 +91,9 @@ public class OTNroutingTask extends RouteGenerationTask{
                 waypoint.get(pointIndex).setMetaString("type" , "b-m-p-w" );
                 // set relative nav cue
                 cue = instructionList.get(cueIndex).getTurnDescription(translation);
-                navcue = new NavigationCue(UUID.randomUUID().toString() , cue , cue ) ;
-                navcue.addCue(NavigationCue.TriggerMode.DISTANCE , 50 );
-                waycue.put(tmpuid , navcue );
+                navCue = new NavigationCue(UUID.randomUUID().toString() , cue , cue ) ;
+                navCue.addCue(NavigationCue.TriggerMode.DISTANCE , 50 );
+                waycue.put(tmpUid , navCue );
                 cueIndex ++;
             }
 

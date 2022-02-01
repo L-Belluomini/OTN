@@ -24,7 +24,7 @@ import com.graphhopper.util.PointList;
 import java.util.List;
 import java.util.Map;
 
-public class GraphHopperRouter implements RoutePlannerInterface {
+public class OTNRouter implements RoutePlannerInterface {
 
 
     /**
@@ -33,7 +33,7 @@ public class GraphHopperRouter implements RoutePlannerInterface {
      * @return the descriptive name of the planner
      */
     public String getDescriptiveName(){
-        return "router based on graphHopper";
+        return "OTN offline router";
     }
 
     /**

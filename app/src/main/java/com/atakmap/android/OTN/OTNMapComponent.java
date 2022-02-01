@@ -18,8 +18,6 @@ import com.atakmap.android.OTN.plugin.R;
 import com.atakmap.android.routes.RoutePlannerManager;
 import com.atakmap.android.routes.RouteMapComponent;
 
-import com.atakmap.android.OTN.GraphHopperRouter;
-
 public class OTNMapComponent extends DropDownMapComponent {
 
     private static final String TAG = "OTNMapComponent";
@@ -32,7 +30,7 @@ public class OTNMapComponent extends DropDownMapComponent {
     private RoutePlannerManager _routeManager ;
     private Context _context;
 
-    public GraphHopperRouter OTNrouter;
+    public OTNRouter OTNrouter;
     @Override
     public void onStart(final Context context, final MapView view) {
         Log.d(TAG, "onStart");
@@ -82,7 +80,7 @@ public class OTNMapComponent extends DropDownMapComponent {
                     .getRoutePlannerManager()
                 :null;
         assert _routeManager != null;
-        OTNrouter = new GraphHopperRouter();
+        OTNrouter = new OTNRouter();
         _routeManager.registerPlanner("OTN" , OTNrouter);
     }
 
