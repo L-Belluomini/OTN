@@ -8,14 +8,18 @@ import com.atakmap.android.maps.PointMapItem;
 import com.atakmap.android.routes.RouteGenerationTask;
 import com.atakmap.android.routes.RoutePointPackage;
 import com.atakmap.android.routes.nav.NavigationCue;
-import com.atakmap.coremap.maps.conversion.EGM96;
 import com.atakmap.coremap.maps.coords.GeoPoint;
 import com.graphhopper.GHRequest;
-import com.graphhopper.GHResponse;
 import com.graphhopper.GraphHopper;
 import com.graphhopper.ResponsePath;
 import com.graphhopper.config.CHProfile;
+import com.graphhopper.config.LMProfile;
 import com.graphhopper.config.Profile;
+import com.graphhopper.routing.util.BikeFlagEncoder;
+import com.graphhopper.routing.util.DefaultFlagEncoderFactory;
+import com.graphhopper.routing.util.EncodingManager;
+import com.graphhopper.routing.util.FlagEncoderFactory;
+import com.graphhopper.routing.util.FootFlagEncoder;
 import com.graphhopper.util.InstructionList;
 import com.graphhopper.util.Translation;
 
@@ -29,47 +33,69 @@ import java.util.UUID;
 public class OTNroutingTask extends RouteGenerationTask{
     private GraphHopper _hopper;
     private final String osmFile = "/sdcard/atak/tools/OTN/centro-latest.osm.pbf";
-    private final String cacheLoc = "/sdcard/atak/tools/OTN/";
+    private final String cacheLoc = "/sdcard/atak/tools/OTN/cache";
     private final String Vehicle = "car";
-    private final String Profile = "car";
+    //private final String profile = "car";
+    private Boolean alternative = false ;
 
     public OTNroutingTask(RouteGenerationEventListener listener) {
         super(listener);
     }
-    public OTNroutingTask(RouteGenerationEventListener listener, String test ) {
-
+    public OTNroutingTask(RouteGenerationEventListener listener, Boolean alternative) {
         super(listener);
+        this.alternative = alternative;
     }
 
     @Override
     public RoutePointPackage generateRoute(SharedPreferences prefs, GeoPoint origin, GeoPoint dest, List<GeoPoint> byWayOff) {
+        GHRequest request;
         // cumulative cycle results
         List<PointMapItem> waypoint = new LinkedList<PointMapItem>()  ;
         Map<String , NavigationCue> waycue = new HashMap<>();
         // aux variable for cycle
-        GeoPoint point = null;
-        GeoPoint tmpPoint = null;
+        GeoPoint point;
+        GeoPoint tmpPoint;
         int cueIndex = 0;
-        String cue = "";
-        NavigationCue navCue = null;
-        String tmpUid = "";
-        OTNresponse tmpMapPoint = null;
+        String cue;
+        NavigationCue navCue;
+        String tmpUid;
+        OTNresponse tmpMapPoint;
+
 
 
         GraphHopper _hopper = new GraphHopper();
-        _hopper.setOSMFile ( osmFile );
-        _hopper.setGraphHopperLocation ( cacheLoc );
-        _hopper.setProfiles ( new Profile ( Profile ) .setVehicle ( Vehicle ) .setWeighting ( "fastest" ).setTurnCosts ( false ) );
-        _hopper.getCHPreparationHandler( ).setCHProfiles( new CHProfile ( Profile ) );
-        _hopper.importOrLoad();
+        //_hopper.setOSMFile ( osmFile );
+        //_hopper.setGraphHopperLocation ( cacheLoc );
+        //EncodingManager.Builder builder = _hopper.getEncodingManagerBuilder();
+        //FlagEncoderFactory factory = new DefaultFlagEncoderFactory();
+        //builder.add( new FootFlagEncoder ( ) );
+        //builder.add( new BikeFlagEncoder ( ) );
 
+        // create the default profile
+        Profile defaultProfile = new Profile ( "car") .setVehicle ( "car") .setWeighting ( "fastest" ).setTurnCosts ( false );
+        CHProfile defaultCHPofile = new CHProfile ( "car" );
+        // create alternate profile
+        // Profile altProfile = new Profile( "foot").setVehicle("foot").setWeighting("shortest").setTurnCosts(false);
+        //LMProfile altLMProfile = new LMProfile("foot");
+        //sets prifile
+        //_hopper.setProfiles ( defaultProfile , altProfile );
+        _hopper.setProfiles ( defaultProfile  );
+        _hopper.getCHPreparationHandler( ).setCHProfiles( defaultCHPofile );
+        //_hopper.getLMPreparationHandler().setLMProfiles(altLMProfile);
+        _hopper.load(cacheLoc);
 
-        GHRequest request = new GHRequest(origin.getLatitude() , origin.getLongitude() , dest.getLatitude() ,dest.getLongitude())
-                .setProfile ( Profile )
+        if (true ){ //!alternative
+            request = new GHRequest(origin.getLatitude() , origin.getLongitude() , dest.getLatitude() ,dest.getLongitude())
+                .setProfile ( defaultProfile.getName() )
                 .setLocale ( Locale.ENGLISH );
+        } else {
+           // request = new GHRequest(origin.getLatitude() , origin.getLongitude() , dest.getLatitude() ,dest.getLongitude())
+                    //.setProfile ( altProfile.getName() )
+                    //.setLocale ( Locale.ENGLISH );
+        }
 
-        ResponsePath  hopResponse = _hopper.route ( request ).getBest()  ;
-        _hopper.close();
+        ResponsePath  hopResponse = _hopper.route ( request ) .getBest( )  ;
+        _hopper.close( );
         if ( hopResponse.hasErrors() ) {
             throw new RuntimeException( hopResponse.getErrors().toString());
         }

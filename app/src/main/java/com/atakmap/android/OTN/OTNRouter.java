@@ -27,6 +27,7 @@ import java.util.Map;
 public class OTNRouter implements RoutePlannerInterface {
 
 
+
     /**
      * Gets the descriptive name of the planner.
      *
@@ -52,7 +53,7 @@ public class OTNRouter implements RoutePlannerInterface {
      */
     public RouteGenerationTask getRouteGenerationTask(
             RouteGenerationTask.RouteGenerationEventListener routeGenerationEventListener){
-        // return (  new OTNroutingTask( routeGenerationEventListener, config ) );
+        // return (  new OTNroutingTask( routeGenerationEventListener,  ) );
      return ( new OTNroutingTask( routeGenerationEventListener ) );
     }
 
@@ -61,7 +62,9 @@ public class OTNRouter implements RoutePlannerInterface {
      * results.
      */
     public RoutePlannerOptionsView getOptionsView(AlertDialog parent){
-        return new RoutePlannerOptionsView( parent.getContext() );
+        RoutePlannerOptionsView routePlannerOptionsView = new RoutePlannerOptionsView( parent.getContext() );
+
+        return routePlannerOptionsView;
 
 
     }
