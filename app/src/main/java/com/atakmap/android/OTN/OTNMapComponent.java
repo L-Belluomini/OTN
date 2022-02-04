@@ -17,8 +17,27 @@ import com.atakmap.android.OTN.plugin.R;
 
 import com.atakmap.android.routes.RoutePlannerManager;
 import com.atakmap.android.routes.RouteMapComponent;
+import com.google.gson.Gson;
+import com.google.gson.stream.JsonReader;
+import com.graphhopper.GraphHopperConfig;
+
+import java.io.FileReader;
+import java.io.IOException;
 
 public class OTNMapComponent extends DropDownMapComponent {
+    private GraphHopperConfig jConfig;
+    private String cacheLoc = "/sdcard/atak/tools/OTN/cache"; // todo get from shared preference and setted from gui
+
+    public OTNMapComponent(){
+        try {
+            Gson ason = new Gson();
+            JsonReader reader = new JsonReader(new FileReader(cacheLoc + "/config.json"));
+            jConfig = ason.fromJson (reader , GraphHopperConfig.class );
+        } catch (IOException e) {
+            System.out.println("An error occurred, reading " );
+        }
+
+    }
 
     private static final String TAG = "OTNMapComponent";
 
@@ -80,7 +99,7 @@ public class OTNMapComponent extends DropDownMapComponent {
                     .getRoutePlannerManager()
                 :null;
         assert _routeManager != null;
-        OTNrouter = new OTNRouter();
+        OTNrouter = new OTNRouter(jConfig);
         _routeManager.registerPlanner("OTN" , OTNrouter);
     }
 

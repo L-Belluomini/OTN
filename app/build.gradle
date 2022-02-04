@@ -133,7 +133,7 @@ def getVersionCode() {
 
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion 29
     buildToolsVersion "29.0.2"
 
    dexOptions {
@@ -302,5 +302,6 @@ dependencies {
     implementation fileTree(dir: 'libs', include: '*.jar')
     // https://mvnrepository.com/artifact/com.graphhopper/graphhopper-core
     implementation group: 'com.graphhopper', name: 'graphhopper-core', version: '4.0'
+    implementation 'com.google.code.gson:gson:2.8.9'
 }
 

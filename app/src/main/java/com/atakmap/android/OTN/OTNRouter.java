@@ -2,7 +2,9 @@ package com.atakmap.android.OTN;
 
 import android.app.AlertDialog;
 import android.content.SharedPreferences;
+import android.view.LayoutInflater;
 
+import com.atakmap.android.OTN.plugin.R;
 import com.atakmap.android.maps.MapItem;
 import com.atakmap.android.maps.PointMapItem;
 import com.atakmap.android.routes.RoutePlannerInterface;
@@ -16,6 +18,7 @@ import com.atakmap.coremap.maps.coords.GeoPoint;
 import com.graphhopper.GHRequest;
 import com.graphhopper.GHResponse;
 import com.graphhopper.GraphHopper;
+import com.graphhopper.GraphHopperConfig;
 import com.graphhopper.ResponsePath;
 import com.graphhopper.config.CHProfile;
 import com.graphhopper.config.Profile;
@@ -25,8 +28,12 @@ import java.util.List;
 import java.util.Map;
 
 public class OTNRouter implements RoutePlannerInterface {
+    private GraphHopperConfig jConfig;
+    private int selectedProfile = 0;
 
-
+    public OTNRouter(GraphHopperConfig jConfig){
+        this.jConfig = jConfig;
+    }
 
     /**
      * Gets the descriptive name of the planner.
@@ -53,8 +60,8 @@ public class OTNRouter implements RoutePlannerInterface {
      */
     public RouteGenerationTask getRouteGenerationTask(
             RouteGenerationTask.RouteGenerationEventListener routeGenerationEventListener){
-        // return (  new OTNroutingTask( routeGenerationEventListener,  ) );
-     return ( new OTNroutingTask( routeGenerationEventListener ) );
+           ;
+     return new OTNroutingTask( routeGenerationEventListener,  jConfig , selectedProfile );
     }
 
     /**
@@ -62,9 +69,13 @@ public class OTNRouter implements RoutePlannerInterface {
      * results.
      */
     public RoutePlannerOptionsView getOptionsView(AlertDialog parent){
-        RoutePlannerOptionsView routePlannerOptionsView = new RoutePlannerOptionsView( parent.getContext() );
-
-        return routePlannerOptionsView;
+        RoutePlannerOptionsView view= null;
+        try {
+             view = (RoutePlannerOptionsView) LayoutInflater.from(parent.getContext()).inflate(R.layout.otnplanneroption, null);
+        }catch(Exception e ){
+            view = new RoutePlannerOptionsView(parent.getContext() );
+        }
+        return view;
 
 
     }
