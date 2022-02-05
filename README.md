@@ -40,6 +40,9 @@ The steps to compile repo are based on [this](https://www.ballantyne.online/deve
 
 There are two breaking issues at the moment:
 
+* [Inflating resource crashes app](https://github.com/L-Belluomini/OTN/issues/1)
+* 
+
 
 ## Contact
 For any issue, suggestion or question, feel free to leave an issue on the [GitHub issues page](https://github.com/L-Belluomini/OTN/issues).
