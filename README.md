@@ -41,7 +41,7 @@ The steps to compile repo are based on [this](https://www.ballantyne.online/deve
 There are two breaking issues at the moment:
 
 * [Inflating resource crashes app](https://github.com/L-Belluomini/OTN/issues/1)
-* 
+* [Build on thirdparty pipeline fails proguard](https://github.com/L-Belluomini/OTN/issues/2)
 
 
 ## Contact
