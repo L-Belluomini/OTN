@@ -1,5 +1,5 @@
 <p align="center">
-  <img src= https://github.com/MightyBakedPotato/Imagefiles/blob/main/OTN1-0%20crop%20resize.png>
+  <img src= https://github.com/L-Belluomini/OTN/blob/main/img/OTN1-0_crop_resize.png>
    
 <p/>
 
@@ -16,7 +16,7 @@ At the moment OTN can't create a graph for the routing on the phone itself. To c
 ## For users
 We are sorry, the developer build is the only available one at the moment. Here's a cat to apologize
 
-![image](https://github.com/MightyBakedPotato/Imagefiles/blob/main/1zgnt0qzh9s71.png)
+![image](https://github.com/L-Belluomini/OTN/blob/main/img/1zgnt0qzh9s71.png)
 
 ## For developers
 The steps to compile repo are based on [this](https://www.ballantyne.online/developing-atak-plugin-101/).
@@ -36,7 +36,7 @@ The steps to compile repo are based on [this](https://www.ballantyne.online/deve
 * ...
 
 ## Call for SME
-![image](https://github.com/MightyBakedPotato/Imagefiles/blob/main/51oEcOu.jpg)
+![image](https://github.com/L-Belluomini/OTN/blob/main/img/51oEcOu.jpg)
 
 There are two breaking issues at the moment:
 
