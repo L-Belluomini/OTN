@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<com.atakmap.android.routes.RoutePlannerOptionsView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -12,7 +12,7 @@
         android:text="Routing area" />
 
     <com.atakmap.android.gui.PluginSpinner
-        android:id="@+id/spinner"
+        android:id="@+id/areaspinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
@@ -33,25 +33,27 @@
         android:layout_height="wrap_content"
         android:text="Type" />
 
-    <RadioButton
-        android:id="@+id/radioButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="48dp"
-        android:text="Fast (ch)" />
-
-    <RadioButton
-        android:id="@+id/radioButton2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="48dp"
-        android:text="Hybrid (lm)" />
-
-    <RadioButton
-        android:id="@+id/radioButton3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="48dp"
-        android:text="Flexible" />
-
-</LinearLayout>
+    <RadioGroup
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+        <RadioButton
+            android:id="@+id/rbCH"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:text="Fast (ch)" />
+        <RadioButton
+            android:id="@+id/rbLM"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:text="Hybrid (lm)" />
+            android:
+        <RadioButton
+            android:id="@+id/rbSTD"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:text="Flexible" />
+    </RadioGroup>
+</com.atakmap.android.routes.RoutePlannerOptionsView>

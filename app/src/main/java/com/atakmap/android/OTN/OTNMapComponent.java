@@ -26,16 +26,10 @@ import java.io.IOException;
 
 public class OTNMapComponent extends DropDownMapComponent {
     private GraphHopperConfig jConfig;
-    private String cacheLoc = "/sdcard/atak/tools/OTN/cache"; // todo get from shared preference and setted from gui
+    private String cacheLoc = "/sdcard/atak/tools/OTN/cache"; // todo get from shared preference and setter from gui
 
     public OTNMapComponent(){
-        try {
-            Gson ason = new Gson();
-            JsonReader reader = new JsonReader(new FileReader(cacheLoc + "/config.json"));
-            jConfig = ason.fromJson (reader , GraphHopperConfig.class );
-        } catch (IOException e) {
-            System.out.println("An error occurred, reading " );
-        }
+
 
     }
 
@@ -88,6 +82,13 @@ public class OTNMapComponent extends DropDownMapComponent {
         registerDropDownReceiver(ddr, ddFilter);
 
         //up as from template
+        try {
+            Gson ason = new Gson();
+            JsonReader reader = new JsonReader(new FileReader(cacheLoc + "/config.json"));
+            jConfig = ason.fromJson (reader , GraphHopperConfig.class );
+        } catch (IOException e) {
+            System.out.println("An error occurred, reading " );
+        }
 
 
         _context = view.getContext();
@@ -99,7 +100,7 @@ public class OTNMapComponent extends DropDownMapComponent {
                     .getRoutePlannerManager()
                 :null;
         assert _routeManager != null;
-        OTNrouter = new OTNRouter(jConfig);
+        OTNrouter = new OTNRouter(jConfig , pluginContext);
         _routeManager.registerPlanner("OTN" , OTNrouter);
     }
 
