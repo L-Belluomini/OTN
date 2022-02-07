@@ -133,10 +133,10 @@ def getVersionCode() {
 
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 28
     buildToolsVersion "29.0.2"
 
-   dexOptions {
+    dexOptions {
         jumboMode = true
     }
 
@@ -254,8 +254,15 @@ android {
         }
         }
 
+    sourceSets.main.java.filter.exclude 'META-INF/**/*'
     packagingOptions {
-        exclude 'META-INF/*'
+         exclude 'META-INF/**'
+        // exclude 'META-INF/DEPENDENCY'
+        //exclude 'META-INF/NOTICE.md'
+        exclude 'META-INF/LICENSE.md'
+
+        //exclude 'META-INF/*'
+        //exclude 'META-INF/*'
         //resources.excludes.add("META-INF/*")
         // resources.excludes.add("META-INF/NOTICE.md")
     }
@@ -301,7 +308,9 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: '*.jar')
     // https://mvnrepository.com/artifact/com.graphhopper/graphhopper-core
-    implementation group: 'com.graphhopper', name: 'graphhopper-core', version: '4.0'
+    implementation (group: 'com.graphhopper', name: 'graphhopper-core', version: '4.0') {
+        // tried for #2 didint work exclude module: 'javax.xml.bind.ModuleUtil' , group: 'javax.xml.bind.ModuleUtil'
+    }
     implementation 'com.google.code.gson:gson:2.8.9'
 }
 
