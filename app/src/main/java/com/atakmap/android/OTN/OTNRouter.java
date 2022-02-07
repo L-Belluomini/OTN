@@ -1,12 +1,18 @@
 package com.atakmap.android.OTN;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 
 import com.atakmap.android.OTN.plugin.R;
+import com.atakmap.android.gui.PluginSpinner;
 import com.atakmap.android.maps.MapItem;
 import com.atakmap.android.maps.PointMapItem;
+import com.atakmap.android.routes.Route;
 import com.atakmap.android.routes.RoutePlannerInterface;
 import com.atakmap.android.routes.RouteGenerationTask;
 import com.atakmap.android.routes.RoutePlannerOptionsView;
@@ -28,11 +34,14 @@ import java.util.List;
 import java.util.Map;
 
 public class OTNRouter implements RoutePlannerInterface {
-    private GraphHopperConfig jConfig;
+    private final GraphHopperConfig jConfig;
     private int selectedProfile = 0;
+    private final Context pluginContext;
 
-    public OTNRouter(GraphHopperConfig jConfig){
+    public OTNRouter(GraphHopperConfig jConfig, Context pluginContext){
+
         this.jConfig = jConfig;
+        this.pluginContext = pluginContext;
     }
 
     /**
@@ -69,16 +78,40 @@ public class OTNRouter implements RoutePlannerInterface {
      * results.
      */
     public RoutePlannerOptionsView getOptionsView(AlertDialog parent){
-        RoutePlannerOptionsView view= null;
-        try {
-             view = (RoutePlannerOptionsView) LayoutInflater.from(parent.getContext()).inflate(R.layout.otnplanneroption, null);
-        }catch(Exception e ){
-            view = new RoutePlannerOptionsView(parent.getContext() );
+        RoutePlannerOptionsView view= (RoutePlannerOptionsView) LayoutInflater.from(pluginContext).inflate(R.layout.otnplanneroption, null);
+
+        //routing Area
+
+        PluginSpinner AreaSpinner = ( PluginSpinner) view.findViewById(R.id.areaspinner);
+
+        // profile
+        PluginSpinner profileSpinner = ( PluginSpinner) view.findViewById(R.id.profilesSpinner);
+        ArrayAdapter<String> profileAdapter = new ArrayAdapter<String>( pluginContext , android.R.layout.simple_spinner_dropdown_item );
+        for (  Profile item : jConfig.getProfiles() ){
+            profileAdapter.add( item.getName() );
         }
+        profileSpinner.setAdapter(profileAdapter);
+       /* profileSpinner.setOnItemClickListener( new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int viewIndex, long l) {
+                selectedProfile = viewIndex;
+            }
+        }); */
+
+
+
+
+        //profile type
+
+
+
+
         return view;
 
 
     }
+
+
 
     /**
      * Gets any additional options for the planner that are needed at the time of navigating a route.
