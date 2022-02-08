@@ -32,28 +32,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Type" />
+    <com.atakmap.android.gui.PluginSpinner
+        android:id="@+id/typeSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
-    <RadioGroup
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-        <RadioButton
-            android:id="@+id/rbCH"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="48dp"
-            android:text="Fast (ch)" />
-        <RadioButton
-            android:id="@+id/rbLM"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="48dp"
-            android:text="Hybrid (lm)" />
-            android:
-        <RadioButton
-            android:id="@+id/rbSTD"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="48dp"
-            android:text="Flexible" />
-    </RadioGroup>
+
 </com.atakmap.android.routes.RoutePlannerOptionsView>
