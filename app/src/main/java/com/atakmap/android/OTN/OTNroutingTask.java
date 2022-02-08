@@ -34,7 +34,8 @@ public class OTNroutingTask extends RouteGenerationTask{
         super(listener);
 
         this.jConfig = jconfig;
-        this.selectedProfile = selectedProfile;
+        //this.selectedProfile = selectedProfile;
+        this.selectedProfile=1;
     }
 
     @Override

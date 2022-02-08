@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.RadioButton;
 
 import com.atakmap.android.OTN.plugin.R;
 import com.atakmap.android.gui.PluginSpinner;
@@ -20,6 +21,7 @@ import com.atakmap.android.routes.RoutePlannerOptionsView;
 
 import com.atakmap.android.routes.RoutePointPackage;
 import com.atakmap.android.routes.nav.NavigationCue;
+import com.atakmap.coremap.log.Log;
 import com.atakmap.coremap.maps.coords.GeoPoint;
 import com.graphhopper.GHRequest;
 import com.graphhopper.GHResponse;
@@ -33,7 +35,7 @@ import com.graphhopper.util.PointList;
 import java.util.List;
 import java.util.Map;
 
-public class OTNRouter implements RoutePlannerInterface {
+public class OTNRouter implements RoutePlannerInterface, AdapterView.OnItemSelectedListener {
     private final GraphHopperConfig jConfig;
     private int selectedProfile = 0;
     private final Context pluginContext;
@@ -91,18 +93,20 @@ public class OTNRouter implements RoutePlannerInterface {
             profileAdapter.add( item.getName() );
         }
         profileSpinner.setAdapter(profileAdapter);
-       /* profileSpinner.setOnItemClickListener( new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int viewIndex, long l) {
-                selectedProfile = viewIndex;
-            }
-        }); */
+        profileSpinner.setOnItemSelectedListener( this );
 
 
 
 
         //profile type
+        PluginSpinner typeSpinner = ( PluginSpinner) view.findViewById( R.id.typeSpinner );
+        ArrayAdapter<String> typeAdapter = new ArrayAdapter<String>( pluginContext , android.R.layout.simple_spinner_dropdown_item );
 
+        typeAdapter.add( "speed (ch)" );
+        typeAdapter.add( "hybrit (alt)" );
+        typeAdapter.add( "standard" );
+        typeSpinner.setAdapter(typeAdapter);
+        typeSpinner.setOnItemSelectedListener( this );
 
 
 
@@ -139,5 +143,38 @@ public class OTNRouter implements RoutePlannerInterface {
 
 
 
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int position, long iD) {
+
+        Log.d("OTN" , "view listener "+Integer.toString(position) + " Id:"+Long.toString(iD) + "adapter ID " + Integer.toString (adapterView.getId() ) );
+        switch (adapterView.getId()){
+            case (R.id.profilesSpinner ):
+                Log.d("OTN" , "view listener profile spinner" );
+                break;
+            case ( R.id.areaspinner ):
+                Log.d("OTN" , "view listener area spinner" );
+
+                break;
+            case ( R.id.typeSpinner ):
+                Log.d("OTN" , "view listener type spinner" );
+            default:
+                return;
+
+
+        }
+        if (position == Math.round(iD) ) {
+            selectedProfile = position;
+        }
+
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
+    }
+
+
 
 }
+
