@@ -12,6 +12,7 @@ import com.graphhopper.GraphHopper;
 import com.graphhopper.GraphHopperConfig;
 import com.graphhopper.ResponsePath;
 import com.graphhopper.util.InstructionList;
+import com.graphhopper.util.Parameters;
 import com.graphhopper.util.Translation;
 
 import java.util.HashMap;
@@ -21,26 +22,25 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 
-public class OTNroutingTask extends RouteGenerationTask{
+public class OTNOfflineroutingTask extends RouteGenerationTask{
 
-    private final String cacheLoc = "/sdcard/atak/tools/OTN/cache"; // todo get from shared preference and setted from gui
-    private int selectedProfile = 0;
+    private final String graphPath = "/sdcard/atak/tools/OTN/cache"; // todo get from shared preference and setted from gui
+    private OTNrequest takRequest;
     private GraphHopperConfig jConfig;
 
-    public OTNroutingTask(RouteGenerationEventListener listener) {
+    public OTNOfflineroutingTask(RouteGenerationEventListener listener) {
         super(listener);
     }
-    public OTNroutingTask(RouteGenerationEventListener listener, GraphHopperConfig jconfig , int selectedProfile ) {
+    public OTNOfflineroutingTask(RouteGenerationEventListener listener, GraphHopperConfig jconfig , OTNrequest takRequest  ) {
         super(listener);
 
         this.jConfig = jconfig;
-        //this.selectedProfile = selectedProfile;
-        this.selectedProfile=1;
+        this.takRequest = takRequest;
     }
 
     @Override
     public RoutePointPackage generateRoute(SharedPreferences prefs, GeoPoint origin, GeoPoint dest, List<GeoPoint> byWayOff) {
-        GHRequest request;
+        GHRequest ghRequest;
         // cumulative cycle results
         List<PointMapItem> waypoint = new LinkedList<PointMapItem>()  ;
         Map<String , NavigationCue> waycue = new HashMap<>();
@@ -54,16 +54,32 @@ public class OTNroutingTask extends RouteGenerationTask{
         OTNresponse tmpMapPoint;
 
         GraphHopper hopper = new GraphHopper();
-        hopper.setGraphHopperLocation(cacheLoc);
+        hopper.setGraphHopperLocation(graphPath);
         hopper.init(jConfig);
-        hopper.load(cacheLoc);
+        hopper.load(graphPath);
 
-        request = new GHRequest(origin.getLatitude() , origin.getLongitude() , dest.getLatitude() ,dest.getLongitude())
-                .setProfile ( jConfig.getProfiles().get( selectedProfile ).getName() )
+        //tmp for test
+        boolean chRun = false;
+        boolean lmRun = false;
+
+        /*
+        String profileName = jConfig.getProfiles().get(takRequest.selectedProfile).getName();
+        //List <ChProfiles> = jConfig.getCHProfiles();
+        */
+
+        ghRequest = new GHRequest(origin.getLatitude() , origin.getLongitude() , dest.getLatitude() ,dest.getLongitude())
+                .setProfile (takRequest.getProfile().getName() )
                 .setLocale ( Locale.ENGLISH );
 
+        if (!chRun) {
+            ghRequest.putHint(Parameters.CH.DISABLE , true);
+        }
+        if(!lmRun){
+            ghRequest.putHint(Parameters.Landmark.DISABLE , true);
+        }
 
-        ResponsePath  hopResponse = hopper.route ( request ) .getBest( )  ;
+
+        ResponsePath  hopResponse = hopper.route ( ghRequest ) .getBest( )  ;
         hopper.close( );
         if ( hopResponse.hasErrors() ) {
             throw new RuntimeException( hopResponse.getErrors().toString());
