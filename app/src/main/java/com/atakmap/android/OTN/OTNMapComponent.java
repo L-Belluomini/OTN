@@ -43,7 +43,7 @@ public class OTNMapComponent extends DropDownMapComponent {
     private RoutePlannerManager _routeManager ;
     private Context _context;
 
-    public OTNRouter OTNrouter;
+
     @Override
     public void onStart(final Context context, final MapView view) {
         Log.d(TAG, "onStart");
@@ -100,8 +100,8 @@ public class OTNMapComponent extends DropDownMapComponent {
                     .getRoutePlannerManager()
                 :null;
         assert _routeManager != null;
-        OTNrouter = new OTNRouter(jConfig , pluginContext);
-        _routeManager.registerPlanner("OTN" , OTNrouter);
+        _routeManager.registerPlanner ( "OTNOffline" , new OTNOfflineRouter( jConfig , pluginContext ) );
+        // _routeManager.registerPlanner( "OTNonline" , new OTNOnlineRouter ( pluginContext ) );
     }
 
     @Override

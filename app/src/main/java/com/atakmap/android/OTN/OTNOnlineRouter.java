@@ -2,47 +2,26 @@ package com.atakmap.android.OTN;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.RadioButton;
 
 import com.atakmap.android.OTN.plugin.R;
 import com.atakmap.android.gui.PluginSpinner;
-import com.atakmap.android.maps.MapItem;
-import com.atakmap.android.maps.PointMapItem;
-import com.atakmap.android.routes.Route;
-import com.atakmap.android.routes.RoutePlannerInterface;
 import com.atakmap.android.routes.RouteGenerationTask;
+import com.atakmap.android.routes.RoutePlannerInterface;
 import com.atakmap.android.routes.RoutePlannerOptionsView;
-
-
-import com.atakmap.android.routes.RoutePointPackage;
-import com.atakmap.android.routes.nav.NavigationCue;
 import com.atakmap.coremap.log.Log;
-import com.atakmap.coremap.maps.coords.GeoPoint;
-import com.graphhopper.GHRequest;
-import com.graphhopper.GHResponse;
-import com.graphhopper.GraphHopper;
 import com.graphhopper.GraphHopperConfig;
-import com.graphhopper.ResponsePath;
-import com.graphhopper.config.CHProfile;
 import com.graphhopper.config.Profile;
-import com.graphhopper.util.PointList;
 
-import java.util.List;
-import java.util.Map;
-
-public class OTNRouter implements RoutePlannerInterface, AdapterView.OnItemSelectedListener {
-    private final GraphHopperConfig jConfig;
-    private int selectedProfile = 0;
+public class OTNOnlineRouter implements RoutePlannerInterface, AdapterView.OnItemSelectedListener {
     private final Context pluginContext;
 
-    public OTNRouter(GraphHopperConfig jConfig, Context pluginContext){
 
-        this.jConfig = jConfig;
+
+    public OTNOnlineRouter( Context pluginContext){
         this.pluginContext = pluginContext;
     }
 
@@ -52,7 +31,7 @@ public class OTNRouter implements RoutePlannerInterface, AdapterView.OnItemSelec
      * @return the descriptive name of the planner
      */
     public String getDescriptiveName(){
-        return "OTN offline router";
+        return "OTN ONline router";
     }
 
     /**
@@ -61,7 +40,7 @@ public class OTNRouter implements RoutePlannerInterface, AdapterView.OnItemSelec
      * @return true if an active network is required.
      */
     public boolean isNetworkRequired(){
-        return false;
+        return true;
     }
 
     /**
@@ -70,9 +49,9 @@ public class OTNRouter implements RoutePlannerInterface, AdapterView.OnItemSelec
      * @return A RouteGenerationTask for this planner.
      */
     public RouteGenerationTask getRouteGenerationTask(
-            RouteGenerationTask.RouteGenerationEventListener routeGenerationEventListener){
-           ;
-     return new OTNroutingTask( routeGenerationEventListener,  jConfig , selectedProfile );
+            RouteGenerationTask.RouteGenerationEventListener routeGenerationEventListener) {
+
+        return  null ; //new OTNOfflineroutingTask( routeGenerationEventListener);
     }
 
     /**
@@ -82,12 +61,8 @@ public class OTNRouter implements RoutePlannerInterface, AdapterView.OnItemSelec
     public RoutePlannerOptionsView getOptionsView(AlertDialog parent){
         RoutePlannerOptionsView view= (RoutePlannerOptionsView) LayoutInflater.from(pluginContext).inflate(R.layout.otnplanneroption, null);
 
-        //routing Area
-
-        PluginSpinner AreaSpinner = ( PluginSpinner) view.findViewById(R.id.areaspinner);
-
         // profile
-        PluginSpinner profileSpinner = ( PluginSpinner) view.findViewById(R.id.profilesSpinner);
+       /* PluginSpinner profileSpinner = ( PluginSpinner) view.findViewById(R.id.profilesSpinner);
         ArrayAdapter<String> profileAdapter = new ArrayAdapter<String>( pluginContext , android.R.layout.simple_spinner_dropdown_item );
         for (  Profile item : jConfig.getProfiles() ){
             profileAdapter.add( item.getName() );
@@ -95,19 +70,7 @@ public class OTNRouter implements RoutePlannerInterface, AdapterView.OnItemSelec
         profileSpinner.setAdapter(profileAdapter);
         profileSpinner.setOnItemSelectedListener( this );
 
-
-
-
-        //profile type
-        PluginSpinner typeSpinner = ( PluginSpinner) view.findViewById( R.id.typeSpinner );
-        ArrayAdapter<String> typeAdapter = new ArrayAdapter<String>( pluginContext , android.R.layout.simple_spinner_dropdown_item );
-
-        typeAdapter.add( "speed (ch)" );
-        typeAdapter.add( "hybrit (alt)" );
-        typeAdapter.add( "standard" );
-        typeSpinner.setAdapter(typeAdapter);
-        typeSpinner.setOnItemSelectedListener( this );
-
+        */
 
 
         return view;
@@ -163,7 +126,7 @@ public class OTNRouter implements RoutePlannerInterface, AdapterView.OnItemSelec
 
         }
         if (position == Math.round(iD) ) {
-            selectedProfile = position;
+            //selectedProfile = position;
         }
 
 
@@ -177,4 +140,5 @@ public class OTNRouter implements RoutePlannerInterface, AdapterView.OnItemSelec
 
 
 }
+
 
