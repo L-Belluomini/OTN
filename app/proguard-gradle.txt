@@ -58,3 +58,9 @@
 -keep class ModuleUtil
 
 
+-dontwarn javax.xml.stream.*.**
+-dontwarn org.apache.tools.ant.**
+-dontwarn org.slf4j.*
+-dontwarn org.locationtech.jts.awt.*
+
+-ignorewarnings
