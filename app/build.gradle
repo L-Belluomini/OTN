@@ -255,7 +255,11 @@ android {
         }
 
     packagingOptions {
+        exclude 'META-INF/NOTICE.md'
+        exclude 'META-INF/LICENSE.md'
         exclude 'META-INF/*'
+        exclude 'META-INF/**'
+
         //resources.excludes.add("META-INF/*")
         // resources.excludes.add("META-INF/NOTICE.md")
     }
@@ -301,7 +305,13 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: '*.jar')
     // https://mvnrepository.com/artifact/com.graphhopper/graphhopper-core
-    implementation group: 'com.graphhopper', name: 'graphhopper-core', version: '4.0'
-    implementation 'com.google.code.gson:gson:2.8.9'
+    implementation (group: 'com.graphhopper', name: 'graphhopper-core', version: '4.0') {
+        exclude group : 'module-info'
+        exclude group : 'jakarta.xml.bind'// reimported dirctly to remove multirelease jar
+    }
+    implementation files ('/home/developer0/Downloads/atak-civ-sdk-4.4.0.0/atak-civ/plugin-examples/OTN/jakarta.xml.bind-api-2.3.2.jar')
+    implementation ('com.google.code.gson:gson:2.8.9'){
+        exclude group : 'module-info'
+    }
 }
 

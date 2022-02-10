@@ -56,3 +56,9 @@
 # overcome an existing bug in the gradle subsystem (3.5.x)
 #-keep class module-info
 
+-dontwarn javax.xml.stream.*.**
+-dontwarn org.apache.tools.ant.**
+-dontwarn org.slf4j.*
+-dontwarn org.locationtech.jts.awt.*
+
+-ignorewarnings
