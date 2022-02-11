@@ -133,10 +133,10 @@ def getVersionCode() {
 
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
     buildToolsVersion "29.0.2"
 
-    dexOptions {
+   dexOptions {
         jumboMode = true
     }
 
@@ -254,15 +254,13 @@ android {
         }
         }
 
-    sourceSets.main.java.filter.exclude 'META-INF/**/*'
     packagingOptions {
-         exclude 'META-INF/**'
-        // exclude 'META-INF/DEPENDENCY'
-        //exclude 'META-INF/NOTICE.md'
+        exclude 'META-INF/NOTICE.md'
         exclude 'META-INF/LICENSE.md'
+        exclude 'META-INF/*'
+        exclude 'META-INF/**'
+        exclude 'module-info'
 
-        //exclude 'META-INF/*'
-        //exclude 'META-INF/*'
         //resources.excludes.add("META-INF/*")
         // resources.excludes.add("META-INF/NOTICE.md")
     }
@@ -309,8 +307,21 @@ dependencies {
     implementation fileTree(dir: 'libs', include: '*.jar')
     // https://mvnrepository.com/artifact/com.graphhopper/graphhopper-core
     implementation (group: 'com.graphhopper', name: 'graphhopper-core', version: '4.0') {
-        // tried for #2 didint work exclude module: 'javax.xml.bind.ModuleUtil' , group: 'javax.xml.bind.ModuleUtil'
+        exclude group : 'com.fasterxml.jackson.core' // reimported directly to remove module-info
+        exclude group : 'jakarta.xml.bind'// reimported directly to remove multirelease jar
+        exclude group : 'com.fasterxml.jackson.dataformat' // reimported directly to remove module-info
+        exclude group : 'com.fasterxml.jackson.module' // reimported directly to remove module-info
+        exclude group : 'com.fasterxml.woodstox' // reimported directly to remove module-info
+        exclude group : 'org.codehaus.woodstox' // reimported directly to remove module-info
     }
-    implementation 'com.google.code.gson:gson:2.8.9'
+    implementation files ('/home/developer0/Downloads/atak-civ-sdk-4.4.0.0/atak-civ/plugin-examples/OTN/jakarta.xml.bind-api-2.3.2.jar')
+    implementation files ('/home/developer0/Downloads/gson/gson-2.8.9.jar')
+    implementation files ('/home/developer0/Downloads/jakson/jackson-annotations-2.10.5.jar')
+    implementation files ('/home/developer0/Downloads/jakson/jackson-core-2.10.5.jar')
+    implementation files ('/home/developer0/Downloads/jakson/jackson-databind-2.10.5.1.jar')
+    implementation files ('/home/developer0/Downloads/jakson/jackson-dataformat-xml-2.10.5.jar')
+    implementation files ('/home/developer0/Downloads/jakson/jackson-module-jaxb-annotations-2.10.5.jar')
+    implementation files ('/home/developer0/Downloads/woodstox/stax2-api-4.2.1.jar')
+    implementation files ('/home/developer0/Downloads/woodstox/woodstox-core-6.2.1.jar')
 }
 
