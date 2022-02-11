@@ -62,10 +62,6 @@ public class OTNOfflineroutingTask extends RouteGenerationTask{
         boolean chRun = false;
         boolean lmRun = false;
 
-        /*
-        String profileName = jConfig.getProfiles().get(takRequest.selectedProfile).getName();
-        //List <ChProfiles> = jConfig.getCHProfiles();
-        */
 
         ghRequest = new GHRequest(origin.getLatitude() , origin.getLongitude() , dest.getLatitude() ,dest.getLongitude())
                 .setProfile (takRequest.getProfile().getName() )
@@ -82,17 +78,17 @@ public class OTNOfflineroutingTask extends RouteGenerationTask{
         ResponsePath  hopResponse = hopper.route ( ghRequest ) .getBest( )  ;
         hopper.close( );
         if ( hopResponse.hasErrors() ) {
-            throw new RuntimeException( hopResponse.getErrors().toString());
+            throw new RuntimeException( hopResponse.getErrors().toString()); // todo better manage errors
         }
 
-        InstructionList instructionList = hopResponse.getInstructions();
+        final InstructionList instructionList = hopResponse.getInstructions();
         final Translation translation = instructionList.getTr();
 
         for ( int pointIndex = 0 ; pointIndex < hopResponse.getPoints().size() ; pointIndex ++) {
             tmpPoint = new GeoPoint( hopResponse.getPoints().getLat ( pointIndex ) , hopResponse.getPoints().getLon ( pointIndex ) );
             point = new GeoPoint( tmpPoint.getLatitude() , tmpPoint.getLongitude() , 100 ); // todo: fix altitude
             tmpUid = UUID.randomUUID().toString();
-            tmpMapPoint = new OTNresponse( point , tmpUid  ) ;// TODO: find already used pointmapitem ?
+            tmpMapPoint = new OTNresponse( point , tmpUid  ) ;// TODO: find already used pointmapitem ? (decorate mapitem better ?)
             tmpMapPoint.setMetaString("type" , "b-m-p-c" );
             waypoint.add ( tmpMapPoint );
 

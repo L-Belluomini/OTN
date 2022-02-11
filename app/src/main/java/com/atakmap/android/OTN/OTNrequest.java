@@ -30,7 +30,7 @@ public class OTNrequest {
             if (profile. )
         }
         */
-        this.selectedProfile = profilesList.get( selectedProfileIndex);
+        this.selectedProfile = profilesList.get( selectedProfileIndex );
 
     }
     public Profile getProfile (){

@@ -54,9 +54,7 @@
 }
 
 # overcome an existing bug in the gradle subsystem (3.5.x)
--keep class module-info
--keep class ModuleUtil
-
+#-keep class module-info
 
 -dontwarn javax.xml.stream.*.**
 -dontwarn org.apache.tools.ant.**
