@@ -56,3 +56,4 @@
 # overcome an existing bug in the gradle subsystem (3.5.x)
 #-keep class module-info
 
+-dontwarn

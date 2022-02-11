@@ -82,6 +82,7 @@ allprojects {
 
 apply plugin: 'com.android.application'
 apply plugin: 'atak-takdev-plugin'
+apply plugin: 'org.anarres.jarjar'
 
 
 
@@ -314,14 +315,29 @@ dependencies {
         exclude group : 'com.fasterxml.woodstox' // reimported directly to remove module-info
         exclude group : 'org.codehaus.woodstox' // reimported directly to remove module-info
     }
-    implementation files ('/home/developer0/Downloads/atak-civ-sdk-4.4.0.0/atak-civ/plugin-examples/OTN/jakarta.xml.bind-api-2.3.2.jar')
-    implementation files ('/home/developer0/Downloads/gson/gson-2.8.9.jar')
-    implementation files ('/home/developer0/Downloads/jakson/jackson-annotations-2.10.5.jar')
-    implementation files ('/home/developer0/Downloads/jakson/jackson-core-2.10.5.jar')
-    implementation files ('/home/developer0/Downloads/jakson/jackson-databind-2.10.5.1.jar')
-    implementation files ('/home/developer0/Downloads/jakson/jackson-dataformat-xml-2.10.5.jar')
-    implementation files ('/home/developer0/Downloads/jakson/jackson-module-jaxb-annotations-2.10.5.jar')
-    implementation files ('/home/developer0/Downloads/woodstox/stax2-api-4.2.1.jar')
-    implementation files ('/home/developer0/Downloads/woodstox/woodstox-core-6.2.1.jar')
+    // tried to use jar jar to remove modle-info https://github.com/google/gson/issues/1627#issuecomment-856734057
+    // dose not work
+
+    /*implementation jarjar.repackage {
+        from('com.fasterxml.jackson.core:jackson-core:2.10.5') {
+            //exclude group: '', module: ''
+            // transitive = false
+        }
+        //archiveBypass ""
+        //archiveExclude ""
+
+        classDelete "module-info"
+    } */
+
+    implementation files ('../libs/jakarta.xml.bind-api-2.3.2.jar')
+    implementation files ('../libs/gson-2.8.9.jar')
+    implementation files ('../libs/jackson-annotations-2.10.5.jar')
+    implementation files ('../libs/jackson-core-2.10.5.jar')
+    implementation files ('../libs/jackson-databind-2.10.5.1.jar')
+    implementation files ('../libs/jackson-dataformat-xml-2.10.5.jar')
+    implementation files ('../libs/jackson-module-jaxb-annotations-2.10.5.jar')
+    implementation files ('../libs/stax2-api-4.2.1.jar')
+    implementation files ('../libs/woodstox-core-6.2.1.jar')
+
 }
 
