@@ -2,6 +2,8 @@
 -dontshrink
 -dontoptimize
 
+
+
 ############### ACRA specifics
 # we need line numbers in our stack traces otherwise they are pretty useless
 -renamesourcefileattribute SourceFile
@@ -54,7 +56,7 @@
 }
 
 # overcome an existing bug in the gradle subsystem (3.5.x)
-#-keep class module-info
+-keep class module-info
 
 -dontwarn javax.xml.stream.*.**
 -dontwarn org.apache.tools.ant.**
