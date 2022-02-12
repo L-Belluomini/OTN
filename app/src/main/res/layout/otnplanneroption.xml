@@ -9,12 +9,14 @@
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Routing area" />
+        android:text="Routing area"
+        android:visibility="gone"/>
 
     <com.atakmap.android.gui.PluginSpinner
         android:id="@+id/areaspinner"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:visibility="gone"/>
 
     <TextView
         android:id="@+id/textView2"

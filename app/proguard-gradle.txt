@@ -56,4 +56,40 @@
 # overcome an existing bug in the gradle subsystem (3.5.x)
 #-keep class module-info
 
+# projectspecific
 -dontwarn
+
+#graphhopper
+-keep class com.graphhopper.util.TranslationMap
+
+
+
+
+##---------------Begin: proguard configuration for Gson  ----------
+# Gson uses generic type information stored in a class file when working with fields. Proguard
+# removes such information by default, so configure it to keep all of it.
+-keepattributes Signature
+
+# For using GSON @Expose annotation
+-keepattributes *Annotation*
+
+# Gson specific classes
+# -dontwarn sun.misc.** buld break test
+-keep class com.google.gson.stream.** { *; }
+
+# Application classes that will be serialized/deserialized over Gson
+-keep class com.graphhopper.GraphHopperConfig  { <fields>; }
+-keep class com.graphhopper.config.Profile  { <fields>; }
+-keep class com.graphhopper.config.CHProfile  { <fields>; }
+-keep class com.graphhopper.config.LMProfile  { <fields>; }
+
+# Prevent proguard from stripping interface information from TypeAdapter, TypeAdapterFactory,
+# JsonSerializer, JsonDeserializer instances (so they can be used in @JsonAdapter)
+-keep class * extends com.google.gson.TypeAdapter
+-keep class * implements com.google.gson.TypeAdapterFactory
+-keep class * implements com.google.gson.JsonSerializer
+-keep class * implements com.google.gson.JsonDeserializer
+
+## removed config for R8
+
+##---------------End: proguard configuration for Gson  ----------
