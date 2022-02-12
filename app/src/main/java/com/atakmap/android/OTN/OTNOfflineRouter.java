@@ -23,6 +23,7 @@ public class OTNOfflineRouter implements RoutePlannerInterface, AdapterView.OnIt
     private int selectedProfile = 0;
     private OTNrequest.ProfileType selectedType = OTNrequest.ProfileType.STANDARD;
     private final Context pluginContext;
+    private final String TAG = "OTNOfflineRouter";
 
 
 
@@ -75,6 +76,10 @@ public class OTNOfflineRouter implements RoutePlannerInterface, AdapterView.OnIt
         // profile
         PluginSpinner profileSpinner = ( PluginSpinner) view.findViewById(R.id.profilesSpinner);
         ArrayAdapter<String> profileAdapter = new ArrayAdapter<String>( pluginContext , android.R.layout.simple_spinner_dropdown_item );
+       if (jConfig == null) {
+           Log.w(TAG , "jConfig is null!!");
+           return view; // todo tell user dose not work but dont kill app
+       }
         for (  Profile item : jConfig.getProfiles() ){
             profileAdapter.add( item.getName() );
         }
@@ -88,6 +93,7 @@ public class OTNOfflineRouter implements RoutePlannerInterface, AdapterView.OnIt
         PluginSpinner typeSpinner = ( PluginSpinner) view.findViewById( R.id.typeSpinner );
         ArrayAdapter<String> typeAdapter = new ArrayAdapter<String>( pluginContext , android.R.layout.simple_spinner_dropdown_item );
 
+        typeAdapter.add( "best" );
         typeAdapter.add( "speed (ch)" );
         typeAdapter.add( "hybrit (alt)" );
         typeAdapter.add( "standard" );
@@ -132,21 +138,42 @@ public class OTNOfflineRouter implements RoutePlannerInterface, AdapterView.OnIt
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int position, long iD) {
 
-        Log.d("OTN" , "view listener "+Integer.toString(position) + " Id:"+Long.toString(iD) + "adapter ID " + Integer.toString (adapterView.getId() ) );
-        switch (adapterView.getId()){
+        Log.d(TAG , "view listener "+Integer.toString(position) + " Id:"+Long.toString(iD) + "adapter ID " + Integer.toString (adapterView.getId() ) );
+        switch ( adapterView.getId ( ) ) {
+
             case (R.id.profilesSpinner ):
-                Log.d("OTN" , "view listener profile spinner" );
+
+                Log.d(TAG , "view listener profile spinner" );
                 if (position == Math.round(iD) ) {
                     selectedProfile = position;
                 }
                 break;
+
             case ( R.id.areaspinner ):
-                Log.d("OTN" , "view listener area spinner" );
+                Log.d(TAG , "view listener area spinner" );
+                break;
+
+            case ( R.id.typeSpinner ):
+                Log.d(TAG , "view listener type spinner" );
+
+                switch (position ) {
+                    case ( 0 ):// best
+                        selectedType = OTNrequest.ProfileType.BEST;
+                        break;
+                    case  ( 1 ):// ch
+                        selectedType = OTNrequest.ProfileType.CH;
+                        break;
+                    case  ( 2 ):// lm
+                        selectedType = OTNrequest.ProfileType.ALT;
+                        break;
+                    case (3):// std
+                        selectedType = OTNrequest.ProfileType.STANDARD;
+                }
 
                 break;
-            case ( R.id.typeSpinner ):
-                Log.d("OTN" , "view listener type spinner" );
+
             default:
+                Log.w(TAG, " itemselceted defaulted");
                 return;
 
 

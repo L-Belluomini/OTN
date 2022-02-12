@@ -12,6 +12,8 @@ import com.atakmap.android.maps.MapView;
 import com.atakmap.android.dropdown.DropDownMapComponent;
 
 
+import com.atakmap.coremap.filesystem.FileSystemUtils;
+import com.atakmap.coremap.io.IOProviderFactory;
 import com.atakmap.coremap.log.Log;
 import com.atakmap.android.OTN.plugin.R;
 
@@ -23,6 +25,7 @@ import com.graphhopper.GraphHopperConfig;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.FileSystem;
 
 public class OTNMapComponent extends DropDownMapComponent {
     private GraphHopperConfig jConfig;
@@ -58,6 +61,10 @@ public class OTNMapComponent extends DropDownMapComponent {
     public void onResume(final Context context,
                          final MapView view) {
         Log.d(TAG, "onResume");
+
+        if (jConfig == null){
+            Log.w("OTN" , "reading j config failed");
+        }
     }
 
     @Override
@@ -84,10 +91,17 @@ public class OTNMapComponent extends DropDownMapComponent {
         //up as from template
         try {
             Gson ason = new Gson();
-            JsonReader reader = new JsonReader(new FileReader(cacheLoc + "/config.json"));
+            FileSystemUtils.init();
+            FileReader fReader =  new FileReader( FileSystemUtils.getItem(FileSystemUtils.TOOL_DATA_DIRECTORY  + "/OTN" + "/cache" + "/config.json") );
+            JsonReader reader = new JsonReader(fReader);
             jConfig = ason.fromJson (reader , GraphHopperConfig.class );
+            Log.d(TAG , "jConfig: " + jConfig.toString());
+            if (jConfig == null){
+                Log.w(TAG , "reading j config failed");
+            }
         } catch (IOException e) {
-            System.out.println("An error occurred, reading " );
+            Log.e( TAG ,"An error occurred, reading " );
+            Log.e ( TAG , e.toString());
         }
 
 
@@ -101,11 +115,11 @@ public class OTNMapComponent extends DropDownMapComponent {
                 :null;
         assert _routeManager != null;
         _routeManager.registerPlanner ( "OTNOffline" , new OTNOfflineRouter( jConfig , pluginContext ) );
-        // _routeManager.registerPlanner( "OTNonline" , new OTNOnlineRouter ( pluginContext ) );
     }
 
     @Override
     protected void onDestroyImpl(Context context, MapView view) {
+        _routeManager.unregisterPlanner("OTNOffline");
         super.onDestroyImpl(context, view);
     }
 

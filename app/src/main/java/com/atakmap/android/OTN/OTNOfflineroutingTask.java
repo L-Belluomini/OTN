@@ -1,12 +1,15 @@
 package com.atakmap.android.OTN;
 
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.atakmap.android.maps.PointMapItem;
 import com.atakmap.android.routes.RouteGenerationTask;
 import com.atakmap.android.routes.RoutePointPackage;
 import com.atakmap.android.routes.nav.NavigationCue;
+import com.atakmap.coremap.filesystem.FileSystemUtils;
 import com.atakmap.coremap.maps.coords.GeoPoint;
+import com.atakmap.map.elevation.ElevationManager;
 import com.graphhopper.GHRequest;
 import com.graphhopper.GraphHopper;
 import com.graphhopper.GraphHopperConfig;
@@ -24,6 +27,7 @@ import java.util.UUID;
 
 public class OTNOfflineroutingTask extends RouteGenerationTask{
 
+    private static final String TAG = "OTNOfflineroutingTask";
     private final String graphPath = "/sdcard/atak/tools/OTN/cache"; // todo get from shared preference and setted from gui
     private OTNrequest takRequest;
     private GraphHopperConfig jConfig;
@@ -53,14 +57,19 @@ public class OTNOfflineroutingTask extends RouteGenerationTask{
         String tmpUid;
         OTNresponse tmpMapPoint;
 
+        if (jConfig == null ){
+            Log.e(TAG , "jConfig could not be loaded" );
+            return new RoutePointPackage("jConfig could not be loaded");
+        }
         GraphHopper hopper = new GraphHopper();
-        hopper.setGraphHopperLocation(graphPath);
+        hopper.setGraphHopperLocation(FileSystemUtils.getItem(FileSystemUtils.TOOL_DATA_DIRECTORY  + "/OTN" + "/cache" ).getPath() );
+        Log.d("OTN" , hopper.getGraphHopperLocation() );
         hopper.init(jConfig);
-        hopper.load(graphPath);
+        hopper.load( FileSystemUtils.getItem(FileSystemUtils.TOOL_DATA_DIRECTORY  + "/OTN" + "/cache" ).getPath() );
 
         //tmp for test
-        boolean chRun = false;
-        boolean lmRun = false;
+        boolean chRun = takRequest.isChCapable();
+        boolean lmRun = takRequest.isLmCapable();
 
 
         ghRequest = new GHRequest(origin.getLatitude() , origin.getLongitude() , dest.getLatitude() ,dest.getLongitude())
@@ -69,16 +78,25 @@ public class OTNOfflineroutingTask extends RouteGenerationTask{
 
         if (!chRun) {
             ghRequest.putHint(Parameters.CH.DISABLE , true);
+            Log.d(TAG , "ch disabled");
         }
         if(!lmRun){
             ghRequest.putHint(Parameters.Landmark.DISABLE , true);
+            Log.d(TAG , "lm disabled");
         }
 
+        /*switch ( takRequest.getProfileType()) {
+            case(BEST):
+                break;
+            case CH:
+        }
+        */
 
         ResponsePath  hopResponse = hopper.route ( ghRequest ) .getBest( )  ;
         hopper.close( );
         if ( hopResponse.hasErrors() ) {
-            throw new RuntimeException( hopResponse.getErrors().toString()); // todo better manage errors
+            Log.e(TAG , hopResponse.getErrors ( ).toString ( ) );
+            return new RoutePointPackage( hopResponse.getErrors ( ).toString( ) );
         }
 
         final InstructionList instructionList = hopResponse.getInstructions();
@@ -86,9 +104,9 @@ public class OTNOfflineroutingTask extends RouteGenerationTask{
 
         for ( int pointIndex = 0 ; pointIndex < hopResponse.getPoints().size() ; pointIndex ++) {
             tmpPoint = new GeoPoint( hopResponse.getPoints().getLat ( pointIndex ) , hopResponse.getPoints().getLon ( pointIndex ) );
-            point = new GeoPoint( tmpPoint.getLatitude() , tmpPoint.getLongitude() , 100 ); // todo: fix altitude
+            point = new GeoPoint( tmpPoint.getLatitude() , tmpPoint.getLongitude() , ElevationManager.getElevation( tmpPoint , null ) );
             tmpUid = UUID.randomUUID().toString();
-            tmpMapPoint = new OTNresponse( point , tmpUid  ) ;// TODO: find already used pointmapitem ? (decorate mapitem better ?)
+            tmpMapPoint = new OTNresponse( point , tmpUid  ) ;// TODO: decorate mapitem better ?
             tmpMapPoint.setMetaString("type" , "b-m-p-c" );
             waypoint.add ( tmpMapPoint );
 
