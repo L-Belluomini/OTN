@@ -14,12 +14,14 @@ The Project is now in beta.
 At the moment OTN can't create a graph for the routing on the phone itself. To create it, check out [OTNcompanion](https://github.com/L-Belluomini/OTN-companion).
 
 ## For users
-1. On the GitHub project page, go to releases and download the .apk file relative to your Atak version.
-2. Install the .apk on your smartphone.
-3. On the Atak app, go to the plugins list and load OTN.
-4. Now that OTN is loaded, go to the routes tool and select *OTN offline routing* as the routing method.
-5. Pick a starting point, a destination and a profile (currently either on foot or by car).
-6. Success! Here's a cat to celebrate!
+
+1. On your pc, generate the graphs of the geografical area you need using [OTNcompanion](https://github.com/L-Belluomini/OTN-companion).
+2. On the GitHub project page, go to releases and download the .apk file relative to your Atak version.
+3. Install the .apk on your smartphone.
+4. On the Atak app, go to the plugins list and load OTN.
+5. Now that OTN is loaded, go to the routes tool and select *OTN offline routing* as the routing method.
+6. Pick a starting point, a destination and a profile (currently either on foot or by car).
+7. Success! Here's a cat to celebrate!
 
 ![image](https://github.com/L-Belluomini/OTN/blob/main/img/51ZjBEW%2BqNL._AC_SX466_.jpg)
 
