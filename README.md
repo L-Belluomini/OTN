@@ -18,7 +18,7 @@ At the moment OTN can't create a graph for the routing on the phone itself. To c
 2. Install the .apk on your smartphone.
 3. On the Atak app, go to the plugins list and load OTN.
 4. Now that OTN is loaded, go to the routes tool and select *OTN offline routing* as the routing method.
-5. Pick a starting point, a destination and a profile (currently either on foot or by car)
+5. Pick a starting point, a destination and a profile (currently either on foot or by car).
 6. Success! Here's a cat to celebrate!
 
 ![image](https://github.com/L-Belluomini/OTN/blob/main/img/51ZjBEW%2BqNL._AC_SX466_.jpg)
@@ -26,7 +26,7 @@ At the moment OTN can't create a graph for the routing on the phone itself. To c
 ## Current limitations:
 
 * Graphs must be located in \tools\OTN\cache. If you update the graphs, the app itself must be restarted.
-* At the moment, the only available routing type is 'best' (which means that it defaults to the quickest type between CH, ALT and STANDARD)
+* At the moment, the only available routing type is 'best' (which means that it defaults to the quickest type between CH, ALT and STANDARD).
 * Bloodhund is implemented, but still unstable.
 * Geocode and reverse-geocode are set to the default ones.
 * Errors and/or crashes may occur. If so use logcat (adb).
