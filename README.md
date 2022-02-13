@@ -8,15 +8,28 @@
 
 ## Introduction
 *Open Tak Navigation* is an ATAK plugin that enables offline routing, it based on graphhopper routing engine and uses Open Stree Map data to do the navigation.
-the Project is in pre-alpha state, the only feature available right now is the rountig part.
+The Project is now in beta.
 
 ## Note
 At the moment OTN can't create a graph for the routing on the phone itself. To create it, check out [OTNcompanion](https://github.com/L-Belluomini/OTN-companion).
 
 ## For users
-We are sorry, the developer build is the only available one at the moment. Here's a cat to apologize
+1. On the GitHub project page, go to releases and download the .apk file relative to your Atak version.
+2. Install the .apk on your smartphone.
+3. On the Atak app, go to the plugins list and load OTN.
+4. Now that OTN is loaded, go to the routes tool and select *OTN offline routing* as the routing method.
+5. Pick a starting point, a destination and a profile (currently either on foot or by car)
+6. Success! Here's a cat to celebrate!
 
-![image](https://github.com/L-Belluomini/OTN/blob/main/img/1zgnt0qzh9s71.png)
+![image](https://github.com/L-Belluomini/OTN/blob/main/img/51ZjBEW%2BqNL._AC_SX466_.jpg)
+
+## Current limitations:
+
+* Graphs must be located in \tools\OTN\cache. If you update the graphs, the app itself must be restarted.
+* At the moment, the only available routing type is 'best' (which means that it defaults to the quickest type between CH, ALT and STANDARD)
+* Bloodhund is implemented, but still unstable.
+* Geocode and reverse-geocode are set to the default ones.
+* Errors and/or crashes may occur. If so use logcat (adb).
 
 ## For developers
 The steps to compile repo are based on [this](https://www.ballantyne.online/developing-atak-plugin-101/).
@@ -26,19 +39,20 @@ The steps to compile repo are based on [this](https://www.ballantyne.online/deve
 2. Open the repo folder in AndroidStudio
 3. Install sdk21 (min sdk)
 4. Synch gradle project
-5. build
+5. Because of a Proguard limitations, dependency libraries that have module info.class and multirelease.class must be 'hacked':
+    Copy the .jar file from the remote repository and remove those two module types, save the file and place it back in the libs directory.
+    The hacked libraries aren't on git. To find them, check the build.gradle :app the dependency are listed as a local import.
+6. build
 
 ## Future features
-* Gui
-* Select routing profile during query
+* Gui (currently at 50%)
+* ~~Select routing profile during query~~ DONE
 * Local graph building support
 * Create layer based on routing area
 * ...
 
 ## Call for SME
 ![image](https://github.com/L-Belluomini/OTN/blob/main/img/51oEcOu.jpg)
-
-There are two breaking issues at the moment:
 
 * ~~[Inflating resource crashes app](https://github.com/L-Belluomini/OTN/issues/1)~~ SOLVED
 * ~~[Build on thirdparty pipeline fails proguard](https://github.com/L-Belluomini/OTN/issues/2)~~ SOLVED
