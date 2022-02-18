@@ -51,7 +51,7 @@ public class OTNOnlineRouter implements RoutePlannerInterface, AdapterView.OnIte
     public RouteGenerationTask getRouteGenerationTask(
             RouteGenerationTask.RouteGenerationEventListener routeGenerationEventListener) {
 
-        return  null ; //new OTNOfflineroutingTask( routeGenerationEventListener);
+        return  new OTNOnlineroutingTask(routeGenerationEventListener);
     }
 
     /**

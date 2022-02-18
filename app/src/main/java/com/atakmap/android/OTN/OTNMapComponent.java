@@ -115,6 +115,7 @@ public class OTNMapComponent extends DropDownMapComponent {
                 :null;
         assert _routeManager != null;
         _routeManager.registerPlanner ( "OTNOffline" , new OTNOfflineRouter( jConfig , pluginContext ) );
+        _routeManager.registerPlanner ( "OTNOnline" , new OTNOnlineRouter(  pluginContext ) );
     }
 
     @Override

@@ -39,7 +39,7 @@ public class OTNOfflineRouter implements RoutePlannerInterface, AdapterView.OnIt
      * @return the descriptive name of the planner
      */
     public String getDescriptiveName(){
-        return "OTN offline router";
+        return "OTN OFFline router";
     }
 
     /**
