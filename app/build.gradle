@@ -82,7 +82,7 @@ allprojects {
 
 apply plugin: 'com.android.application'
 apply plugin: 'atak-takdev-plugin'
-apply plugin: 'org.anarres.jarjar'
+
 
 
 
@@ -308,6 +308,14 @@ dependencies {
     implementation fileTree(dir: 'libs', include: '*.jar')
     // https://mvnrepository.com/artifact/com.graphhopper/graphhopper-core
     implementation (group: 'com.graphhopper', name: 'graphhopper-core', version: '4.0') {
+        exclude group : 'com.fasterxml.jackson.core' // reimported directly to remove module-info
+        exclude group : 'jakarta.xml.bind'// reimported directly to remove multirelease jar
+        exclude group : 'com.fasterxml.jackson.dataformat' // reimported directly to remove module-info
+        exclude group : 'com.fasterxml.jackson.module' // reimported directly to remove module-info
+        exclude group : 'com.fasterxml.woodstox' // reimported directly to remove module-info
+        exclude group : 'org.codehaus.woodstox' // reimported directly to remove module-info
+    }
+    implementation ( group: 'com.graphhopper' , name: 'directions-api-client-hc' , version: '4.0' ) {
         exclude group : 'com.fasterxml.jackson.core' // reimported directly to remove module-info
         exclude group : 'jakarta.xml.bind'// reimported directly to remove multirelease jar
         exclude group : 'com.fasterxml.jackson.dataformat' // reimported directly to remove module-info

@@ -10,7 +10,9 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.ViewGroup;
-import transapps.mapi.MapView;
+import com.atakmap.android.maps.MapView;
+import com.atakmap.coremap.log.Log;
+// import transapps.mapi.MapView; // deprecated
 import transapps.maps.plugin.tool.Group;
 import transapps.maps.plugin.tool.Tool;
 import transapps.maps.plugin.tool.ToolDescriptor;
@@ -18,6 +20,7 @@ import transapps.maps.plugin.tool.ToolDescriptor;
 public class OTNTool extends Tool implements ToolDescriptor {
 
     private final Context context;
+    private final  String TAG = "OTNtool";
 
     public OTNTool(Context context) {
         this.context = context;
@@ -51,10 +54,20 @@ public class OTNTool extends Tool implements ToolDescriptor {
         return this;
     }
 
+
+
     @Override
-    public void onActivate(Activity arg0, MapView arg1, ViewGroup arg2,
+    public void onActivate(Activity arg0, transapps.mapi.MapView oldMapView, ViewGroup arg2,
             Bundle arg3,
             ToolCallback arg4) {
+        MapView mapView;
+
+        // hack to updated API
+        if (oldMapView == null || !(oldMapView.getView() instanceof MapView)) {
+            Log.w(TAG, "This plugin is only compatible with ATAK MapView");
+            return;
+        }
+        mapView = (MapView) oldMapView.getView();
 
         // Hack to close the dropdown that automatically opens when a tool
         // plugin is activated.
