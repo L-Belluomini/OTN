@@ -67,6 +67,9 @@ For any issue, suggestion or question, feel free to leave an issue on the [GitHu
 ## License
 check the [license.md](https://github.com/L-Belluomini/OTN/blob/main/LICENSE)
 
+## Contributors
+https://github.com/niccellular
+
 ---
 
 plugin developed and tested on a huawei p10 light (android 8.0 API 26) 4gb ram kirin658 cpu atak version 4.4.0.0 developer build (latest on github @ 2022-02-05)
