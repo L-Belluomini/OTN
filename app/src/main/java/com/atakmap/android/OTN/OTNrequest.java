@@ -18,7 +18,8 @@ public class OTNrequest {
         STANDARD,
         CH,
         ALT,
-        BEST;
+        BEST,
+        BESTFLEXIBLE;
     }
 
     public OTNrequest ( GraphHopperConfig jConfing , int selectedProfileIndex , ProfileType selectedType ) {
@@ -53,7 +54,6 @@ public class OTNrequest {
     }
     public boolean isLmCapable() {
         return  lmCapable;
-
     }
     public  OTNrequest.ProfileType getProfileType (){
         return selectedType;

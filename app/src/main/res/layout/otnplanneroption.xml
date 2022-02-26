@@ -6,19 +6,6 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/textView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Routing area"
-        android:visibility="gone"/>
-
-    <com.atakmap.android.gui.PluginSpinner
-        android:id="@+id/areaspinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"/>
-
-    <TextView
         android:id="@+id/textView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -28,17 +15,5 @@
         android:id="@+id/profilesSpinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Type" />
-
-    <com.atakmap.android.gui.PluginSpinner
-        android:id="@+id/typeSpinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
 
 </com.atakmap.android.routes.RoutePlannerOptionsView>

@@ -324,18 +324,9 @@ dependencies {
         exclude group : 'org.codehaus.woodstox' // reimported directly to remove module-info
     }
     // tried to use jar jar to remove modle-info https://github.com/google/gson/issues/1627#issuecomment-856734057
-    // dose not work
+    // does not work
 
-    /*implementation jarjar.repackage {
-        from('com.fasterxml.jackson.core:jackson-core:2.10.5') {
-            //exclude group: '', module: ''
-            // transitive = false
-        }
-        //archiveBypass ""
-        //archiveExclude ""
 
-        classDelete "module-info"
-    } */
 
     implementation files ('../libs/jakarta.xml.bind-api-2.3.2.jar')
     implementation files ('../libs/gson-2.8.9.jar')
@@ -346,6 +337,29 @@ dependencies {
     implementation files ('../libs/jackson-module-jaxb-annotations-2.10.5.jar')
     implementation files ('../libs/stax2-api-4.2.1.jar')
     implementation files ('../libs/woodstox-core-6.2.1.jar')
+
+    implementation ('androidx.constraintlayout:constraintlayout:1.1.0') {
+        exclude module: 'collection'
+        exclude module: 'core'
+        exclude module: 'lifecycle'
+        exclude module: 'core-common'
+        exclude module: 'collection'
+        exclude module: 'customview'
+        exclude module: 'collection'
+    }
+
+
+
+    /* implementation ('androidx.recyclerview:recyclerview:1.2.1') {
+        exclude module: 'collection'
+        exclude module: 'core'
+        exclude module: 'lifecycle'
+        exclude module: 'core-common'
+        exclude module: 'collection'
+        exclude module: 'customview'
+    }
+
+     */
 
 }
 

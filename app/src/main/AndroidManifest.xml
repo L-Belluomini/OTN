@@ -12,6 +12,7 @@
         android:description="@string/app_desc"
         android:extractNativeLibs="true"
         android:theme="@style/AppTheme" >
+
         <meta-data android:name="plugin-api" android:value="${atakApiVersion}"/>
         <meta-data android:name="app_desc" android:value="@string/app_desc"/>
 

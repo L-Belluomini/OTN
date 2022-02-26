@@ -28,25 +28,25 @@ import java.util.UUID;
 public class OTNOfflineroutingTask extends RouteGenerationTask{
 
     private static final String TAG = "OTNOfflineroutingTask";
-    private final String graphPath = "/sdcard/atak/tools/OTN/cache"; // todo get from shared preference and setted from gui
-    private OTNrequest takRequest;
-    private GraphHopperConfig jConfig;
+    private final String selectedGraphDir ;
+    private final OTNrequest takRequest;
+    private final GraphHopperConfig jConfig;
 
-    public OTNOfflineroutingTask(RouteGenerationEventListener listener) {
-        super(listener);
-    }
-    public OTNOfflineroutingTask(RouteGenerationEventListener listener, GraphHopperConfig jconfig , OTNrequest takRequest  ) {
+
+    public OTNOfflineroutingTask(RouteGenerationEventListener listener, GraphHopperConfig jconfig , String selectedDir , OTNrequest takRequest  ) {
         super(listener);
 
         this.jConfig = jconfig;
         this.takRequest = takRequest;
+        this.selectedGraphDir = selectedDir;
     }
+
 
     @Override
     public RoutePointPackage generateRoute(SharedPreferences prefs, GeoPoint origin, GeoPoint dest, List<GeoPoint> byWayOff) {
         GHRequest ghRequest;
         // cumulative cycle results
-        List<PointMapItem> waypoint = new LinkedList<PointMapItem>()  ;
+        List<PointMapItem> waypoint = new LinkedList<>()  ;
         Map<String , NavigationCue> waycue = new HashMap<>();
         // aux variable for cycle
         GeoPoint point;
@@ -62,35 +62,28 @@ public class OTNOfflineroutingTask extends RouteGenerationTask{
             return new RoutePointPackage("jConfig could not be loaded");
         }
         GraphHopper hopper = new GraphHopper();
-        hopper.setGraphHopperLocation(FileSystemUtils.getItem(FileSystemUtils.TOOL_DATA_DIRECTORY  + "/OTN" + "/cache" ).getPath() );
+        hopper.setGraphHopperLocation(FileSystemUtils.getItem(FileSystemUtils.TOOL_DATA_DIRECTORY  +  selectedGraphDir ).getPath() );
         Log.d("OTN" , hopper.getGraphHopperLocation() );
         hopper.init(jConfig);
-        hopper.load( FileSystemUtils.getItem(FileSystemUtils.TOOL_DATA_DIRECTORY  + "/OTN" + "/cache" ).getPath() );
+        hopper.load( FileSystemUtils.getItem(FileSystemUtils.TOOL_DATA_DIRECTORY  +   selectedGraphDir).getPath() );
 
-        //tmp for test
-        boolean chRun = takRequest.isChCapable();
-        boolean lmRun = takRequest.isLmCapable();
 
 
         ghRequest = new GHRequest(origin.getLatitude() , origin.getLongitude() , dest.getLatitude() ,dest.getLongitude())
                 .setProfile (takRequest.getProfile().getName() )
                 .setLocale ( Locale.ENGLISH );
 
-        if (!chRun) {
+        if ( ! takRequest.isChCapable() | takRequest.getProfileType() == OTNrequest.ProfileType.BESTFLEXIBLE ) {
             ghRequest.putHint(Parameters.CH.DISABLE , true);
             Log.d(TAG , "ch disabled");
         }
-        if(!lmRun){
+
+        if(!takRequest.isLmCapable()){
             ghRequest.putHint(Parameters.Landmark.DISABLE , true);
             Log.d(TAG , "lm disabled");
         }
 
-        /*switch ( takRequest.getProfileType()) {
-            case(BEST):
-                break;
-            case CH:
-        }
-        */
+
 
         ResponsePath  hopResponse = hopper.route ( ghRequest ) .getBest( )  ;
         hopper.close( );

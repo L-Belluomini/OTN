@@ -110,22 +110,12 @@ public class OTNOnlineRouter implements RoutePlannerInterface, AdapterView.OnIte
     public void onItemSelected(AdapterView<?> adapterView, View view, int position, long iD) {
 
         Log.d("OTN" , "view listener "+Integer.toString(position) + " Id:"+Long.toString(iD) + "adapter ID " + Integer.toString (adapterView.getId() ) );
-        switch (adapterView.getId()){
-            case (R.id.profilesSpinner ):
-                Log.d("OTN" , "view listener profile spinner" );
-                break;
-            case ( R.id.areaspinner ):
-                Log.d("OTN" , "view listener area spinner" );
-
-                break;
-            case ( R.id.typeSpinner ):
-                Log.d("OTN" , "view listener type spinner" );
-            default:
-                return;
 
 
-        }
+
+
         if (position == Math.round(iD) ) {
+
             //selectedProfile = position;
         }
 

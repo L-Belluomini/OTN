@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.atakmap.android.OTN.plugin.R;
 import com.atakmap.android.gui.PluginSpinner;
@@ -18,20 +20,27 @@ import com.atakmap.coremap.log.Log;
 import com.graphhopper.GraphHopperConfig;
 import com.graphhopper.config.Profile;
 
-public class OTNOfflineRouter implements RoutePlannerInterface, AdapterView.OnItemSelectedListener {
-    private final GraphHopperConfig jConfig;
+import java.util.LinkedList;
+
+public class OTNOfflineRouter implements RoutePlannerInterface, AdapterView.OnItemSelectedListener  {
+    private final GraphHopperConfig configGH;
     private int selectedProfile = 0;
-    private OTNrequest.ProfileType selectedType = OTNrequest.ProfileType.STANDARD;
+    private OTNrequest.ProfileType selectedType ;
     private final Context pluginContext;
     private final String TAG = "OTNOfflineRouter";
+    private final String graphDir ;
 
 
 
-    public OTNOfflineRouter(GraphHopperConfig jConfig, Context pluginContext){
 
-        this.jConfig = jConfig;
+    public OTNOfflineRouter( Context pluginContext , GraphHopperConfig configGH , String graphDir , OTNrequest.ProfileType type ){
         this.pluginContext = pluginContext;
+        this.configGH = configGH;
+        this.graphDir = graphDir;
+        this.selectedType= type;
+
     }
+
 
     /**
      * Gets the descriptive name of the planner.
@@ -59,7 +68,7 @@ public class OTNOfflineRouter implements RoutePlannerInterface, AdapterView.OnIt
     public RouteGenerationTask getRouteGenerationTask(
             RouteGenerationTask.RouteGenerationEventListener routeGenerationEventListener){
 
-     return new OTNOfflineroutingTask( routeGenerationEventListener,  jConfig ,  new OTNrequest(jConfig , selectedProfile , selectedType) );
+     return new OTNOfflineroutingTask( routeGenerationEventListener,  configGH ,  graphDir  ,  new OTNrequest(configGH , selectedProfile , selectedType) );
     }
 
     /**
@@ -69,38 +78,32 @@ public class OTNOfflineRouter implements RoutePlannerInterface, AdapterView.OnIt
     public RoutePlannerOptionsView getOptionsView(AlertDialog parent){
         RoutePlannerOptionsView view= (RoutePlannerOptionsView) LayoutInflater.from(pluginContext).inflate(R.layout.otnplanneroption, null);
 
-        //routing Area
-
-        PluginSpinner AreaSpinner = ( PluginSpinner) view.findViewById(R.id.areaspinner);
 
         // profile
         PluginSpinner profileSpinner = ( PluginSpinner) view.findViewById(R.id.profilesSpinner);
-        ArrayAdapter<String> profileAdapter = new ArrayAdapter<String>( pluginContext , android.R.layout.simple_spinner_dropdown_item );
-       if (jConfig == null) {
+        ArrayAdapter<String> profileAdapter = new ArrayAdapter<>( pluginContext , android.R.layout.simple_spinner_dropdown_item );
+       if (configGH == null) {
            Log.w(TAG , "jConfig is null!!");
-           return view; // todo tell user dose not work but dont kill app
+           return view; // todo tell user does not work but dont kill app
        }
-        for (  Profile item : jConfig.getProfiles() ){
+        for (  Profile item : configGH.getProfiles() ){
             profileAdapter.add( item.getName() );
         }
         profileSpinner.setAdapter(profileAdapter);
         profileSpinner.setOnItemSelectedListener( this );
 
+       /* Button profileButton = view.findViewById(R.id.button);
+        profileButton.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "button pressed");
+
+            }
 
 
+        });
 
-        //profile type
-        PluginSpinner typeSpinner = ( PluginSpinner) view.findViewById( R.id.typeSpinner );
-        ArrayAdapter<String> typeAdapter = new ArrayAdapter<String>( pluginContext , android.R.layout.simple_spinner_dropdown_item );
-
-        typeAdapter.add( "best" );
-        typeAdapter.add( "speed (ch)" );
-        typeAdapter.add( "hybrit (alt)" );
-        typeAdapter.add( "standard" );
-        typeSpinner.setAdapter(typeAdapter);
-        typeSpinner.setOnItemSelectedListener( this );
-
-
+        */
 
         return view;
 
@@ -122,14 +125,17 @@ public class OTNOfflineRouter implements RoutePlannerInterface, AdapterView.OnIt
      * Gets whether or not the planner is capable of supporting re-routing.
      */
     public boolean isRerouteCapable(){
-        return false;
+        return true;
     }
 
     /**
      * Gets whether or not the planner is capable of supporting routing around regions.
      */
     public boolean canRouteAroundRegions(){
-        return false;
+        if (selectedType == OTNrequest.ProfileType.BEST) {
+            return false;
+        } else return selectedType == OTNrequest.ProfileType.BESTFLEXIBLE;
+        // if fails the simpler is the best
     }
 
 
@@ -139,44 +145,14 @@ public class OTNOfflineRouter implements RoutePlannerInterface, AdapterView.OnIt
     public void onItemSelected(AdapterView<?> adapterView, View view, int position, long iD) {
 
         Log.d(TAG , "view listener "+Integer.toString(position) + " Id:"+Long.toString(iD) + "adapter ID " + Integer.toString (adapterView.getId() ) );
-        switch ( adapterView.getId ( ) ) {
-
-            case (R.id.profilesSpinner ):
-
-                Log.d(TAG , "view listener profile spinner" );
-                if (position == Math.round(iD) ) {
-                    selectedProfile = position;
-                }
-                break;
-
-            case ( R.id.areaspinner ):
-                Log.d(TAG , "view listener area spinner" );
-                break;
-
-            case ( R.id.typeSpinner ):
-                Log.d(TAG , "view listener type spinner" );
-
-                switch (position ) {
-                    case ( 0 ):// best
-                        selectedType = OTNrequest.ProfileType.BEST;
-                        break;
-                    case  ( 1 ):// ch
-                        selectedType = OTNrequest.ProfileType.CH;
-                        break;
-                    case  ( 2 ):// lm
-                        selectedType = OTNrequest.ProfileType.ALT;
-                        break;
-                    case (3):// std
-                        selectedType = OTNrequest.ProfileType.STANDARD;
-                }
-
-                break;
-
-            default:
-                Log.w(TAG, " itemselceted defaulted");
-                return;
-
-
+        if (adapterView.getId() == R.id.profilesSpinner) {
+            Log.d(TAG, "view listener profile spinner");
+            if (position == Math.round(iD)) {
+                selectedProfile = position;
+            }
+        } else {
+            Log.w(TAG, " itemselceted defaulted");
+            return;
         }
 
 
@@ -187,7 +163,6 @@ public class OTNOfflineRouter implements RoutePlannerInterface, AdapterView.OnIt
     public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
-
 
 
 }

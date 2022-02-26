@@ -57,7 +57,11 @@
 #-keep class module-info
 
 # projectspecific
--dontwarn
+
+-ignorewarnings
+
+# androidx
+
 
 #graphhopper
 -keep class com.graphhopper.util.TranslationMap
