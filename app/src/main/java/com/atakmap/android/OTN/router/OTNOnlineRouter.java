@@ -1,20 +1,16 @@
-package com.atakmap.android.OTN;
+package com.atakmap.android.OTN.router;
 
 import android.app.AlertDialog;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 
 import com.atakmap.android.OTN.plugin.R;
-import com.atakmap.android.gui.PluginSpinner;
 import com.atakmap.android.routes.RouteGenerationTask;
 import com.atakmap.android.routes.RoutePlannerInterface;
 import com.atakmap.android.routes.RoutePlannerOptionsView;
 import com.atakmap.coremap.log.Log;
-import com.graphhopper.GraphHopperConfig;
-import com.graphhopper.config.Profile;
 
 public class OTNOnlineRouter implements RoutePlannerInterface, AdapterView.OnItemSelectedListener {
     private final Context pluginContext;

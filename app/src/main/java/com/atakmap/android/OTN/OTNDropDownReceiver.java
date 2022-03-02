@@ -45,7 +45,6 @@ public class OTNDropDownReceiver extends DropDownReceiver implements
         // developers to look at this Inflator
         templateView = PluginLayoutInflater.inflate(context,
                 R.layout.main_layout, null);
-        updateView();
 
     }
 
@@ -112,18 +111,5 @@ public class OTNDropDownReceiver extends DropDownReceiver implements
     }
 
 
-    // cusotm methods
 
-    private void updateView() {
-        Context appContext = _view.getContext();
-
-         OTNMapComponent component = OTNMapComponent.getInstance();
-
-        if (component == null) {
-            Log.w(TAG , "not found map component");
-            return;
-        }
-
-        Log.d(TAG , component.toString());
-    }
 }

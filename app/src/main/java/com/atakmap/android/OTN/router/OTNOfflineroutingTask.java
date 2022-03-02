@@ -1,8 +1,11 @@
-package com.atakmap.android.OTN;
+package com.atakmap.android.OTN.router;
 
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import com.atakmap.android.OTN.OTNGraph;
+import com.atakmap.android.OTN.OTNrequest;
+import com.atakmap.android.OTN.OTNresponse;
 import com.atakmap.android.maps.PointMapItem;
 import com.atakmap.android.routes.RouteGenerationTask;
 import com.atakmap.android.routes.RoutePointPackage;
@@ -25,20 +28,20 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 
+
 public class OTNOfflineroutingTask extends RouteGenerationTask{
 
     private static final String TAG = "OTNOfflineroutingTask";
-    private final String selectedGraphDir ;
+    private final OTNGraph graph;
     private final OTNrequest takRequest;
-    private final GraphHopperConfig jConfig;
 
 
-    public OTNOfflineroutingTask(RouteGenerationEventListener listener, GraphHopperConfig jconfig , String selectedDir , OTNrequest takRequest  ) {
+
+    public OTNOfflineroutingTask(RouteGenerationEventListener listener, OTNGraph graph, OTNrequest takRequest  ) {
         super(listener);
-
-        this.jConfig = jconfig;
+        this.graph = graph;
         this.takRequest = takRequest;
-        this.selectedGraphDir = selectedDir;
+
     }
 
 
@@ -57,15 +60,15 @@ public class OTNOfflineroutingTask extends RouteGenerationTask{
         String tmpUid;
         OTNresponse tmpMapPoint;
 
-        if (jConfig == null ){
+        if (graph == null ){
             Log.e(TAG , "jConfig could not be loaded" );
             return new RoutePointPackage("jConfig could not be loaded");
         }
         GraphHopper hopper = new GraphHopper();
-        hopper.setGraphHopperLocation(FileSystemUtils.getItem(FileSystemUtils.TOOL_DATA_DIRECTORY  +  selectedGraphDir ).getPath() );
+        hopper.setGraphHopperLocation(FileSystemUtils.getItem(FileSystemUtils.TOOL_DATA_DIRECTORY  +  graph.getGraphPath() ).getPath() );
         Log.d("OTN" , hopper.getGraphHopperLocation() );
-        hopper.init(jConfig);
-        hopper.load( FileSystemUtils.getItem(FileSystemUtils.TOOL_DATA_DIRECTORY  +   selectedGraphDir).getPath() );
+        hopper.init(graph.getConfigGH());
+        hopper.load( FileSystemUtils.getItem(FileSystemUtils.TOOL_DATA_DIRECTORY  +   graph.getGraphPath()).getPath() );
 
 
 

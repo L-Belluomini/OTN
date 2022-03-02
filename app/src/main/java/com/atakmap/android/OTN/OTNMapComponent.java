@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.atakmap.android.OTN.router.OTNOfflineRouter;
 import com.atakmap.android.ipc.AtakBroadcast;
 import com.atakmap.android.ipc.AtakBroadcast.DocumentedIntentFilter;
 
@@ -41,20 +42,12 @@ public class OTNMapComponent extends DropDownMapComponent {
     private OTNDropDownReceiver ddr;
     private MapComponent mc;
     private RoutePlannerManager _routeManager ;
-
-    private static OTNMapComponent _instance;
-    private LinkedList<String> registerdRouters = new LinkedList<>();
-    private GraphHopperConfig selectedConfig;
-    private String selectedGraphDir;
-    // graphs dir & config list are "synced"
+    private LinkedList<String> registeredRouters = new LinkedList<>();
     private LinkedList<OTNGraph> graphs = new LinkedList<>();
-    private LinkedList <GraphHopperConfig> configList = new LinkedList<>() ;
-    private  LinkedList <String> graphsDir = new LinkedList<>() ;
-
-    public OTNMapComponent(){
+    private OTNGraph selectdeGraph;
 
 
-    }
+    public OTNMapComponent(){    }
 
 
 
@@ -87,7 +80,6 @@ public class OTNMapComponent extends DropDownMapComponent {
 
         context.setTheme(R.style.ATAKPluginTheme);
         super.onCreate(context, intent, view);
-        _instance = this;
         pluginContext = context;
 
         ddr = new OTNDropDownReceiver(
@@ -111,10 +103,7 @@ public class OTNMapComponent extends DropDownMapComponent {
             toast.show();
             return;
         }
-        ////////
-        selectedConfig = graphs.get(0).getConfigGH();
-        selectedGraphDir =graphs.get(0).getGraphPath();
-        ///////
+
 
         Intent i = new Intent(
                 OTNDropDownReceiver.SET_GRAPHS);
@@ -136,8 +125,8 @@ public class OTNMapComponent extends DropDownMapComponent {
         assert _routeManager != null;
 
 
-            _routeManager.registerPlanner ( "OTNOFFlineFast", new OTNOfflineRouter( pluginContext , selectedConfig , selectedGraphDir, OTNrequest.ProfileType.BEST ) );
-            registerdRouters.add( "OTNOFFlineFast" );
+            _routeManager.registerPlanner ( "OTNOFFlineFast", new OTNOfflineRouter( pluginContext , selectdeGraph , OTNrequest.ProfileType.BEST ) );
+            registeredRouters.add( "OTNOFFlineFast" );
             Log.d(TAG, "registered route planner: " + "OTNOFFlineFast" );
             // register other route planners
         // querry serivce db and create realtive routers
@@ -148,7 +137,7 @@ public class OTNMapComponent extends DropDownMapComponent {
     @Override
     protected void onDestroyImpl(Context context, MapView view) {
         super.onDestroyImpl(context, view);
-        for ( String router : registerdRouters ) {
+        for ( String router : registeredRouters) {
             _routeManager.unregisterPlanner(router);
 
         }
@@ -199,12 +188,5 @@ public class OTNMapComponent extends DropDownMapComponent {
         IOProvider provider = IOProviderFactory.getProvider();
         return provider.exists( FileSystemUtils.getItem (FileSystemUtils.TOOL_DATA_DIRECTORY  + "/OTN") );
     }
-    public static OTNMapComponent getInstance () {
-        Log.d(TAG , "getting instanche ");
-        if (_instance == null){
-            Log.w(TAG , "big problem INtsnce not good");
-        }
-        return _instance;
-    //public get
-    }
+
 }

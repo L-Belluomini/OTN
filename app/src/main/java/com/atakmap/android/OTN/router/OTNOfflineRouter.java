@@ -1,4 +1,4 @@
-package com.atakmap.android.OTN;
+package com.atakmap.android.OTN.router;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -6,9 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.TextView;
 
+import com.atakmap.android.OTN.OTNGraph;
+import com.atakmap.android.OTN.OTNrequest;
 import com.atakmap.android.OTN.plugin.R;
 import com.atakmap.android.gui.PluginSpinner;
 import com.atakmap.android.routes.RoutePlannerInterface;
@@ -20,23 +20,19 @@ import com.atakmap.coremap.log.Log;
 import com.graphhopper.GraphHopperConfig;
 import com.graphhopper.config.Profile;
 
-import java.util.LinkedList;
-
 public class OTNOfflineRouter implements RoutePlannerInterface, AdapterView.OnItemSelectedListener  {
-    private final GraphHopperConfig configGH;
+    private final String TAG = "OTNOfflineRouter";
     private int selectedProfile = 0;
     private OTNrequest.ProfileType selectedType ;
     private final Context pluginContext;
-    private final String TAG = "OTNOfflineRouter";
-    private final String graphDir ;
+    private  final OTNGraph graph;
 
 
 
 
-    public OTNOfflineRouter( Context pluginContext , GraphHopperConfig configGH , String graphDir , OTNrequest.ProfileType type ){
+    public OTNOfflineRouter( Context pluginContext , OTNGraph graph , OTNrequest.ProfileType type ){
         this.pluginContext = pluginContext;
-        this.configGH = configGH;
-        this.graphDir = graphDir;
+        this.graph = graph;
         this.selectedType= type;
 
     }
@@ -68,7 +64,7 @@ public class OTNOfflineRouter implements RoutePlannerInterface, AdapterView.OnIt
     public RouteGenerationTask getRouteGenerationTask(
             RouteGenerationTask.RouteGenerationEventListener routeGenerationEventListener){
 
-     return new OTNOfflineroutingTask( routeGenerationEventListener,  configGH ,  graphDir  ,  new OTNrequest(configGH , selectedProfile , selectedType) );
+     return new OTNOfflineroutingTask( routeGenerationEventListener, graph  ,  new OTNrequest(graph.getConfigGH(), selectedProfile , selectedType) );
     }
 
     /**
@@ -82,11 +78,11 @@ public class OTNOfflineRouter implements RoutePlannerInterface, AdapterView.OnIt
         // profile
         PluginSpinner profileSpinner = ( PluginSpinner) view.findViewById(R.id.profilesSpinner);
         ArrayAdapter<String> profileAdapter = new ArrayAdapter<>( pluginContext , android.R.layout.simple_spinner_dropdown_item );
-       if (configGH == null) {
+       if (graph == null) {
            Log.w(TAG , "jConfig is null!!");
            return view; // todo tell user does not work but dont kill app
        }
-        for (  Profile item : configGH.getProfiles() ){
+        for (  Profile item : graph.getConfigGH().getProfiles() ){
             profileAdapter.add( item.getName() );
         }
         profileSpinner.setAdapter(profileAdapter);
