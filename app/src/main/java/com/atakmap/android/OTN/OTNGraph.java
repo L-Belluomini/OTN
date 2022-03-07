@@ -1,5 +1,7 @@
 package com.atakmap.android.OTN;
 
+import com.atakmap.coremap.filesystem.FileSystemUtils;
+import com.atakmap.filesystem.HashingUtils;
 import com.graphhopper.GraphHopperConfig;
 
 import java.io.Serializable;
@@ -7,31 +9,30 @@ import java.io.Serializable;
 public class OTNGraph implements Serializable {
     private String Name ;
     private GraphHopperConfig configGH;
-    private  String GraphPath ;
+    private  String graphPath;
     // Private boundingBox;
     // private String dateFile;
     //private String dateBuild;
     // private LinkedList<String> hashes;
 
-
-    public void setConfigGH(GraphHopperConfig configGH) {
+    public  OTNGraph (String graphPath , GraphHopperConfig jconfig){
         this.configGH = configGH;
-    }
-    public void setGraphPath (String path) {
-        this.GraphPath = path;
+        this.graphPath = graphPath;
+
+
     }
 
-    public GraphHopperConfig getConfigGH(){
-        return configGH;
-    }
     public String getGraphPath() {
-        return GraphPath;
+        return graphPath;
     }
+    public GraphHopperConfig getConfigGH() { return this.configGH; }
+    public  String getEdgeHash () { return HashingUtils.sha256sum( FileSystemUtils.getItem(graphPath + "/edges")); }
+
 
     @Override
     public String toString(){
 
-        return GraphPath;
+        return graphPath;
     }
 
 }

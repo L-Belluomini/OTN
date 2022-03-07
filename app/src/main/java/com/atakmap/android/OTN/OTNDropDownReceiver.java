@@ -70,7 +70,7 @@ public class OTNDropDownReceiver extends DropDownReceiver implements
                 break;
             }
             case (SET_GRAPHS):{
-                                Bundle graphsBundle = intent.getBundleExtra("GRAPHS");
+                Bundle graphsBundle = intent.getBundleExtra("GRAPHS");
                 if (graphsBundle == null) {
                     Log.w(TAG,"failled importing bundle");
                     return;

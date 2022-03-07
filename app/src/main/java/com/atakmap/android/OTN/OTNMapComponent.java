@@ -2,9 +2,12 @@
 package com.atakmap.android.OTN;
 
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.widget.Toast;
 
 import com.atakmap.android.OTN.router.OTNOfflineRouter;
@@ -17,6 +20,8 @@ import com.atakmap.android.maps.MapView;
 import com.atakmap.android.dropdown.DropDownMapComponent;
 
 
+import com.atakmap.android.preference.AtakPreferences;
+import com.atakmap.android.routes.RoutePlannerInterface;
 import com.atakmap.coremap.filesystem.FileSystemUtils;
 import com.atakmap.coremap.io.IOProvider;
 import com.atakmap.coremap.io.IOProviderFactory;
@@ -33,6 +38,7 @@ import java.io.FileReader;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.List;
 
 public class OTNMapComponent extends DropDownMapComponent {
 
@@ -45,6 +51,8 @@ public class OTNMapComponent extends DropDownMapComponent {
     private LinkedList<String> registeredRouters = new LinkedList<>();
     private LinkedList<OTNGraph> graphs = new LinkedList<>();
     private OTNGraph selectdeGraph;
+    private OTNGraph tmpGraph;
+    private AtakPreferences _prefs;
 
 
     public OTNMapComponent(){    }
@@ -85,35 +93,7 @@ public class OTNMapComponent extends DropDownMapComponent {
         ddr = new OTNDropDownReceiver(
                 view, context);
 
-        Log.d(TAG, "registering the plugin filter");
-        DocumentedIntentFilter ddFilter = new DocumentedIntentFilter();
-        ddFilter.addAction(OTNDropDownReceiver.SHOW_PLUGIN);
-        ddFilter.addAction(OTNDropDownReceiver.SET_GRAPHS); // added
-        registerDropDownReceiver(ddr, ddFilter);
-
-
-
-        // check if OTN exist
-        if ( checkOTNFolder()) {
-            // otn exist
-            findnSetGraphs();
-        } else {
-            //
-            Toast toast = Toast.makeText(context , "NO graph FOUND" , Toast.LENGTH_LONG ); // check right context
-            toast.show();
-            return;
-        }
-
-
-        Intent i = new Intent(
-                OTNDropDownReceiver.SET_GRAPHS);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("GRAPHS" ,(Serializable) graphs );
-        Log.d(TAG , bundle.toString());
-        i.putExtra("GRAPHS", bundle );
-        AtakBroadcast.getInstance().sendBroadcast(i);
-        Log.d(TAG , "sent broadcast setgrapsh");
-
+        // prepare to set the routers
         _context = view.getContext();
         mc = ( (MapActivity) _context )
                 .getMapComponent(RouteMapComponent.class);
@@ -124,14 +104,98 @@ public class OTNMapComponent extends DropDownMapComponent {
                 :null;
         assert _routeManager != null;
 
+        _prefs = new AtakPreferences(view);
+
+        Log.d(TAG, "registering the plugin filter");
+        DocumentedIntentFilter ddFilter = new DocumentedIntentFilter();
+        ddFilter.addAction(OTNDropDownReceiver.SHOW_PLUGIN);
+        ddFilter.addAction(OTNDropDownReceiver.SET_GRAPHS);
+        registerDropDownReceiver(ddr, ddFilter);
+
+        final BroadcastReceiver selcetedgraphReciver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                final String action = intent.getAction();
+                if (action == null)
+                    return;
+
+                switch (action) {
+                    case (OTNDropDownReceiver.SET_GRAPHS):
+                        Bundle graphBundle = intent.getBundleExtra("GRAPH");
+                        if (graphBundle == null) {
+                            Log.w(TAG,"failled setting bundle");
+                            return;
+
+                        }
+                        tmpGraph = (OTNGraph) graphBundle.getSerializable("GRAPH");
+                        if ( tmpGraph == null ) {
+                            Log.w(TAG,"failled importing graph list");
+                            return;
+                        }
+                        updateRouters();
+
+                        break;
+
+                }
+
+            }
+        };
+        AtakBroadcast.getInstance().registerReceiver(selcetedgraphReciver, new DocumentedIntentFilter( OTNDropDownReceiver.SET_GRAPHS ) );
+
+        // check if OTN exist
+        if ( checkOTNFolder()) {
+            // otn exist
+            findnSetGraphs();
+        } else {
+            Log.w(TAG , "no folder found");
+            Toast toast = Toast.makeText(context, "NO OTN folder FOUND", Toast.LENGTH_LONG); // check right context
+            toast.show();
+            return;
+        }
+
+
+
+
+        //push the graphs list to the dorp down
+        Intent i = new Intent(
+                OTNDropDownReceiver.SET_GRAPHS);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("GRAPHS" ,(Serializable) graphs );
+        Log.d(TAG , bundle.toString());
+        i.putExtra("GRAPHS", bundle );
+        AtakBroadcast.getInstance().sendBroadcast(i);
+        Log.d(TAG , "sent broadcast setgraphs");
+
+
+        if ( this.graphs.isEmpty( ) ) {
+        Log.w(TAG , "no graph found");
+        Toast toast = Toast.makeText(context, "NO OTN graph FOUND", Toast.LENGTH_LONG); // check right context
+        toast.show();
+        return;
+        }
+
+        // retrive last selceted graph if present and unchanged
+        for (OTNGraph tmpGraph : graphs ) {
+            if ( tmpGraph.getEdgeHash().equals( _prefs.get("OTNSelectedGraph","") ) ){
+                selectdeGraph = tmpGraph;
+            }
+        }
+
+
+        if (selectdeGraph == null){
+            if (graphs.size() > 1 ) {
+                return;
+            }
+            // if there only one graph set as selected
+            selectdeGraph = graphs.get(0);
+        }
 
             _routeManager.registerPlanner ( "OTNOFFlineFast", new OTNOfflineRouter( pluginContext , selectdeGraph , OTNrequest.ProfileType.BEST ) );
+            _prefs.set( "OTNSelectedGraph" , selectdeGraph.getEdgeHash() );
             registeredRouters.add( "OTNOFFlineFast" );
             Log.d(TAG, "registered route planner: " + "OTNOFFlineFast" );
             // register other route planners
         // querry serivce db and create realtive routers
-
-
     }
 
     @Override
@@ -141,6 +205,20 @@ public class OTNMapComponent extends DropDownMapComponent {
             _routeManager.unregisterPlanner(router);
 
         }
+
+    }
+    protected void updateRouters() {
+        for (String routerUID : registeredRouters ){
+            RoutePlannerInterface tmpPlanner = _routeManager.getPlanner( routerUID );
+            if ( tmpPlanner instanceof OTNOfflineRouter  ){
+                _routeManager.unregisterPlanner(routerUID);
+            }
+        }
+        selectdeGraph = tmpGraph;
+        tmpGraph = null;
+        // add routr/routers
+        _routeManager.registerPlanner ( "OTNOFFlineFast", new OTNOfflineRouter( pluginContext , selectdeGraph , OTNrequest.ProfileType.BEST ) );
+        registeredRouters.add( "OTNOFFlineFast" );
 
     }
 
@@ -162,7 +240,7 @@ public class OTNMapComponent extends DropDownMapComponent {
     }
     protected OTNGraph getGraphFromDir (String dir){
         GraphHopperConfig tmpConfig = null;
-        OTNGraph tmp = null;
+
         try {
             Gson ason = new Gson();
             FileReader fReader =  new FileReader( FileSystemUtils.getItem(FileSystemUtils.TOOL_DATA_DIRECTORY  + "/OTN/graphs/" + dir + "/config.json") );
@@ -176,12 +254,7 @@ public class OTNMapComponent extends DropDownMapComponent {
             Log.e( TAG ,"An error occurred, reading " );
             Log.e ( TAG , e.toString());
         }
-        tmp = new OTNGraph();
-        //Log.d(TAG , "jConfig: " + tmpConfig.toString());
-        tmp.setConfigGH (tmpConfig);
-        tmp.setGraphPath( "/OTN/graphs/" + dir);
-        return  tmp;
-
+        return new OTNGraph("/OTN/graphs/" + dir ,tmpConfig );
     }
 
     protected static boolean checkOTNFolder() {
