@@ -48,6 +48,7 @@ public class OTNDropDownReceiver extends DropDownReceiver implements
         // developers to look at this Inflator
         templateView = PluginLayoutInflater.inflate(context,
                 R.layout.main_layout, null);
+        updateView();
 
     }
 
