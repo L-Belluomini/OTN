@@ -82,7 +82,7 @@ public class OTNDropDownReceiver extends DropDownReceiver implements
                     Log.w(TAG,"failled importing graph list");
                     return;
                 }
-                ListView graphListView = (ListView) templateView.findViewById(R.id.graphList);
+                ListView graphListView = (ListView) templateView.findViewById(R.id.graph_list);
                 ArrayAdapter graphListAdapter = new ArrayAdapter<>(pluginContext , R.layout.graph_textview , graphs);
                 graphListView.setAdapter(graphListAdapter);
 
