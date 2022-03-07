@@ -4,7 +4,7 @@
     <!-- COMMON -->
     <color name="white">#ffffff</color>
     <color name="darker_gray">#121212</color>
-
+    <color name="black">#000000</color>
     <!-- LED -->
 
     <!-- PRESET -->
