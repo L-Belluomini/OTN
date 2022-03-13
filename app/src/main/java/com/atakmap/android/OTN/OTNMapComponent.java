@@ -128,7 +128,7 @@ public class OTNMapComponent extends DropDownMapComponent {
                             return;
 
                         }
-                        tmpGraph = (OTNGraph) graphBundle.getSerializable("GRAPH");
+                        tmpGraph =  (OTNGraph) graphBundle.getSerializable("GRAPH");
                         if ( tmpGraph == null ) {
                             Log.w(TAG,"failled importing graph list");
                             return;
@@ -179,6 +179,7 @@ public class OTNMapComponent extends DropDownMapComponent {
         bundleGraphs.putSerializable("GRAPHS" ,(Serializable) graphs );
         Log.d(TAG , bundleGraphs.toString());
         i.putExtra("GRAPHS", bundleGraphs );
+
         Bundle bundleGraph = new Bundle();
         bundleGraph.putSerializable ("GRAPH" , (Serializable) selectdeGraph);
         i.putExtra("GRAPH" , bundleGraph);
