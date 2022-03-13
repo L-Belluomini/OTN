@@ -84,6 +84,7 @@ public class OTNDropDownReceiver extends DropDownReceiver implements
                 ListView graphListView = (ListView) templateView.findViewById(R.id.graphList);
                 ArrayAdapter graphListAdapter = new ArrayAdapter<>(pluginContext , R.layout.graph_textview , graphs);
                 graphListView.setAdapter(graphListAdapter);
+                // highlight selceted graph,
 
 
                 //text.setText( graphs.get(0).getGraphPath() +" dir and profile name:"+graphs.get(0).getConfigGH().getProfiles().get(0).getName() );

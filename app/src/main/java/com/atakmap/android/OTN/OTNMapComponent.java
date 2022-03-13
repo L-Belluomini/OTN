@@ -113,7 +113,7 @@ public class OTNMapComponent extends DropDownMapComponent {
         ddFilter.addAction(OTNDropDownReceiver.SET_GRAPHS);
         registerDropDownReceiver(ddr, ddFilter);
 
-        final BroadcastReceiver selcetedgraphReciver = new BroadcastReceiver() {
+        final BroadcastReceiver selectegraphReciver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 final String action = intent.getAction();
@@ -141,7 +141,7 @@ public class OTNMapComponent extends DropDownMapComponent {
 
             }
         };
-        AtakBroadcast.getInstance().registerReceiver(selcetedgraphReciver, new DocumentedIntentFilter( OTNDropDownReceiver.SET_GRAPHS ) );
+        AtakBroadcast.getInstance().registerReceiver(selectegraphReciver, new DocumentedIntentFilter( OTNDropDownReceiver.SET_GRAPHS ) );
 
         // check if OTN exist
         if ( checkOTNFolder()) {
@@ -153,31 +153,6 @@ public class OTNMapComponent extends DropDownMapComponent {
             toast.show();
             return;
         }
-
-
-
-
-        //push the graphs list to the dorp down
-        Intent i = new Intent(
-                OTNDropDownReceiver.SET_GRAPHS);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("GRAPHS" ,(Serializable) graphs );
-        Log.d(TAG , bundle.toString());
-        i.putExtra("GRAPHS", bundle );
-        AtakBroadcast.getInstance().sendBroadcast(i);
-        Log.d(TAG , "sent broadcast setgraphs");
-
-
-        if ( this.graphs.isEmpty( ) ) {
-        Log.w(TAG , "no graph found");
-        Toast toast = Toast.makeText(context, "NO OTN graph FOUND", Toast.LENGTH_LONG); // check right context
-        toast.show();
-        return;
-        }
-
-        //add offline geocorder
-        GeocodeManager _geocoderManager = GeocodeManager.getInstance(_context);
-        _geocoderManager.registerGeocoder( new OTNOfflineGeocoder( graphs) );
 
         // retrive last selceted graph if present and unchanged
         for (OTNGraph tmpGraph : graphs ) {
@@ -194,6 +169,35 @@ public class OTNMapComponent extends DropDownMapComponent {
             // if there only one graph set as selected
             selectdeGraph = graphs.get(0);
         }
+
+
+
+        //push the graphs list to the dorp down
+        Intent i = new Intent(
+                OTNDropDownReceiver.SET_GRAPHS);
+        Bundle bundleGraphs = new Bundle();
+        bundleGraphs.putSerializable("GRAPHS" ,(Serializable) graphs );
+        Log.d(TAG , bundleGraphs.toString());
+        i.putExtra("GRAPHS", bundleGraphs );
+        Bundle bundleGraph = new Bundle();
+        bundleGraph.putSerializable ("GRAPH" , (Serializable) selectdeGraph);
+        i.putExtra("GRAPH" , bundleGraph);
+        AtakBroadcast.getInstance().sendBroadcast(i);
+        Log.d(TAG , "sent broadcast setgraphs");
+
+
+        if ( this.graphs.isEmpty( ) ) {
+        Log.w(TAG , "no graph found");
+        Toast toast = Toast.makeText(context, "NO OTN graph FOUND", Toast.LENGTH_LONG); // check right context
+        toast.show();
+        return;
+        }
+
+        //add offline geocorder
+        GeocodeManager _geocoderManager = GeocodeManager.getInstance(_context);
+        _geocoderManager.registerGeocoder( new OTNOfflineGeocoder( graphs) );
+
+
 
 
 
