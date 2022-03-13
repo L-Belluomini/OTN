@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -14,9 +15,11 @@ import com.atak.plugins.impl.PluginLayoutInflater;
 import com.atakmap.android.OTN.plugin.R;
 import com.atakmap.android.dropdown.DropDown.OnStateListener;
 import com.atakmap.android.dropdown.DropDownReceiver;
+import com.atakmap.android.ipc.AtakBroadcast;
 import com.atakmap.android.maps.MapView;
 import com.atakmap.coremap.log.Log;
 
+import java.io.Serializable;
 import java.util.List;
 
 public class OTNDropDownReceiver extends DropDownReceiver implements
@@ -82,9 +85,28 @@ public class OTNDropDownReceiver extends DropDownReceiver implements
                     return;
                 }
                 ListView graphListView = (ListView) templateView.findViewById(R.id.graph_list);
-                ArrayAdapter graphListAdapter = new ArrayAdapter<>(pluginContext , R.layout.graph_textview , graphs);
+                ArrayAdapter graphListAdapter = new OTNArrayAdapter(pluginContext , R.layout.graph_listitem , graphs);
                 graphListView.setAdapter(graphListAdapter);
                 // highlight selceted graph,
+                graphListView.setOnItemSelectedListener( new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int index , long l) {
+                        Intent intent = new Intent(
+                                OTNDropDownReceiver.SET_GRAPHS);
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("GRAPH" ,(Serializable) graphs.get( index ) );
+                        Log.d(TAG , bundle.toString());
+                        intent.putExtra("GRAPH", bundle );
+                        AtakBroadcast.getInstance().sendBroadcast(intent);
+
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+
+                    }
+
+                });
 
 
                 //text.setText( graphs.get(0).getGraphPath() +" dir and profile name:"+graphs.get(0).getConfigGH().getProfiles().get(0).getName() );
