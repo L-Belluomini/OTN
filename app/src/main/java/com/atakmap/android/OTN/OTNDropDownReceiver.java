@@ -87,26 +87,7 @@ public class OTNDropDownReceiver extends DropDownReceiver implements
                 ListView graphListView = (ListView) templateView.findViewById(R.id.graph_list);
                 ArrayAdapter graphListAdapter = new OTNArrayAdapter(pluginContext , R.layout.graph_listitem , graphs);
                 graphListView.setAdapter(graphListAdapter);
-                // highlight selceted graph,
-                graphListView.setOnItemSelectedListener( new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> adapterView, View view, int index , long l) {
-                        Intent intent = new Intent(
-                                OTNDropDownReceiver.SET_GRAPHS);
-                        Bundle bundle = new Bundle();
-                        bundle.putSerializable("GRAPH" ,(Serializable) graphs.get( index ) );
-                        Log.d(TAG , bundle.toString());
-                        intent.putExtra("GRAPH", bundle );
-                        AtakBroadcast.getInstance().sendBroadcast(intent);
-
-                    }
-
-                    @Override
-                    public void onNothingSelected(AdapterView<?> adapterView) {
-
-                    }
-
-                });
+                // highlight selceted graph
 
 
                 //text.setText( graphs.get(0).getGraphPath() +" dir and profile name:"+graphs.get(0).getConfigGH().getProfiles().get(0).getName() );

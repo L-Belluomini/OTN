@@ -129,6 +129,7 @@ public class OTNMapComponent extends DropDownMapComponent {
 
                         }
                         tmpGraph =  (OTNGraph) graphBundle.getSerializable("GRAPH");
+                        Log.d(TAG , tmpGraph.toString());
                         if ( tmpGraph == null ) {
                             Log.w(TAG,"failled importing graph list");
                             return;
@@ -221,6 +222,7 @@ public class OTNMapComponent extends DropDownMapComponent {
 
     }
     protected void updateRouters() {
+        Log.d(TAG,"updateing router");
         for (String routerUID : registeredRouters ){
             RoutePlannerInterface tmpPlanner = _routeManager.getPlanner( routerUID );
             if ( tmpPlanner instanceof OTNOfflineRouter  ){
