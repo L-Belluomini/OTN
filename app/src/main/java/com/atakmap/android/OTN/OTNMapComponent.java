@@ -22,6 +22,7 @@ import com.atakmap.android.dropdown.DropDownMapComponent;
 
 import com.atakmap.android.preference.AtakPreferences;
 import com.atakmap.android.routes.RoutePlannerInterface;
+import com.atakmap.android.user.geocode.GeocodeManager;
 import com.atakmap.coremap.filesystem.FileSystemUtils;
 import com.atakmap.coremap.io.IOProvider;
 import com.atakmap.coremap.io.IOProviderFactory;
@@ -174,6 +175,10 @@ public class OTNMapComponent extends DropDownMapComponent {
         return;
         }
 
+        //add offline geocorder
+        GeocodeManager _geocoderManager = GeocodeManager.getInstance(_context);
+        _geocoderManager.registerGeocoder( new OTNOfflineGeocoder( graphs) );
+
         // retrive last selceted graph if present and unchanged
         for (OTNGraph tmpGraph : graphs ) {
             if ( tmpGraph.getEdgeHash().equals( _prefs.get("OTNSelectedGraph","") ) ){
@@ -189,6 +194,9 @@ public class OTNMapComponent extends DropDownMapComponent {
             // if there only one graph set as selected
             selectdeGraph = graphs.get(0);
         }
+
+
+
 
             _routeManager.registerPlanner ( "OTNOFFlineFast", new OTNOfflineRouter( pluginContext , selectdeGraph , OTNrequest.ProfileType.BEST ) );
             _prefs.set( "OTNSelectedGraph" , selectdeGraph.getEdgeHash() );

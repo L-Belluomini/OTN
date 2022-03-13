@@ -3,10 +3,12 @@ package com.atakmap.android.OTN;
 import com.atakmap.coremap.filesystem.FileSystemUtils;
 import com.atakmap.filesystem.HashingUtils;
 import com.graphhopper.GraphHopperConfig;
+import com.atakmap.coremap.log.Log;
 
 import java.io.Serializable;
 
 public class OTNGraph implements Serializable {
+    private String TAG = "OTNgraph" ;
     private String Name ;
     private GraphHopperConfig configGH;
     private  String graphPath;
@@ -16,7 +18,7 @@ public class OTNGraph implements Serializable {
     // private LinkedList<String> hashes;
 
     public  OTNGraph (String graphPath , GraphHopperConfig jconfig){
-        this.configGH = configGH;
+        this.configGH = jconfig;
         this.graphPath = graphPath;
 
 
@@ -26,7 +28,11 @@ public class OTNGraph implements Serializable {
         return graphPath;
     }
     public GraphHopperConfig getConfigGH() { return this.configGH; }
-    public  String getEdgeHash () { return HashingUtils.sha256sum( FileSystemUtils.getItem(graphPath + "/edges")); }
+    public  String getEdgeHash () {
+        String val = HashingUtils.sha256sum( FileSystemUtils.getItem(FileSystemUtils.TOOL_DATA_DIRECTORY  + graphPath + "/edges" ) );
+        Log.d(TAG , "graph path" + graphPath + "/edges" );
+        Log.d(TAG , "graph hash: " + val);
+        return val; }
 
 
     @Override
