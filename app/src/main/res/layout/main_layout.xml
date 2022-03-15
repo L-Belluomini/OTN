@@ -1,46 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/black"
-        android:orientation="vertical"
-        app:layout_constraintTop_toTopOf="parent">
+        android:background="@color/black">
 
         <TextView
             android:id="@+id/app_name"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingStart="6dp"
+            android:padding="6dp"
             android:text="@string/app_name"
             android:textColor="@color/white"
+            android:textSize="20sp"
             android:textStyle="bold"
-            android:textSize="20sp" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/app_desc"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/app_name"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_toEndOf="@+id/app_name"
+            android:gravity="center_vertical"
             android:paddingStart="6dp"
             android:text="@string/app_desc"
             android:textColor="@color/white"
             android:textSize="16sp" />
+
         <TextView
             android:id="@+id/graph_list_title"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/refresh_button"
+            android:layout_alignBottom="@+id/refresh_button"
+            android:layout_alignParentStart="true"
+            android:gravity="center_vertical"
             android:paddingStart="6dp"
+            android:paddingEnd="6dp"
             android:text="Available graphs:"
             android:textColor="@color/white"
             android:textSize="18sp"
             android:textStyle="bold" />
-    </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/help_button"
+            style="@android:style/Widget.DeviceDefault.ImageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/refresh_button"
+            android:layout_alignBottom="@+id/refresh_button"
+            android:layout_toStartOf="@id/refresh_button"
+            android:src="@android:drawable/ic_menu_info_details"
+            tools:src="@android:drawable/ic_menu_info_details"
+            android:contentDescription="Info"/>
+
+        <Button
+            android:id="@+id/refresh_button"
+            style="@style/darkButton"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_below="@id/app_name"
+            android:layout_alignParentEnd="true"
+            android:padding="12dp"
+            android:text="Refresh" />
+
+    </RelativeLayout>
 
     <ListView
         android:id="@+id/graph_list"
@@ -54,5 +89,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout"
         tools:listitem="@layout/graph_listitem" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
