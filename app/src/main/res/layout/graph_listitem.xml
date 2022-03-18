@@ -4,15 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    >
+    android:paddingHorizontal="6dp">
 
     <TextView
         android:id="@+id/graph_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_marginEnd="6dp"
+        android:layout_toStartOf="@+id/graph_button_select"
         android:ellipsize="end"
         android:lines="1"
+        android:paddingVertical="4dp"
         android:textColor="@color/white"
         android:textSize="16sp" />
 
@@ -25,8 +27,7 @@
         android:layout_marginEnd="6dp"
         android:background="@color/white" />
 
-
-    <ListView
+    <LinearLayout
         android:id="@+id/available_profiles"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -38,7 +39,8 @@
         android:paddingVertical="4dp">
 
         <!--Inflate profiles into this layout with the profiles_listitem textview-->
-    </ListView>
+    </LinearLayout>
+
 
 
 
@@ -47,10 +49,12 @@
         style="@style/darkButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="0"
-        android:padding="6dp"
-        android:text="Select"
-        android:layout_alignParentRight="true"/>
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="6dp"
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="6dp"
+        android:text="Select" />
 
 
 </RelativeLayout>
