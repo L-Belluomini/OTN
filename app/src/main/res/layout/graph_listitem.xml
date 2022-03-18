@@ -1,30 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:paddingHorizontal="6dp">
 
     <TextView
         android:id="@+id/graph_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_marginEnd="6dp"
+        android:layout_toStartOf="@+id/graph_button_select"
         android:ellipsize="end"
         android:lines="1"
+        android:paddingVertical="4dp"
         android:textColor="@color/white"
-        android:textSize="14sp" />
+        android:textSize="16sp" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_below="@id/graph_name"
+        android:layout_toStartOf="@+id/graph_button_select"
+        android:layout_marginEnd="6dp"
+        android:background="@color/white" />
+
+    <LinearLayout
+        android:id="@+id/available_profiles"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/divider"
+        android:layout_alignParentStart="true"
+        android:layout_marginEnd="6dp"
+        android:layout_toStartOf="@+id/graph_button_select"
+        android:paddingVertical="4dp">
+
+        <!--Inflate profiles into this layout with the profiles_listitem textview-->
+    </LinearLayout>
+
+
+
 
     <Button
         android:id="@+id/graph_button_select"
         style="@style/darkButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="0"
-        android:padding="6dp"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="6dp"
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="6dp"
         android:text="Select" />
-    <!--You must add either android:onClick or android:onClickListener to the button attributes
-     The value for onClick must be the name of the method you want to call in response to a click event
-     alternatively, use onClickListener if you instantiate the button at runtime-->
-</LinearLayout>
+
+
+</RelativeLayout>

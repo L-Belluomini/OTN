@@ -6,14 +6,22 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/textView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Profile" />
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:textColor="#FFF"
+        android:textSize="16sp"
+        android:text="Routing profile:" />
 
     <com.atakmap.android.gui.PluginSpinner
-        android:id="@+id/profilesSpinner"
+        android:id="@+id/route_plan_method"
+        style="@style/darkButton"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="48dp"
+        android:contentDescription="Select Profile"
+        android:padding="6dp"
+        android:spinnerMode="dialog"
+        android:textColor="@color/white" />
 
 </com.atakmap.android.routes.RoutePlannerOptionsView>

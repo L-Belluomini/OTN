@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/darker_gray"
     android:orientation="vertical">
-
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -35,7 +35,7 @@
             android:gravity="center_vertical"
             android:paddingStart="6dp"
             android:text="@string/app_desc"
-            android:textColor="@color/white"
+            android:textColor="@android:color/holo_green_light"
             android:textSize="16sp" />
 
         <TextView
@@ -61,18 +61,19 @@
             android:layout_alignTop="@+id/refresh_button"
             android:layout_alignBottom="@+id/refresh_button"
             android:layout_toStartOf="@id/refresh_button"
+            android:contentDescription="Info"
             android:src="@android:drawable/ic_menu_info_details"
-            tools:src="@android:drawable/ic_menu_info_details"
-            android:contentDescription="Info"/>
+            tools:src="@android:drawable/ic_menu_info_details" />
 
         <Button
             android:id="@+id/refresh_button"
             style="@style/darkButton"
             android:layout_width="wrap_content"
-            android:layout_height="48dp"
+            android:layout_height="36dp"
             android:layout_below="@id/app_name"
             android:layout_alignParentEnd="true"
-            android:padding="12dp"
+            android:layout_margin="6dp"
+            android:paddingHorizontal="12dp"
             android:text="Refresh" />
 
     </RelativeLayout>
@@ -81,10 +82,9 @@
         android:id="@+id/graph_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:divider="#5555"
+        android:divider="@android:color/holo_green_dark"
         android:dividerHeight="2dp"
         android:minHeight="48dp"
-        android:padding="6dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout"
