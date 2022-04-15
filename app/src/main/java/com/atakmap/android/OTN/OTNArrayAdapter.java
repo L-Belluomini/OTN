@@ -23,7 +23,7 @@ import java.util.List;
 public class OTNArrayAdapter extends ArrayAdapter {
     private Context pContext;
     private int resource;
-    public OTNArrayAdapter(@NonNull Context pContext, int resource , List<OTNGraph> graphs ) {
+    public OTNArrayAdapter(@NonNull Context pContext, int resource , List<OTNGraph> graphs , OTNGraph selectedGraph ) {
         super(pContext, resource, graphs);
         this.pContext = pContext;
         this.resource = resource;
@@ -35,7 +35,6 @@ public class OTNArrayAdapter extends ArrayAdapter {
 
         if (view == null){
             view = LayoutInflater.from(pContext).inflate( resource , null );
-
         }
         OTNGraph graph = (OTNGraph) getItem( position );
         if (graph == null ) {
@@ -44,7 +43,6 @@ public class OTNArrayAdapter extends ArrayAdapter {
         TextView nameTV = view.findViewById(R.id.graph_name);
         if ( nameTV != null ){
             nameTV.setText( graph.getGraphPath() );
-
         }
         Button selecetdGraphButton = view.findViewById(R.id.graph_button_select);
         if ( selecetdGraphButton != null) {
@@ -60,7 +58,6 @@ public class OTNArrayAdapter extends ArrayAdapter {
                 }
             });
         }
-
 
         return view;
     }

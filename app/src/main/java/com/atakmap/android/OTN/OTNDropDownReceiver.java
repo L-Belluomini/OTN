@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 
 //import androidx.recyclerview.widget.RecyclerView;
@@ -30,6 +31,7 @@ public class OTNDropDownReceiver extends DropDownReceiver implements
 
     public static final String SHOW_PLUGIN = "com.atakmap.android.OTN.SHOW_PLUGIN";
     public static final String SET_GRAPHS = "com.atakmap.android.OTN.SET_GRAPHS";
+    public static final String FIND_GRAPHS = "com.atakmap.android.OTN.FIND_GRAPHS";
     private final View templateView;
     private final Context pluginContext;
     private MapView _view;
@@ -48,6 +50,21 @@ public class OTNDropDownReceiver extends DropDownReceiver implements
         // developers to look at this Inflator
         templateView = PluginLayoutInflater.inflate(context,
                 R.layout.main_layout, null);
+        Button refreshButton =  templateView.findViewById(R.id.refresh_button);
+        if (refreshButton == null) {
+            Log.w( TAG , "refresh button not working");
+        }
+        refreshButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG , "refreshcallback");
+                Intent intent = new Intent( OTNDropDownReceiver.FIND_GRAPHS);
+                AtakBroadcast.getInstance().sendBroadcast(intent);
+            }
+        });
+
+
+
 
     }
 
@@ -84,11 +101,16 @@ public class OTNDropDownReceiver extends DropDownReceiver implements
                     Log.w(TAG,"failled importing graph list");
                     return;
                 }
+                Bundle graphBundle = intent.getBundleExtra("GRAPH");
+                if (graphBundle == null) {
+                    Log.w(TAG,"failled importing bundle");
+                    return;
+                }
+                OTNGraph selectedGraph = (OTNGraph) graphBundle.getSerializable( "GRAPH" );
                 ListView graphListView = (ListView) templateView.findViewById(R.id.graph_list);
-                ArrayAdapter graphListAdapter = new OTNArrayAdapter(pluginContext , R.layout.graph_listitem , graphs);
+                ArrayAdapter graphListAdapter = new OTNArrayAdapter(pluginContext , R.layout.graph_listitem , graphs , selectedGraph );
                 graphListView.setAdapter(graphListAdapter);
                 // highlight selceted graph
-
 
                 //text.setText( graphs.get(0).getGraphPath() +" dir and profile name:"+graphs.get(0).getConfigGH().getProfiles().get(0).getName() );
                 break;

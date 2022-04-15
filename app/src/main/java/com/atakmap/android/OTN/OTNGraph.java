@@ -14,7 +14,7 @@ public class OTNGraph implements Serializable {
     private  String graphPath;
     // Private boundingBox;
     // private String dateFile;
-    //private String dateBuild;
+    // private String dateBuild;
     // private LinkedList<String> hashes;
 
     public  OTNGraph (String graphPath , GraphHopperConfig jconfig){

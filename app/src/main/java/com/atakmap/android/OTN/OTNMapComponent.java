@@ -137,12 +137,18 @@ public class OTNMapComponent extends DropDownMapComponent {
                         updateRouters();
 
                         break;
+                    case (OTNDropDownReceiver.FIND_GRAPHS):
+                        findnSetGraphs();
+                        pushGraphs();
 
+                        break;
                 }
-
             }
         };
-        AtakBroadcast.getInstance().registerReceiver(selectegraphReciver, new DocumentedIntentFilter( OTNDropDownReceiver.SET_GRAPHS ) );
+        DocumentedIntentFilter mcFilter = new DocumentedIntentFilter();
+        mcFilter.addAction(OTNDropDownReceiver.FIND_GRAPHS);
+        mcFilter.addAction(OTNDropDownReceiver.SET_GRAPHS);
+        AtakBroadcast.getInstance().registerReceiver(selectegraphReciver, mcFilter );
 
         // check if OTN exist
         if ( checkOTNFolder()) {
@@ -162,7 +168,6 @@ public class OTNMapComponent extends DropDownMapComponent {
             }
         }
 
-
         if (selectdeGraph == null){
             if (graphs.size() > 1 ) {
                 return;
@@ -171,22 +176,7 @@ public class OTNMapComponent extends DropDownMapComponent {
             selectdeGraph = graphs.get(0);
         }
 
-
-
-        //push the graphs list to the dorp down
-        Intent i = new Intent(
-                OTNDropDownReceiver.SET_GRAPHS);
-        Bundle bundleGraphs = new Bundle();
-        bundleGraphs.putSerializable("GRAPHS" ,(Serializable) graphs );
-        Log.d(TAG , bundleGraphs.toString());
-        i.putExtra("GRAPHS", bundleGraphs );
-
-        Bundle bundleGraph = new Bundle();
-        bundleGraph.putSerializable ("GRAPH" , (Serializable) selectdeGraph);
-        i.putExtra("GRAPH" , bundleGraph);
-        AtakBroadcast.getInstance().sendBroadcast(i);
-        Log.d(TAG , "sent broadcast setgraphs");
-
+        pushGraphs();
 
         if ( this.graphs.isEmpty( ) ) {
         Log.w(TAG , "no graph found");
@@ -199,16 +189,11 @@ public class OTNMapComponent extends DropDownMapComponent {
         GeocodeManager _geocoderManager = GeocodeManager.getInstance(_context);
         _geocoderManager.registerGeocoder( new OTNOfflineGeocoder( graphs) );
 
-
-
-
-
-
-            _routeManager.registerPlanner ( "OTNOFFlineFast", new OTNOfflineRouter( pluginContext , selectdeGraph , OTNrequest.ProfileType.BEST ) );
-            _prefs.set( "OTNSelectedGraph" , selectdeGraph.getEdgeHash() );
-            registeredRouters.add( "OTNOFFlineFast" );
-            Log.d(TAG, "registered route planner: " + "OTNOFFlineFast" );
-            // register other route planners
+        _routeManager.registerPlanner ( "OTNOFFlineFast", new OTNOfflineRouter( pluginContext , selectdeGraph , OTNrequest.ProfileType.BEST ) );
+        _prefs.set( "OTNSelectedGraph" , selectdeGraph.getEdgeHash() );
+        registeredRouters.add( "OTNOFFlineFast" );
+        Log.d(TAG, "registered route planner: " + "OTNOFFlineFast" );
+        // register other route planners
         // querry serivce db and create realtive routers
     }
 
@@ -222,7 +207,7 @@ public class OTNMapComponent extends DropDownMapComponent {
 
     }
     protected void updateRouters() {
-        Log.d(TAG,"updateing router");
+        Log.d(TAG,"updating router");
         for (String routerUID : registeredRouters ){
             RoutePlannerInterface tmpPlanner = _routeManager.getPlanner( routerUID );
             if ( tmpPlanner instanceof OTNOfflineRouter  ){
@@ -237,6 +222,20 @@ public class OTNMapComponent extends DropDownMapComponent {
 
     }
 
+    protected void pushGraphs(){
+        Intent i = new Intent(
+                OTNDropDownReceiver.SET_GRAPHS);
+        Bundle bundleGraphs = new Bundle();
+        bundleGraphs.putSerializable("GRAPHS" ,(Serializable) this.graphs );
+        Log.d(this.TAG , bundleGraphs.toString());
+        i.putExtra("GRAPHS", bundleGraphs );
+
+        Bundle bundleGraph = new Bundle();
+        bundleGraph.putSerializable ("GRAPH" , (Serializable) this.selectdeGraph);
+        i.putExtra("GRAPH" , bundleGraph);
+        AtakBroadcast.getInstance().sendBroadcast(i);
+        Log.d(TAG , "sent broadcast setgraphs");
+    }
     protected void findnSetGraphs(){
         IOProvider provider = IOProviderFactory.getProvider();
         String [] grapfsFolder = provider.list ( FileSystemUtils.getItem (FileSystemUtils.TOOL_DATA_DIRECTORY  + "/OTN" + "/graphs" ) );
@@ -245,31 +244,40 @@ public class OTNMapComponent extends DropDownMapComponent {
             return;
         }
         OTNGraph tmp ;
+        boolean flag;
         for (String dir : grapfsFolder ) {
-            tmp =getGraphFromDir(dir);
+            tmp = getGraphFromDir(dir);
+             flag = true;
             if (tmp != null) {
-                this.graphs.add(tmp);
-            }
+                for (OTNGraph element : graphs ) {
+                    if (tmp.getEdgeHash().equals(element.getEdgeHash())) {
+                        flag = false;
+                        break;
+                    }
+                }
+                if ( flag ) {
+                    this.graphs.add(tmp);
+                }
 
+            }
         }
     }
     protected OTNGraph getGraphFromDir (String dir){
         GraphHopperConfig tmpConfig = null;
-
         try {
             Gson ason = new Gson();
             FileReader fReader =  new FileReader( FileSystemUtils.getItem(FileSystemUtils.TOOL_DATA_DIRECTORY  + "/OTN/graphs/" + dir + "/config.json") );
             JsonReader reader = new JsonReader(fReader);
             tmpConfig = ason.fromJson (reader , GraphHopperConfig.class );
-            if (tmpConfig == null){
+            if ( tmpConfig == null ) {
                 Log.w(TAG , "reading j config failed");
                return null;
             }
-        } catch (Exception e) {
+        } catch ( Exception e) {
             Log.e( TAG ,"An error occurred, reading " );
             Log.e ( TAG , e.toString());
         }
-        return new OTNGraph("/OTN/graphs/" + dir ,tmpConfig );
+        return new OTNGraph("/OTN/graphs/" + dir , tmpConfig );
     }
 
     protected static boolean checkOTNFolder() {
