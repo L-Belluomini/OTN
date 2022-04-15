@@ -186,8 +186,10 @@ public class OTNMapComponent extends DropDownMapComponent {
         }
 
         //add offline geocorder
+        /*
         GeocodeManager _geocoderManager = GeocodeManager.getInstance(_context);
         _geocoderManager.registerGeocoder( new OTNOfflineGeocoder( graphs) );
+        */
 
         _routeManager.registerPlanner ( "OTNOFFlineFast", new OTNOfflineRouter( pluginContext , selectdeGraph , OTNrequest.ProfileType.BEST ) );
         _prefs.set( "OTNSelectedGraph" , selectdeGraph.getEdgeHash() );

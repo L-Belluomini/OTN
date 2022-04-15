@@ -74,6 +74,7 @@ public class OTNOfflineRouter implements RoutePlannerInterface, AdapterView.OnIt
     public RoutePlannerOptionsView getOptionsView(AlertDialog parent){
         RoutePlannerOptionsView view= (RoutePlannerOptionsView) LayoutInflater.from(pluginContext).inflate(R.layout.otnplanneroption, null);
 
+
         // profile
         PluginSpinner profileSpinner = ( PluginSpinner) view.findViewById(R.id.profilesSpinner);
         ArrayAdapter<String> profileAdapter = new ArrayAdapter<>( pluginContext , android.R.layout.simple_spinner_dropdown_item );
