@@ -38,6 +38,7 @@ import com.graphhopper.GraphHopperConfig;
 import java.io.FileReader;
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -54,6 +55,8 @@ public class OTNMapComponent extends DropDownMapComponent {
     private OTNGraph selectdeGraph;
     private OTNGraph tmpGraph;
     private AtakPreferences _prefs;
+
+    private OTNGraphOverlay overlay;
 
 
     public OTNMapComponent(){    }
@@ -129,11 +132,11 @@ public class OTNMapComponent extends DropDownMapComponent {
 
                         }
                         tmpGraph =  (OTNGraph) graphBundle.getSerializable("GRAPH");
-                        Log.d(TAG , tmpGraph.toString());
                         if ( tmpGraph == null ) {
-                            Log.w(TAG,"failled importing graph list");
+                            Log.w(TAG,"failled importing selected graph");
                             return;
                         }
+                        Log.d(TAG , tmpGraph.toString());
                         updateRouters();
 
                         break;
@@ -185,6 +188,11 @@ public class OTNMapComponent extends DropDownMapComponent {
         return;
         }
 
+        // map overlay
+        overlay = new OTNGraphOverlay(view , pluginContext);
+        view.getMapOverlayManager().addOverlay( overlay );
+        Log.d(TAG , "overlay added");
+
         //add offline geocorder
         /*
         GeocodeManager _geocoderManager = GeocodeManager.getInstance(_context);
@@ -194,9 +202,13 @@ public class OTNMapComponent extends DropDownMapComponent {
         _routeManager.registerPlanner ( "OTNOFFlineFast", new OTNOfflineRouter( pluginContext , selectdeGraph , OTNrequest.ProfileType.BEST ) );
         _prefs.set( "OTNSelectedGraph" , selectdeGraph.getEdgeHash() );
         registeredRouters.add( "OTNOFFlineFast" );
-        Log.d(TAG, "registered route planner: " + "OTNOFFlineFast" );
+        Log.d(TAG, "registered route planner: " + "OTNOFFlineFast" + selectdeGraph.toString() );
         // register other route planners
         // querry serivce db and create realtive routers
+
+        //TEST||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+        Log.d(TAG , view.getMapOverlayManager().getOverlays().toString());
+        Log.d(TAG , view.getRootGroup().getChildGroups().toString());
     }
 
     @Override
@@ -221,6 +233,7 @@ public class OTNMapComponent extends DropDownMapComponent {
         // add routr/routers
         _routeManager.registerPlanner ( "OTNOFFlineFast", new OTNOfflineRouter( pluginContext , selectdeGraph , OTNrequest.ProfileType.BEST ) );
         registeredRouters.add( "OTNOFFlineFast" );
+        selectdeGraph = null;
 
     }
 
@@ -238,6 +251,7 @@ public class OTNMapComponent extends DropDownMapComponent {
         AtakBroadcast.getInstance().sendBroadcast(i);
         Log.d(TAG , "sent broadcast setgraphs");
     }
+
     protected void findnSetGraphs(){
         IOProvider provider = IOProviderFactory.getProvider();
         String [] grapfsFolder = provider.list ( FileSystemUtils.getItem (FileSystemUtils.TOOL_DATA_DIRECTORY  + "/OTN" + "/graphs" ) );
@@ -259,6 +273,7 @@ public class OTNMapComponent extends DropDownMapComponent {
                 }
                 if ( flag ) {
                     this.graphs.add(tmp);
+                    Log.d(TAG , this.graphs.toString());
                 }
 
             }

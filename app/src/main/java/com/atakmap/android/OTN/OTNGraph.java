@@ -12,6 +12,7 @@ public class OTNGraph implements Serializable {
     private String Name ;
     private GraphHopperConfig configGH;
     private  String graphPath;
+    private String Hash ="";
     // Private boundingBox;
     // private String dateFile;
     // private String dateBuild;
@@ -29,10 +30,14 @@ public class OTNGraph implements Serializable {
     }
     public GraphHopperConfig getConfigGH() { return this.configGH; }
     public  String getEdgeHash () {
-        String val = HashingUtils.sha256sum( FileSystemUtils.getItem(FileSystemUtils.TOOL_DATA_DIRECTORY  + graphPath + "/edges" ) );
-        Log.d(TAG , "graph path" + graphPath + "/edges" );
-        Log.d(TAG , "graph hash: " + val);
-        return val; }
+        if (Hash.length() == 0 ){
+            String val = HashingUtils.sha256sum( FileSystemUtils.getItem(FileSystemUtils.TOOL_DATA_DIRECTORY  + graphPath + "/edges" ) );
+            Hash = val;
+            return val;
+        } else {
+            return Hash;
+        }
+    }
 
 
     @Override

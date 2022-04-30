@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -20,7 +22,13 @@ import com.atakmap.coremap.log.Log;
 import java.io.Serializable;
 import java.util.List;
 
+
+import com.graphhopper.config.CHProfile;
+import com.graphhopper.config.LMProfile;
+import com.graphhopper.config.Profile;
+
 public class OTNArrayAdapter extends ArrayAdapter {
+    public static final String TAG = OTNDropDownReceiver.class.getSimpleName();
     private Context pContext;
     private int resource;
     public OTNArrayAdapter(@NonNull Context pContext, int resource , List<OTNGraph> graphs , OTNGraph selectedGraph ) {
@@ -57,6 +65,10 @@ public class OTNArrayAdapter extends ArrayAdapter {
                     AtakBroadcast.getInstance().sendBroadcast(intent);
                 }
             });
+            ListView profilesLayout = view.findViewById(R.id.available_profiles);
+
+            ArrayAdapter profilesAdapter = new ArrayAdapter(pContext , android.R.layout.simple_list_item_1 , graph.getConfigGH().getProfiles() );
+            profilesLayout.setAdapter(profilesAdapter);
         }
 
         return view;
