@@ -76,7 +76,7 @@ public class OTNOfflineRouter implements RoutePlannerInterface, AdapterView.OnIt
 
 
         // profile
-        PluginSpinner profileSpinner = ( PluginSpinner) view.findViewById(R.id.profilesSpinner);
+        PluginSpinner profileSpinner = ( PluginSpinner) view.findViewById(R.id.route_plan_method);
         ArrayAdapter<String> profileAdapter = new ArrayAdapter<>( pluginContext , android.R.layout.simple_spinner_dropdown_item );
        if (graph == null) {
            Log.w(TAG , "jConfig is null!!");
@@ -141,7 +141,7 @@ public class OTNOfflineRouter implements RoutePlannerInterface, AdapterView.OnIt
     public void onItemSelected(AdapterView<?> adapterView, View view, int position, long iD) {
 
         Log.d(TAG , "view listener "+Integer.toString(position) + " Id:"+Long.toString(iD) + "adapter ID " + Integer.toString (adapterView.getId() ) );
-        if (adapterView.getId() == R.id.profilesSpinner) {
+        if (adapterView.getId() == R.id.route_plan_method) {
             Log.d(TAG, "view listener profile spinner");
             if (position == Math.round(iD)) {
                 selectedProfile = position;
