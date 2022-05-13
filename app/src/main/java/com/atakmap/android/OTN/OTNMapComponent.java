@@ -216,8 +216,8 @@ public class OTNMapComponent extends DropDownMapComponent {
         super.onDestroyImpl(context, view);
         for ( String router : registeredRouters) {
             _routeManager.unregisterPlanner(router);
-
         }
+        view.getMapOverlayManager().removeOverlay( overlay );
 
     }
     protected void updateRouters() {

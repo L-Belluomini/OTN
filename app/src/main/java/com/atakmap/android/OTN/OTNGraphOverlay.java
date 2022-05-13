@@ -43,6 +43,8 @@ public class OTNGraphOverlay extends AbstractMapOverlay2 {
         _pluginContext = pluginContext;
         _mapView = mapView;
         _group = new DefaultMapGroup(TAG);
+        _group.setMetaString("iconURI" , "android.resource://" + _pluginContext.getPackageName()
+                + "/" + R.drawable.ic_launcher);
         Log.d(TAG, "created garph overlay");
 
         Marker point = new Marker(
@@ -79,7 +81,7 @@ public class OTNGraphOverlay extends AbstractMapOverlay2 {
         if (this.currentList == null || this.currentList.isDisposed())
             this.currentList = new MapGroupHierarchyListItem(null,
                     this._mapView, this._group, null , hierarchyListFilter,
-                    baseAdapter);
+                    baseAdapter );
         else
             this.currentList.refresh(baseAdapter, hierarchyListFilter);
 
@@ -105,8 +107,9 @@ public class OTNGraphOverlay extends AbstractMapOverlay2 {
     public DeepMapItemQuery getQueryFunction() {
         return null;
     }
-
-
+    public MapGroup getMapGroup() {
+        return _group;
+    }
 /*
     public class OTNWorldListModel extends AbstractHierarchyListItem2
             implements Search, Visibility2, View.OnClickListener {
