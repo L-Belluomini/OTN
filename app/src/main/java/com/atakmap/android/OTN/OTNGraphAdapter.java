@@ -27,11 +27,11 @@ import com.graphhopper.config.CHProfile;
 import com.graphhopper.config.LMProfile;
 import com.graphhopper.config.Profile;
 
-public class OTNArrayAdapter extends ArrayAdapter {
+public class OTNGraphAdapter extends ArrayAdapter {
     public static final String TAG = OTNDropDownReceiver.class.getSimpleName();
     private Context pContext;
     private int resource;
-    public OTNArrayAdapter(@NonNull Context pContext, int resource , List<OTNGraph> graphs , OTNGraph selectedGraph ) {
+    public OTNGraphAdapter(@NonNull Context pContext, int resource , List<OTNGraph> graphs , OTNGraph selectedGraph ) {
         super(pContext, resource, graphs);
         this.pContext = pContext;
         this.resource = resource;
@@ -67,7 +67,7 @@ public class OTNArrayAdapter extends ArrayAdapter {
             });
             ListView profilesLayout = view.findViewById(R.id.available_profiles);
 
-            ArrayAdapter profilesAdapter = new ArrayAdapter(pContext , android.R.layout.simple_list_item_1 , graph.getConfigGH().getProfiles() );
+            ArrayAdapter profilesAdapter = new OTNProfileAdapter(pContext , android.R.layout.simple_list_item_1 , graph );
             profilesLayout.setAdapter(profilesAdapter);
         }
 

@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -20,7 +19,6 @@ import com.atakmap.android.ipc.AtakBroadcast;
 import com.atakmap.android.maps.MapView;
 import com.atakmap.coremap.log.Log;
 
-import java.io.Serializable;
 import java.util.List;
 
 public class OTNDropDownReceiver extends DropDownReceiver implements
@@ -108,7 +106,7 @@ public class OTNDropDownReceiver extends DropDownReceiver implements
                 }
                 OTNGraph selectedGraph = (OTNGraph) graphBundle.getSerializable( "GRAPH" );
                 ListView graphListView = (ListView) templateView.findViewById(R.id.graph_list);
-                ArrayAdapter graphListAdapter = new OTNArrayAdapter(pluginContext , R.layout.graph_listitem , graphs , selectedGraph );
+                ArrayAdapter graphListAdapter = new OTNGraphAdapter(pluginContext , R.layout.graph_listitem , graphs , selectedGraph );
                 graphListView.setAdapter(graphListAdapter);
                 // highlight selceted graph
 

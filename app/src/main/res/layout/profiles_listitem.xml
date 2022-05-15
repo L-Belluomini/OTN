@@ -1,9 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/available_profiles"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:ellipsize="end"
-    android:lines="1"
-    android:paddingStart="6dp"
-    android:paddingEnd="6dp">
-</TextView>
+    android:orientation="horizontal"
+    android:layout_below="@+id/divider"
+    android:layout_alignParentStart="true"
+    android:layout_marginEnd="6dp"
+    android:layout_toStartOf="@+id/graph_button_select"
+    android:paddingVertical="4dp">
+
+    <!--Inflate profiles into this layout with the profiles_listitem textview-->
+    <TextView
+        android:id="@+id/profile_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:lines="1"
+        android:paddingStart="6dp"
+        android:paddingEnd="6dp">
+    </TextView>
+</LinearLayout>
