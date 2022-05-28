@@ -65,9 +65,9 @@ public class OTNGraphAdapter extends ArrayAdapter {
                     AtakBroadcast.getInstance().sendBroadcast(intent);
                 }
             });
-            ListView profilesLayout = view.findViewById(R.id.available_profiles);
+            ListView profilesLayout = view.findViewById(R.id.profile_list);
 
-            ArrayAdapter profilesAdapter = new OTNProfileAdapter(pContext , android.R.layout.simple_list_item_1 , graph );
+            ArrayAdapter profilesAdapter = new OTNProfileAdapter(pContext , R.layout.profiles_listitem , graph );
             profilesLayout.setAdapter(profilesAdapter);
         }
 
