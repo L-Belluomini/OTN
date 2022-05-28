@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="6dp"
-        android:layout_toStartOf="@+id/graph_button_select"
+        android:layout_toStartOf="@+id/linear_layout_buttons"
         android:ellipsize="end"
         android:lines="1"
         android:paddingVertical="4dp"
@@ -23,38 +23,63 @@
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:layout_below="@id/graph_name"
-        android:layout_toStartOf="@+id/graph_button_select"
+        android:layout_toStartOf="@+id/linear_layout_buttons"
         android:layout_marginEnd="6dp"
         android:background="@color/white" />
 
     <ListView
-        android:id="@+id/available_profiles"
+        android:id="@+id/profile_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_below="@+id/divider"
         android:layout_alignParentStart="true"
+        android:layout_marginTop="0dp"
         android:layout_marginEnd="6dp"
-        android:layout_toStartOf="@+id/graph_button_select"
-        android:paddingVertical="4dp">
-
-        <!--Inflate profiles into this layout with the profiles_listitem textview-->
-    </ListView>
-
+        android:layout_marginBottom="0dp"
+        android:layout_toStartOf="@+id/linear_layout_buttons"
+        android:paddingVertical="4dp"
+        tools:listitem="@layout/profiles_listitem" />
 
 
-
-    <Button
-        android:id="@+id/graph_button_select"
-        style="@style/darkButton"
+    <LinearLayout
+        android:id="@+id/linear_layout_buttons"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
-        android:layout_marginEnd="6dp"
-        android:paddingHorizontal="12dp"
-        android:paddingVertical="6dp"
-        android:text="Select" />
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/graph_button_view"
+            style="@style/darkButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="6dp"
+            android:text="Show borders" />
+
+        <Button
+            android:id="@+id/graph_button_info"
+            style="@style/darkButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="6dp"
+            android:text="Info" />
+
+        <Button
+            android:id="@+id/graph_button_select"
+            style="@style/darkButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="6dp"
+            android:text="Select" />
+    </LinearLayout>
 
 
 </RelativeLayout>
