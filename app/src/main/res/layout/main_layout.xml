@@ -16,10 +16,10 @@
             android:id="@+id/app_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="6dp"
+            android:paddingStart="6dp"
             android:text="@string/app_name"
             android:textColor="@color/white"
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -33,24 +33,24 @@
             android:layout_alignParentEnd="true"
             android:layout_toEndOf="@+id/app_name"
             android:gravity="center_vertical"
-            android:paddingStart="6dp"
+            android:paddingStart="3dp"
             android:text="@string/app_desc"
             android:textColor="@android:color/holo_green_light"
-            android:textSize="16sp" />
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/graph_list_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/refresh_button"
-            android:layout_alignBottom="@+id/refresh_button"
+            android:layout_below="@id/app_name"
             android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
             android:gravity="center_vertical"
             android:paddingStart="6dp"
-            android:paddingEnd="6dp"
+            android:paddingVertical="3dp"
             android:text="Available graphs:"
             android:textColor="@color/white"
-            android:textSize="18sp"
+            android:textSize="12sp"
             android:textStyle="bold" />
 
         <ImageButton
@@ -58,23 +58,26 @@
             style="@android:style/Widget.DeviceDefault.ImageButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/refresh_button"
-            android:layout_alignBottom="@+id/refresh_button"
+            android:layout_centerVertical="true"
+            android:layout_marginHorizontal="6dp"
             android:layout_toStartOf="@id/refresh_button"
-            android:contentDescription="Info"
-            android:src="@android:drawable/ic_menu_info_details"
-            tools:src="@android:drawable/ic_menu_info_details" />
+            android:background="#00000000"
+            android:contentDescription="Help"
+            android:src="@android:drawable/ic_menu_help"
+            tools:src="@android:drawable/ic_menu_help" />
 
         <Button
             android:id="@+id/refresh_button"
             style="@style/darkButton"
             android:layout_width="wrap_content"
-            android:layout_height="36dp"
-            android:layout_below="@id/app_name"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:layout_alignParentEnd="true"
-            android:layout_margin="6dp"
+            android:layout_marginEnd="6dp"
             android:paddingHorizontal="12dp"
-            android:text="Refresh" />
+            android:paddingVertical="6dp"
+            android:text="Refresh"
+            android:textSize="12sp" />
 
     </RelativeLayout>
 
@@ -83,7 +86,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:divider="@android:color/holo_green_dark"
-        android:dividerHeight="2dp"
+        android:dividerHeight="1dp"
         android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

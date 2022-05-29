@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingHorizontal="6dp">
+    android:paddingRight="6dp">
 
     <TextView
         android:id="@+id/graph_name"
@@ -12,19 +13,21 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="6dp"
         android:layout_toStartOf="@+id/linear_layout_buttons"
+        android:layout_toEndOf="@+id/imageButton"
         android:ellipsize="end"
         android:lines="1"
         android:paddingVertical="4dp"
         android:textColor="@color/white"
-        android:textSize="16sp" />
+        android:textSize="12sp" />
 
     <View
         android:id="@+id/divider"
         android:layout_width="match_parent"
-        android:layout_height="2dp"
+        android:layout_height="1dp"
         android:layout_below="@id/graph_name"
-        android:layout_toStartOf="@+id/linear_layout_buttons"
         android:layout_marginEnd="6dp"
+        android:layout_toStartOf="@+id/linear_layout_buttons"
+        android:layout_toEndOf="@+id/imageButton"
         android:background="@color/white" />
 
     <ListView
@@ -32,11 +35,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/divider"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="0dp"
         android:layout_marginEnd="6dp"
-        android:layout_marginBottom="0dp"
         android:layout_toStartOf="@+id/linear_layout_buttons"
+        android:layout_toEndOf="@+id/imageButton"
         android:paddingVertical="4dp"
         tools:listitem="@layout/profiles_listitem" />
 
@@ -47,8 +48,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
-        android:layout_marginTop="12dp"
-        android:layout_marginBottom="12dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="6dp"
         android:orientation="vertical">
 
         <Button
@@ -58,17 +59,8 @@
             android:layout_height="wrap_content"
             android:paddingHorizontal="12dp"
             android:paddingVertical="6dp"
-            android:text="Show borders" />
-
-        <Button
-            android:id="@+id/graph_button_info"
-            style="@style/darkButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:paddingHorizontal="12dp"
-            android:paddingVertical="6dp"
-            android:text="Info" />
+            android:text="Show borders"
+            android:textSize="12sp" />
 
         <Button
             android:id="@+id/graph_button_select"
@@ -78,8 +70,21 @@
             android:layout_marginTop="6dp"
             android:paddingHorizontal="12dp"
             android:paddingVertical="6dp"
-            android:text="Select" />
+            android:text="Select"
+            android:textSize="12sp" />
     </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="6dp"
+        android:background="#00000000"
+        android:contentDescription="Graph info"
+        android:src="@android:drawable/ic_menu_info_details" />
 
 
 </RelativeLayout>

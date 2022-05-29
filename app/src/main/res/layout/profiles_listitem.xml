@@ -11,8 +11,7 @@
         android:layout_height="wrap_content"
         android:ellipsize="end"
         android:lines="1"
-        android:paddingStart="6dp"
         android:paddingEnd="6dp"
-        android:textColor="@color/white" />
+        android:textSize="12sp"/>
 
 </LinearLayout>
