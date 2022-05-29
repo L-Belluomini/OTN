@@ -60,7 +60,7 @@ public class OTNGraphAdapter extends ArrayAdapter {
                     Intent intent = new Intent( OTNDropDownReceiver.SET_GRAPHS);
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("GRAPH" ,(Serializable) getItem(position) );
-                    Log.d("OTNdropDownButton" , bundle.toString());
+                    //Log.d("OTNdropDownButton" , bundle.toString());
                     intent.putExtra("GRAPH", bundle );
                     AtakBroadcast.getInstance().sendBroadcast(intent);
                 }

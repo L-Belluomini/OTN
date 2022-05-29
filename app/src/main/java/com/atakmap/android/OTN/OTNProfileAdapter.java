@@ -29,6 +29,7 @@ public class OTNProfileAdapter extends ArrayAdapter {
 
     public OTNProfileAdapter(@NonNull Context pContext, int resource , OTNGraph graph  ) {
         super(pContext, resource, graph.getConfigGH().getProfiles());
+        Log.d (TAG , graph.getConfigGH().getProfiles().toString() );
         this.graph = graph;
         this.pContext = pContext;
         this.resource = resource;
@@ -38,19 +39,21 @@ public class OTNProfileAdapter extends ArrayAdapter {
     @Override
     public View getView (int position , View convertView , ViewGroup parent){
         View view = convertView;
-
+        Log.d(TAG, Integer.toString( position ));
         if (view == null){
             view = LayoutInflater.from(pContext).inflate( resource , null );
         }
         Profile profile = (Profile) getItem( position );
+
         if (profile == null ) {
             return view;
         }
+        Log.d(TAG, profile.toString());
+
         TextView nameTV = view.findViewById(R.id.profile_name);
         if ( nameTV != null ){
             nameTV.setText( profile.getName() );
         }
-
 
         return view;
     }
