@@ -1,7 +1,9 @@
 package com.atakmap.android.OTN;
 
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -48,6 +50,25 @@ public class OTNGraphAdapter extends ArrayAdapter {
         if (graph == null ) {
             return view;
         }
+        AlertDialog.Builder setAdBuilder = new AlertDialog.Builder(pContext) ;
+        setAdBuilder.setTitle("Set graph");
+        setAdBuilder.setMessage("Are you sure to set" + graph.getGraphPath() + "?" );
+        setAdBuilder.setPositiveButton("ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                Intent intent = new Intent( OTNDropDownReceiver.SET_GRAPHS);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("GRAPH" ,(Serializable) getItem(position) );
+                //Log.d("OTNdropDownButton" , bundle.toString());
+                intent.putExtra("GRAPH", bundle );
+                AtakBroadcast.getInstance().sendBroadcast(intent);
+            }
+        });
+        setAdBuilder.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User cancelled the dialog
+            }
+        });
+
         TextView nameTV = view.findViewById(R.id.graph_name);
         if ( nameTV != null ){
             nameTV.setText( graph.getGraphPath() );
@@ -57,12 +78,7 @@ public class OTNGraphAdapter extends ArrayAdapter {
             selecetdGraphButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent( OTNDropDownReceiver.SET_GRAPHS);
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("GRAPH" ,(Serializable) getItem(position) );
-                    //Log.d("OTNdropDownButton" , bundle.toString());
-                    intent.putExtra("GRAPH", bundle );
-                    AtakBroadcast.getInstance().sendBroadcast(intent);
+                    AlertDialog dialog = setAdBuilder.create();
                 }
             });
             ListView profilesLayout = view.findViewById(R.id.profile_list);
