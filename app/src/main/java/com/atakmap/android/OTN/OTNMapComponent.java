@@ -35,6 +35,7 @@ import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import com.graphhopper.GraphHopperConfig;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.Serializable;
 import java.util.Arrays;
@@ -89,13 +90,13 @@ public class OTNMapComponent extends DropDownMapComponent {
 
     public void onCreate(final Context context, Intent intent,
             final MapView view) {
-
-        context.setTheme(R.style.ATAKPluginTheme);
-        super.onCreate(context, intent, view);
         pluginContext = context;
+        pluginContext.setTheme(R.style.ATAKPluginTheme);
+        super.onCreate(pluginContext, intent, view);
+
 
         ddr = new OTNDropDownReceiver(
-                view, context);
+                view, pluginContext);
 
         // prepare to set the routers
         _context = view.getContext();
@@ -118,7 +119,7 @@ public class OTNMapComponent extends DropDownMapComponent {
 
         final BroadcastReceiver selectegraphReciver = new BroadcastReceiver() {
             @Override
-            public void onReceive(Context context, Intent intent) {
+            public void onReceive(Context pluginContext, Intent intent) {
                 final String action = intent.getAction();
                 if (action == null)
                     return;
@@ -159,8 +160,9 @@ public class OTNMapComponent extends DropDownMapComponent {
             findnSetGraphs();
         } else {
             Log.w(TAG , "no folder found");
-            Toast toast = Toast.makeText(context, "NO OTN folder FOUND", Toast.LENGTH_LONG); // check right context
+            Toast toast = Toast.makeText(pluginContext, "NO OTN folder FOUND", Toast.LENGTH_LONG); // check right context
             toast.show();
+            setNewUp();
             return;
         }
 
@@ -183,7 +185,7 @@ public class OTNMapComponent extends DropDownMapComponent {
 
         if ( this.graphs.isEmpty( ) ) {
         Log.w(TAG , "no graph found");
-        Toast toast = Toast.makeText(context, "NO OTN graph FOUND", Toast.LENGTH_LONG); // check right context
+        Toast toast = Toast.makeText(pluginContext, "NO OTN graph FOUND", Toast.LENGTH_SHORT); // check right context
         toast.show();
         return;
         }
@@ -256,6 +258,9 @@ public class OTNMapComponent extends DropDownMapComponent {
         IOProvider provider = IOProviderFactory.getProvider();
         String [] grapfsFolder = provider.list ( FileSystemUtils.getItem (FileSystemUtils.TOOL_DATA_DIRECTORY  + "/OTN" + "/graphs" ) );
         Log.d ( TAG , "array dirs: " + Arrays.toString(grapfsFolder));
+        if (grapfsFolder == null ){
+            return;
+        }
         if ( grapfsFolder.length == 0 ){
             return;
         }
@@ -297,9 +302,30 @@ public class OTNMapComponent extends DropDownMapComponent {
         return new OTNGraph("/OTN/graphs/" + dir , tmpConfig );
     }
 
-    protected static boolean checkOTNFolder() {
+    protected boolean checkOTNFolder() {
+        boolean flag = false;
         IOProvider provider = IOProviderFactory.getProvider();
-        return provider.exists( FileSystemUtils.getItem (FileSystemUtils.TOOL_DATA_DIRECTORY  + "/OTN") );
+        flag = provider.exists( FileSystemUtils.getItem (FileSystemUtils.TOOL_DATA_DIRECTORY  + "/OTN") );
+        if ( provider.exists( FileSystemUtils.getItem (FileSystemUtils.TOOL_DATA_DIRECTORY  + "/OTN/cahe") ) ) {
+            Toast toast = Toast.makeText( pluginContext , "cache dir is deprecated.....", Toast.LENGTH_LONG);
+            toast.show();
+
+        }
+
+        return flag ;
+    }
+
+    protected void setNewUp( ) {
+        IOProvider provider = IOProviderFactory.getProvider();
+
+        if (! provider.exists( FileSystemUtils.getItem (FileSystemUtils.TOOL_DATA_DIRECTORY  + "/OTN") ) ) {
+            if ( provider.mkdir( new File(FileSystemUtils.TOOL_DATA_DIRECTORY  + "/OTN" ) ) ) {
+                provider.mkdir( new File(FileSystemUtils.TOOL_DATA_DIRECTORY  + "/OTN/graphs" ) );
+                Toast toast = Toast.makeText( pluginContext , "NO OTN graph FOUND", Toast.LENGTH_SHORT);
+                toast.show();
+            }
+
+        }
     }
 
 }
