@@ -19,6 +19,7 @@ import androidx.annotation.NonNull;
 
 import com.atakmap.android.OTN.plugin.R;
 import com.atakmap.android.ipc.AtakBroadcast;
+import com.atakmap.android.maps.MapView;
 import com.atakmap.coremap.log.Log;
 
 import java.io.Serializable;
@@ -50,7 +51,7 @@ public class OTNGraphAdapter extends ArrayAdapter {
         if (graph == null ) {
             return view;
         }
-        AlertDialog.Builder setAdBuilder = new AlertDialog.Builder(pContext) ;
+        AlertDialog.Builder setAdBuilder = new AlertDialog.Builder(MapView._mapView.getContext()) ;
         setAdBuilder.setTitle("Set graph");
         setAdBuilder.setMessage("Are you sure to set" + graph.getGraphPath() + "?" );
         setAdBuilder.setPositiveButton("ok", new DialogInterface.OnClickListener() {
@@ -79,6 +80,7 @@ public class OTNGraphAdapter extends ArrayAdapter {
                 @Override
                 public void onClick(View view) {
                     AlertDialog dialog = setAdBuilder.create();
+                    dialog.show();
                 }
             });
             ListView profilesLayout = view.findViewById(R.id.profile_list);
