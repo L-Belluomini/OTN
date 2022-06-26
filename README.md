@@ -7,7 +7,7 @@
 # OTN
 
 ## Introduction
-*Open Tak Navigation* is an ATAK plugin that enables offline routing, it based on graphhopper routing engine and uses Open Stree Map data to do the navigation.
+*Open Tak Navigation* is an ATAK plugin that enables offline routing, it based on graphhopper routing engine and uses OpenStreetMap data to do the navigation.
 The Project is now in beta.
 
 ## Note
