@@ -2,6 +2,7 @@ package com.atakmap.android.OTN;
 
 
 import android.app.AlertDialog;
+import android.app.ExpandableListActivity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ExpandableListAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -30,16 +32,38 @@ import com.graphhopper.config.CHProfile;
 import com.graphhopper.config.LMProfile;
 import com.graphhopper.config.Profile;
 
-public class OTNGraphAdapter extends ArrayAdapter {
+public class OTNGraphAdapter extends ExpandableListAdapter {
     public static final String TAG = OTNDropDownReceiver.class.getSimpleName();
     private Context pContext;
     private int resource;
+    private List<OTNGraph> graphs ;
+    private OTNGraph selectedGraph;
     public OTNGraphAdapter(@NonNull Context pContext, int resource , List<OTNGraph> graphs , OTNGraph selectedGraph ) {
-        super(pContext, resource, graphs);
+        this.graphs = graphs;
+        this.selectedGraph = selectedGraph;
         this.pContext = pContext;
         this.resource = resource;
 
     }
+    @Override
+    public View getChildView(int groupPosition, final int childPosition,
+                             boolean isLastChild, View convertView, ViewGroup parent) {
+
+
+
+        if (convertView == null) {
+            LayoutInflater infalInflater = (LayoutInflater) this.pContext
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = infalInflater.inflate(R.layout.profiles_listitem, null);
+        }
+        final String childText = (String) getChild(groupPosition, childPosition);
+        TextView txtListChild = (TextView) convertView
+                .findViewById(R.id.profile_name);
+
+        txtListChild.setText(childText);
+        return convertView;
+    }
+
     @Override
     public View getView (int position , View convertView , ViewGroup parent){
         View view = convertView;
