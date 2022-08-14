@@ -30,7 +30,7 @@
         android:layout_toEndOf="@+id/imageButton"
         android:background="@color/white" />
 
-    <ListView
+    <LinearLayout
         android:id="@+id/profile_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

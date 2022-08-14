@@ -6,6 +6,7 @@ import android.app.ExpandableListActivity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,25 +33,24 @@ import com.graphhopper.config.CHProfile;
 import com.graphhopper.config.LMProfile;
 import com.graphhopper.config.Profile;
 
-public class OTNGraphAdapter extends ExpandableListAdapter {
+public class OTNGraphAdapter extends ArrayAdapter {
     public static final String TAG = OTNDropDownReceiver.class.getSimpleName();
     private Context pContext;
     private int resource;
     private List<OTNGraph> graphs ;
     private OTNGraph selectedGraph;
+
     public OTNGraphAdapter(@NonNull Context pContext, int resource , List<OTNGraph> graphs , OTNGraph selectedGraph ) {
+        super(pContext , resource , graphs );
         this.graphs = graphs;
         this.selectedGraph = selectedGraph;
         this.pContext = pContext;
         this.resource = resource;
 
     }
-    @Override
+    /*@Override
     public View getChildView(int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
-
-
-
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this.pContext
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -62,7 +62,7 @@ public class OTNGraphAdapter extends ExpandableListAdapter {
 
         txtListChild.setText(childText);
         return convertView;
-    }
+    }*/
 
     @Override
     public View getView (int position , View convertView , ViewGroup parent){
@@ -71,7 +71,7 @@ public class OTNGraphAdapter extends ExpandableListAdapter {
         if (view == null){
             view = LayoutInflater.from(pContext).inflate( resource , null );
         }
-        OTNGraph graph = (OTNGraph) getItem( position );
+        OTNGraph graph = (OTNGraph) getItem ( position );
         if (graph == null ) {
             return view;
         }
@@ -107,10 +107,27 @@ public class OTNGraphAdapter extends ExpandableListAdapter {
                     dialog.show();
                 }
             });
-            ListView profilesLayout = view.findViewById(R.id.profile_list);
-
-            ArrayAdapter profilesAdapter = new OTNProfileAdapter(pContext , R.layout.profiles_listitem , graph );
-            profilesLayout.setAdapter(profilesAdapter);
+            LinearLayout profilesLayout =(LinearLayout) view.findViewById(R.id.profile_list);
+            profilesLayout.removeAllViews();
+            boolean isch = false;
+            for (Profile profile: graph.getConfigGH().getProfiles() ) {
+                View profileView = LayoutInflater.from(pContext).inflate( R.layout.profiles_listitem , null );
+                TextView profileName = profileView.findViewById(R.id.profile_name);
+                profileName.setText( profile.getName() );
+                //Log.d("OTNgrapadapter porfile" , profile.getName() );
+                if ( graph.isProfileCH( profile ) ) {
+                    profileName.setTextColor(Color.RED);
+                    isch = true;
+                }
+                if ( graph.isProfilelm( profile ) ) {
+                    if (isch) {
+                        profileName.setTextColor(Color.CYAN);
+                    } else {
+                        profileName.setTextColor(Color.BLUE);
+                    }
+                }
+                profilesLayout.addView(profileView);
+            }
         }
 
         return view;

@@ -1,10 +1,15 @@
 package com.atakmap.android.OTN;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.atakmap.android.OTN.plugin.R;
@@ -26,6 +31,7 @@ import com.atakmap.coremap.maps.coords.GeoPoint;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -38,6 +44,7 @@ public class OTNGraphOverlay extends AbstractMapOverlay2 {
     // private OTNWorldListModel listItem;
     private MapGroupHierarchyListItem currentList;
     // private MapGroup.MapItemsCallback filter;
+    private List<OTNGraph> grapsh = new LinkedList<OTNGraph>();
 
     OTNGraphOverlay(MapView mapView, Context pluginContext) {
         _pluginContext = pluginContext;
@@ -65,6 +72,45 @@ public class OTNGraphOverlay extends AbstractMapOverlay2 {
 
         _group.addItem(point);
 
+        final BroadcastReceiver selectegraphReciver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context pluginContext, Intent intent) {
+                final String action = intent.getAction();
+                if (action == null)
+                    return;
+
+                switch (action) {
+                    case (OTNDropDownReceiver.SET_GRAPHS):{
+                        Bundle graphsBundle = intent.getBundleExtra("GRAPHS");
+                        if (graphsBundle == null) {
+                            Log.w(TAG,"failled importing bundle");
+                            return;
+
+                        }
+
+                        List<OTNGraph> graphs = (List<OTNGraph>) graphsBundle.getSerializable("GRAPHS");
+                        if ( graphs == null ) {
+                            Log.w(TAG,"failled importing graph list");
+                            return;
+                        }
+
+                        Bundle graphBundle = intent.getBundleExtra("GRAPH");
+                        if (graphBundle == null) {
+                            Log.w(TAG,"failled importing bundle");
+                            return;
+                        }
+
+                        OTNGraph selectedGraph = (OTNGraph) graphBundle.getSerializable( "GRAPH" );
+
+                        for ( OTNGraph graph: graphs ) {
+                            _group.addItem( graph.getBorder() );
+                        }
+
+                        break;
+                    }
+                }
+            }
+        };
     }
 
     @Override
