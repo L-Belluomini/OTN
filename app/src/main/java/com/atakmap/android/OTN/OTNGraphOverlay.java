@@ -20,11 +20,13 @@ import com.atakmap.android.hierarchy.action.Visibility;
 import com.atakmap.android.hierarchy.action.Visibility2;
 import com.atakmap.android.hierarchy.items.AbstractHierarchyListItem2;
 import com.atakmap.android.hierarchy.items.MapGroupHierarchyListItem;
+import com.atakmap.android.ipc.AtakBroadcast;
 import com.atakmap.android.maps.DeepMapItemQuery;
 import com.atakmap.android.maps.DefaultMapGroup;
 import com.atakmap.android.maps.MapGroup;
 import com.atakmap.android.maps.MapView;
 import com.atakmap.android.maps.Marker;
+import com.atakmap.android.maps.Polyline;
 import com.atakmap.android.overlay.AbstractMapOverlay2;
 import com.atakmap.coremap.log.Log;
 import com.atakmap.coremap.maps.coords.GeoPoint;
@@ -70,11 +72,13 @@ public class OTNGraphOverlay extends AbstractMapOverlay2 {
         point.setMetaString("entry", "user");
         point.setShowLabel(true);
 
-        _group.addItem(point);
+        //_group.addItem(point);
+
 
         final BroadcastReceiver selectegraphReciver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context pluginContext, Intent intent) {
+                Log.d(TAG,"broadcast reciver firng");
                 final String action = intent.getAction();
                 if (action == null)
                     return;
@@ -103,7 +107,12 @@ public class OTNGraphOverlay extends AbstractMapOverlay2 {
                         OTNGraph selectedGraph = (OTNGraph) graphBundle.getSerializable( "GRAPH" );
 
                         for ( OTNGraph graph: graphs ) {
-                            _group.addItem( graph.getBorder() );
+                            Polyline tmp =graph.getBorder();
+                            if ( tmp != null ) {
+                                _group.addItem(tmp);
+                            } else {
+                                Log.w(TAG , "graph does not have polyy");
+                            }
                         }
 
                         break;
@@ -111,6 +120,11 @@ public class OTNGraphOverlay extends AbstractMapOverlay2 {
                 }
             }
         };
+        Log.d(TAG,"setting  broadcast reciver callback");
+        AtakBroadcast.DocumentedIntentFilter mcFilter = new AtakBroadcast.DocumentedIntentFilter();
+        mcFilter.addAction(OTNDropDownReceiver.FIND_GRAPHS);
+        mcFilter.addAction(OTNDropDownReceiver.SET_GRAPHS);
+        AtakBroadcast.getInstance().registerReceiver(selectegraphReciver, mcFilter );
     }
 
     @Override

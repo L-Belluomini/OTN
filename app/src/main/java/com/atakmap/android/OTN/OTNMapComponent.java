@@ -120,6 +120,7 @@ public class OTNMapComponent extends DropDownMapComponent {
         final BroadcastReceiver selectegraphReciver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context pluginContext, Intent intent) {
+                Log.w(TAG,"failled setting bundle");
                 final String action = intent.getAction();
                 if (action == null)
                     return;
@@ -153,6 +154,11 @@ public class OTNMapComponent extends DropDownMapComponent {
         mcFilter.addAction(OTNDropDownReceiver.FIND_GRAPHS);
         mcFilter.addAction(OTNDropDownReceiver.SET_GRAPHS);
         AtakBroadcast.getInstance().registerReceiver(selectegraphReciver, mcFilter );
+
+        // map overlay
+        overlay = new OTNGraphOverlay(view , pluginContext);
+        view.getMapOverlayManager().addOverlay( overlay );
+        Log.d(TAG , "overlay added");
 
         // check if OTN exist
         if ( checkOTNFolder()) {
@@ -190,10 +196,7 @@ public class OTNMapComponent extends DropDownMapComponent {
         return;
         }
 
-        // map overlay
-        overlay = new OTNGraphOverlay(view , pluginContext);
-        view.getMapOverlayManager().addOverlay( overlay );
-        Log.d(TAG , "overlay added");
+
 
         //add offline geocorder
         /*

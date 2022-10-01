@@ -1,17 +1,18 @@
 package com.atakmap.android.OTN;
 
-import android.util.Log;
+import com.atakmap.coremap.log.Log;
 
 import com.atakmap.coremap.maps.coords.GeoPoint;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
 public class PolyLoader {
-
+    private String TAG = "polyLoader";
     /**
      * The file containing polygon data.
      */
@@ -44,7 +45,7 @@ public class PolyLoader {
         String sectionLine;
         double[] coordinates;
         List<GeoPoint> polygonPath = null;
-
+        GeoPoint tmp;
         try {
 
             bufferedReader = new BufferedReader(new FileReader(polygonFile));
@@ -73,9 +74,11 @@ public class PolyLoader {
                     break;
                 }
 
-                // Parse the line into its coordinates.
+                // Parse the line into its coordinates
                 coordinates = parseCoordinates(sectionLine);
-            }
+                tmp = new GeoPoint( coordinates[1] , coordinates[0]  );
+                polygonPath.add ( tmp);
+                           }
         } catch (Exception e){
             Log.e("polyloader" , e.toString() );
         }
@@ -98,8 +101,12 @@ public class PolyLoader {
                 double[] results;
                 int tokenCount;
 
+
+                Log.d(TAG,coordinateLine );
                 // Split the line into its sub strings separated by whitespace.
                 rawTokens = coordinateLine.split("\\s");
+
+
 
                 // Copy the non-zero tokens into a result array.
                 tokenCount = 0;
