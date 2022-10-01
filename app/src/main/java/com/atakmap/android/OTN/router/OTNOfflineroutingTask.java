@@ -68,8 +68,8 @@ public class OTNOfflineroutingTask extends RouteGenerationTask{
         hopper.setGraphHopperLocation(FileSystemUtils.getItem(FileSystemUtils.TOOL_DATA_DIRECTORY  +  graph.getGraphPath() ).getPath() );
         Log.d("OTN" , hopper.getGraphHopperLocation() );
         hopper.init(graph.getConfigGH());
-        hopper.load( FileSystemUtils.getItem(FileSystemUtils.TOOL_DATA_DIRECTORY  +   graph.getGraphPath()).getPath() );
-
+        //hopper.load( FileSystemUtils.getItem(FileSystemUtils.TOOL_DATA_DIRECTORY  +   graph.getGraphPath()).getPath() );
+        hopper.load( );
 
 
         ghRequest = new GHRequest(origin.getLatitude() , origin.getLongitude() , dest.getLatitude() ,dest.getLongitude())
