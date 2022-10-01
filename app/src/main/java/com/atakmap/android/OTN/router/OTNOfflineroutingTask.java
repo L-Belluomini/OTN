@@ -65,11 +65,12 @@ public class OTNOfflineroutingTask extends RouteGenerationTask{
             return new RoutePointPackage("jConfig could not be loaded");
         }
         GraphHopper hopper = new GraphHopper();
-        hopper.setGraphHopperLocation(FileSystemUtils.getItem(FileSystemUtils.TOOL_DATA_DIRECTORY  +  graph.getGraphPath() ).getPath() );
-        Log.d("OTN" , hopper.getGraphHopperLocation() );
+
         hopper.init(graph.getConfigGH());
+        Log.d("OTN" , hopper.getGraphHopperLocation() );
+        //hopper.setGraphHopperLocation(FileSystemUtils.getItem(FileSystemUtils.TOOL_DATA_DIRECTORY  +  graph.getGraphPath() ).getPath() );
         //hopper.load( FileSystemUtils.getItem(FileSystemUtils.TOOL_DATA_DIRECTORY  +   graph.getGraphPath()).getPath() );
-        hopper.load( );
+        Log.d(TAG , Boolean.toString( hopper.load( ) ) );
 
 
         ghRequest = new GHRequest(origin.getLatitude() , origin.getLongitude() , dest.getLatitude() ,dest.getLongitude())

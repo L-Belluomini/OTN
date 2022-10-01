@@ -29,6 +29,8 @@ public class OTNGraph implements Serializable {
     public  OTNGraph (String graphPath , GraphHopperConfig jconfig){
         this.configGH = jconfig;
         this.graphPath = graphPath;
+
+        this.configGH.putObject( "graph.location" , FileSystemUtils.getItem( FileSystemUtils.TOOL_DATA_DIRECTORY + graphPath ).getPath() );
     }
 
     public String getGraphPath() {
