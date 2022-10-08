@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 //import androidx.recyclerview.widget.RecyclerView;
@@ -48,7 +49,7 @@ public class OTNDropDownReceiver extends DropDownReceiver implements
         // developers to look at this Inflator
         templateView = PluginLayoutInflater.inflate(context,
                 R.layout.main_layout, null);
-        Button refreshButton =  templateView.findViewById(R.id.refresh_button);
+        ImageButton refreshButton =  templateView.findViewById(R.id.refresh_button);
         if (refreshButton == null) {
             Log.w( TAG , "refresh button not working");
         }
