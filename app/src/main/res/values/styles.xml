@@ -107,5 +107,8 @@
         <item name="android:textSize">@dimen/fontSize</item>
     </style>
 
+    <style name="checkButton" parent="@android:style/Widget.ImageButton">
+        <item name="android:background">@drawable/btn_check</item>
+    </style>
 
 </resources>

@@ -4,87 +4,66 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingRight="6dp">
+    android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/graph_name"
-        android:layout_width="match_parent"
+    <ImageButton
+        android:id="@+id/graph_button_select"
+        style="@style/checkButton"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="6dp"
-        android:layout_toStartOf="@+id/linear_layout_buttons"
-        android:layout_toEndOf="@+id/imageButton"
-        android:ellipsize="end"
-        android:lines="1"
-        android:paddingVertical="4dp"
-        android:textColor="@color/white"
-        android:textSize="12sp" />
-
-    <View
-        android:id="@+id/divider"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_below="@id/graph_name"
-        android:layout_marginEnd="6dp"
-        android:layout_toStartOf="@+id/linear_layout_buttons"
-        android:layout_toEndOf="@+id/imageButton"
-        android:background="@color/white" />
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:layout_margin="10dp"
+        android:contentDescription="Graph button select" />
 
     <LinearLayout
-        android:id="@+id/profile_list"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/divider"
-        android:layout_marginEnd="6dp"
-        android:layout_toStartOf="@+id/linear_layout_buttons"
-        android:layout_toEndOf="@+id/imageButton"
-        android:paddingVertical="4dp"
-        tools:listitem="@layout/profiles_listitem" />
+        android:layout_centerVertical="true"
+        android:layout_toStartOf="@+id/btn_graph_info"
+        android:layout_toEndOf="@+id/graph_button_select"
+        android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/graph_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:lines="1"
+            android:textColor="@color/white"
+            android:textSize="12sp" />
 
-    <LinearLayout
-        android:id="@+id/linear_layout_buttons"
+        <LinearLayout
+            android:id="@+id/profile_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:listitem="@layout/profiles_listitem"/>
+
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/btn_graph_info"
+        style="@style/darkButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toStartOf="@id/btn_show_borders"
+        android:layout_centerVertical="true"
+        android:layout_margin="10dp"
+        android:contentDescription="Graph info"
+        android:src="@drawable/btn_info"
+        android:background="@android:color/transparent"/>
+
+    <Button
+        android:id="@+id/btn_show_borders"
+        style="@style/darkButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
-        android:layout_marginTop="6dp"
-        android:layout_marginBottom="6dp"
-        android:orientation="vertical">
-
-        <Button
-            android:id="@+id/graph_button_view"
-            style="@style/darkButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingHorizontal="12dp"
-            android:paddingVertical="6dp"
-            android:text="Show borders"
-            android:textSize="12sp" />
-
-        <Button
-            android:id="@+id/graph_button_select"
-            style="@style/darkButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:paddingHorizontal="12dp"
-            android:paddingVertical="6dp"
-            android:text="Select"
-            android:textSize="12sp" />
-    </LinearLayout>
-
-    <ImageButton
-        android:id="@+id/imageButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_centerVertical="true"
-        android:layout_marginEnd="6dp"
-        android:background="#00000000"
-        android:contentDescription="Graph info"
-        android:src="@android:drawable/ic_menu_info_details" />
+        android:padding="6dp"
+        android:layout_marginEnd="10dp"
+        android:text="Show borders"
+        android:textSize="12sp" />
 
 
 </RelativeLayout>

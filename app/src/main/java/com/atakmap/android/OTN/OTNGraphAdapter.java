@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ExpandableListAdapter;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -98,7 +99,7 @@ public class OTNGraphAdapter extends ArrayAdapter {
         if ( nameTV != null ){
             nameTV.setText( graph.getGraphPath() );
         }
-        Button selecetdGraphButton = view.findViewById(R.id.graph_button_select);
+        ImageButton selecetdGraphButton = view.findViewById(R.id.graph_button_select);
         if ( selecetdGraphButton != null) {
             selecetdGraphButton.setOnClickListener(new View.OnClickListener() {
                 @Override
