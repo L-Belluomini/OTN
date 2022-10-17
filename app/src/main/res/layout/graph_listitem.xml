@@ -31,13 +31,15 @@
             android:ellipsize="end"
             android:lines="1"
             android:textColor="@color/white"
-            android:textSize="12sp" />
+            android:textSize="14sp"
+            android:lineHeight="19dp"/>
 
         <LinearLayout
             android:id="@+id/profile_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:listitem="@layout/profiles_listitem"/>
+            tools:listitem="@layout/profiles_listitem"
+            android:orientation="horizontal" />
 
     </LinearLayout>
 
@@ -55,14 +57,16 @@
 
     <Button
         android:id="@+id/btn_show_borders"
-        style="@style/darkButton"
+        style="@style/secondaryButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
-        android:padding="6dp"
         android:layout_marginEnd="10dp"
-        android:text="Show borders"
+        android:layout_marginVertical="10dp"
+        android:padding="10dp"
+        android:text="BORDERS"
+        android:textColor="@drawable/secondary_button_color"
         android:textSize="12sp" />
 
 

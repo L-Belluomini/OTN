@@ -111,4 +111,8 @@
         <item name="android:background">@drawable/btn_check</item>
     </style>
 
+    <style name="secondaryButton" parent="@android:style/Widget.Button">
+        <item name="android:background">@drawable/secondary_button</item>
+    </style>
+
 </resources>
