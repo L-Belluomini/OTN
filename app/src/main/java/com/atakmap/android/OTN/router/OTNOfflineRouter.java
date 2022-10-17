@@ -128,10 +128,13 @@ public class OTNOfflineRouter implements RoutePlannerInterface, AdapterView.OnIt
      * Gets whether or not the planner is capable of supporting routing around regions.
      */
     public boolean canRouteAroundRegions(){
-        if (selectedType == OTNrequest.ProfileType.BEST) {
+        /*if (selectedType == OTNrequest.ProfileType.BEST) {
             return false;
         } else return selectedType == OTNrequest.ProfileType.BESTFLEXIBLE;
         // if fails the simpler is the best
+
+         */
+        return true;
     }
 
 

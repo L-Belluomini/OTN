@@ -234,11 +234,13 @@ public class OTNMapComponent extends DropDownMapComponent {
             }
         }
         selectdeGraph = tmpGraph;
+        _prefs.set("OTNSelectedGraph",tmpGraph.getEdgeHash());
         tmpGraph = null;
         // add routr/routers
         _routeManager.registerPlanner ( "OTNOFFlineFast", new OTNOfflineRouter( pluginContext , selectdeGraph , OTNrequest.ProfileType.BEST ) );
         registeredRouters.add( "OTNOFFlineFast" );
         selectdeGraph = null;
+
 
     }
 
