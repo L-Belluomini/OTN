@@ -13,6 +13,8 @@
 -keepattributes *Annotation*
 -keepattributes Signature, InnerClasses
 
+# for testing
+-printmapping proguardamppingtest
 
 -keep class * implements android.os.Parcelable {
   public static final android.os.Parcelable$Creator *;
@@ -65,7 +67,7 @@
 
 #graphhopper
 -keep class com.graphhopper.util.TranslationMap
-
+-keep class com.graphhopper.routing.lm.LandmarkStorage
 
 
 

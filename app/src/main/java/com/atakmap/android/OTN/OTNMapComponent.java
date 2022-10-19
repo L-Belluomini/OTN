@@ -172,6 +172,8 @@ public class OTNMapComponent extends DropDownMapComponent {
             return;
         }
 
+        findnSetGraphs();
+
         // retrive last selceted graph if present and unchanged
         for (OTNGraph tmpGraph : graphs ) {
             if ( tmpGraph.getEdgeHash().equals( _prefs.get("OTNSelectedGraph","") ) ){

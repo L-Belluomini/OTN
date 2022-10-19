@@ -12,7 +12,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class PolyLoader {
-    private String TAG = "polyLoader";
+    private String TAG = "otnPlyLoader";
     /**
      * The file containing polygon data.
      */
