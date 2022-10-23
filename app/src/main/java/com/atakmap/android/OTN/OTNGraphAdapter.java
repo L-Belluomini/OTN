@@ -108,6 +108,16 @@ public class OTNGraphAdapter extends ArrayAdapter {
                     dialog.show();
                 }
             });
+
+            if ( ! ( selectedGraph == null)){
+                if ( graph.getEdgeHash().equals(selectedGraph.getEdgeHash() )) {
+                    selecetdGraphButton.setSelected(true); //doesn't work as intended, shows every graph as selected
+                }
+            } else{
+                selecetdGraphButton.setSelected(false);
+            }
+
+
             LinearLayout profilesLayout =(LinearLayout) view.findViewById(R.id.profile_list);
             profilesLayout.removeAllViews();
             boolean isch = false;

@@ -72,7 +72,7 @@ public class OTNOfflineRouter implements RoutePlannerInterface, AdapterView.OnIt
      * results.
      */
     public RoutePlannerOptionsView getOptionsView(AlertDialog parent){
-        RoutePlannerOptionsView view= (RoutePlannerOptionsView) LayoutInflater.from(pluginContext).inflate(R.layout.otnplanneroption, null);
+        RoutePlannerOptionsView view= (RoutePlannerOptionsView) LayoutInflater.from(pluginContext).inflate(R.layout.otnplanneroption, null); //@gabri for waypoint
 
 
         // profile

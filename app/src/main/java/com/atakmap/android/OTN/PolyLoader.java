@@ -78,7 +78,8 @@ public class PolyLoader {
                 coordinates = parseCoordinates(sectionLine);
                 tmp = new GeoPoint( coordinates[1] , coordinates[0]  );
                 polygonPath.add ( tmp);
-                           }
+            }
+
         } catch (Exception e){
             Log.e("polyloader" , e.toString() );
         }
@@ -106,20 +107,21 @@ public class PolyLoader {
                 // Split the line into its sub strings separated by whitespace.
                 rawTokens = coordinateLine.split("\\s");
 
-
-
                 // Copy the non-zero tokens into a result array.
                 tokenCount = 0;
                 results = new double[2];
                 for (int i = 0; i < rawTokens.length; i++) {
                     if (rawTokens[i].length() > 0) {
                         // Ensure we have no more than 2 coordinate values.
-                        if (tokenCount >= 2) {
-
+                        if (tokenCount > 2) {
+                            continue;
                         }
+                        // Ensure we found two tokens.
+
 
                         // Parse the token into a double precision number.
                         try {
+                            Log.d(TAG,"token"+rawTokens[i]);
                             results[tokenCount++] = Double.parseDouble(rawTokens[i]);
                         } catch (NumberFormatException e) {
 
@@ -127,9 +129,7 @@ public class PolyLoader {
                     }
                 }
 
-                // Ensure we found two tokens.
-                if (tokenCount < 2) {
-                }
+
 
                 return results;
             }

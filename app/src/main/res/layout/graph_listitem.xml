@@ -45,15 +45,18 @@
 
     <ImageButton
         android:id="@+id/btn_graph_info"
-        style="@style/darkButton"
+        style="@style/customImageButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toStartOf="@id/btn_show_borders"
         android:layout_centerVertical="true"
-        android:layout_margin="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_toStartOf="@id/btn_show_borders"
+        android:background="@android:color/transparent"
         android:contentDescription="Graph info"
-        android:src="@drawable/btn_info"
-        android:background="@android:color/transparent"/>
+        android:src="@drawable/btn_info" />
 
     <Button
         android:id="@+id/btn_show_borders"
@@ -62,8 +65,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
-        android:layout_marginEnd="10dp"
         android:layout_marginVertical="10dp"
+        android:layout_marginEnd="10dp"
         android:padding="10dp"
         android:text="BORDERS"
         android:textColor="@drawable/secondary_button_color"

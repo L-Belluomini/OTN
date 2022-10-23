@@ -55,23 +55,23 @@
 
         <ImageButton
             android:id="@+id/help_button"
+            style="@style/customImageButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginHorizontal="10dp"
             android:layout_toStartOf="@id/refresh_button"
-            android:background="@android:color/transparent"
             android:contentDescription="Help"
             android:src="@drawable/btn_help" />
 
         <ImageButton
             android:id="@+id/refresh_button"
+            style="@style/customImageButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginEnd="10dp"
-            android:background="@android:color/transparent"
             android:contentDescription="Refresh"
             android:src="@drawable/btn_refresh" />
 
