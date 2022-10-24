@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/charcoal_100"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/black">
+
+        <ImageButton
+            android:id="@+id/waypoint_add_btn"
+            style="@style/customImageButton"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_centerVertical="true"
+            android:layout_marginHorizontal="4dp"
+            android:layout_marginVertical="10dp"
+            android:scaleX="1.3"
+            android:scaleY="1.3"
+            android:src="@drawable/btn_add" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@+id/waypoint_add_point_dropper"
+            android:layout_toEndOf="@id/waypoint_add_btn"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/new_waypoint_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="new waypoint address"
+                android:inputType="textNoSuggestions"
+                android:maxLines="1"
+                android:paddingStart="8dp"
+                android:singleLine="true"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/new_waypoint_coords"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/waypoint_add_point_dropper"
+            style="@style/customImageButton"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="4dp"
+            android:layout_toStartOf="@+id/waypoint_add_history_btn"
+            android:scaleX="1.3"
+            android:scaleY="1.3"
+            android:src="@drawable/point_dropper" />
+
+        <ImageButton
+            android:id="@+id/waypoint_add_history_btn"
+            style="@style/customImageButton"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginHorizontal="4dp"
+            android:scaleX="1.3"
+            android:scaleY="1.3"
+            android:src="@drawable/btn_history" />
+
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/waypoint_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="@color/stone_100"
+        android:dividerHeight="1dp"
+        android:paddingEnd="21dp"
+        android:scrollbarStyle="outsideOverlay"
+        tools:listitem="@layout/waypoint_listitem" />
+
+</LinearLayout>

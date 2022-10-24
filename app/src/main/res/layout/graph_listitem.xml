@@ -13,8 +13,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
-        android:layout_margin="10dp"
-        android:contentDescription="Graph button select" />
+        android:layout_marginHorizontal="4dp"
+        android:layout_marginVertical="15dp"
+        android:contentDescription="Graph button select"
+        android:src="@drawable/btn_check" />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -28,11 +30,10 @@
             android:id="@+id/graph_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:lines="1"
+            android:maxLines="1"
             android:textColor="@color/white"
             android:textSize="14sp"
-            android:lineHeight="19dp"/>
+            android:lineHeight="19sp"/>
 
         <LinearLayout
             android:id="@+id/profile_list"
@@ -49,10 +50,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginHorizontal="4dp"
+        android:layout_marginVertical="15dp"
         android:layout_toStartOf="@id/btn_show_borders"
         android:background="@android:color/transparent"
         android:contentDescription="Graph info"
@@ -65,12 +64,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
-        android:layout_marginVertical="10dp"
-        android:layout_marginEnd="10dp"
-        android:padding="10dp"
+        android:layout_marginEnd="4dp"
         android:text="BORDERS"
-        android:textColor="@drawable/secondary_button_color"
-        android:textSize="12sp" />
+        android:textColor="@drawable/secondary_button_textcolor" />
 
 
 </RelativeLayout>
