@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageButton
+        android:id="@+id/move_down_btn"
+        style="@style/customImageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="4dp"
+        android:src="@drawable/btn_down" />
+
+    <ImageButton
+        android:id="@+id/move_up_btn"
+        style="@style/customImageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@+id/move_down_btn"
+        android:layout_marginHorizontal="4dp"
+        android:src="@drawable/btn_up" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@id/move_up_btn"
+        android:layout_toStartOf="@id/waypoint_delete_btn"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/new_waypoint_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/new_waypoint_coords"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/waypoint_delete_btn"
+        style="@style/customImageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginVertical="10dp"
+        android:layout_marginHorizontal="4dp"
+        android:layout_alignParentEnd="true"
+        android:src="@drawable/btn_trash" />
+
+
+
+</RelativeLayout>

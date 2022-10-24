@@ -1,12 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    
-    <!-- COMMON -->
-    <color name="white">#ffffff</color>
+    <color name="white">#FFFFFF</color>
     <color name="darker_gray">#121212</color>
     <color name="black">#000000</color>
-    <!-- LED -->
 
-    <!-- PRESET -->
-
+    <!-- OTN/ARSENAL -->
+    <color name="primary_icon">#D8D8D8</color> <!--not specified in ARSENAL but used a lot, I'm making the call to use it for button icons-->
+    <color name="secondary_icon">#CDC8B0</color>
+    <color name="neon_green">#CBFF5E</color> <!--analogous color to cyber, OTN accent color-->
+    <!-- ARSENAL -->
+    <!-- PRIMARY -->
+    <color name="sand_100">#DAD4BC</color>
+    <color name="cyber_100">#FFE35E</color>
+    <!--color name="ink_100">#000000</color--> <!-- same as black -->
+    <!-- TONES -->
+    <color name="charcoal_100">#131415</color>
+    <color name="ash_100">#38362F</color>
+    <color name="stone_100">#979797</color>
+    <!--color name="cloud_100">#FFFFFF</color--> <!-- same as white -->
+    <color name="bronze_100">#BBAE79</color>
+    <!-- STATUS -->
+    <color name="alert_100">#F52D2D</color>
+    <color name="succeSs_100">#0EA900</color>
 </resources>
