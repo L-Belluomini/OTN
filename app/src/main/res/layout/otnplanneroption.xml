@@ -24,4 +24,5 @@
         android:spinnerMode="dialog"
         android:textColor="@color/white" />
 
+
 </com.atakmap.android.routes.RoutePlannerOptionsView>

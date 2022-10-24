@@ -25,7 +25,7 @@
             android:maxLines="1"
             android:singleLine="true"
             android:nextFocusDown="@+id/route_dest_address"
-            android:hint="@string/start_address_hint"
+            android:hint="start_address_hint"
             android:textSize="16sp"
             android:inputType="textNoSuggestions" />
         <TextView

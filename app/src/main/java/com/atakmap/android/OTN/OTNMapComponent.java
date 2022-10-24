@@ -126,7 +126,7 @@ public class OTNMapComponent extends DropDownMapComponent {
                     return;
 
                 switch (action) {
-                    case (OTNDropDownReceiver.SET_GRAPHS):
+                    case (OTNDropDownReceiver.SET_SELECTED_GRAPH):
                         Bundle graphBundle = intent.getBundleExtra("GRAPH");
                         if (graphBundle == null) {
                             Log.w(TAG,"failled setting bundle");
@@ -142,6 +142,7 @@ public class OTNMapComponent extends DropDownMapComponent {
                         updateRouters();
 
                         break;
+
                     case (OTNDropDownReceiver.FIND_GRAPHS):
                         findnSetGraphs();
                         pushGraphs();
@@ -152,7 +153,7 @@ public class OTNMapComponent extends DropDownMapComponent {
         };
         DocumentedIntentFilter mcFilter = new DocumentedIntentFilter();
         mcFilter.addAction(OTNDropDownReceiver.FIND_GRAPHS);
-        mcFilter.addAction(OTNDropDownReceiver.SET_GRAPHS);
+        mcFilter.addAction(OTNDropDownReceiver.SET_SELECTED_GRAPH);
         AtakBroadcast.getInstance().registerReceiver(selectegraphReciver, mcFilter );
 
         // map overlay
@@ -291,6 +292,7 @@ public class OTNMapComponent extends DropDownMapComponent {
             }
         }
     }
+
     protected OTNGraph getGraphFromDir (String dir){
         GraphHopperConfig tmpConfig = null;
         try {
