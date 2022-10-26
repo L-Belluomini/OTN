@@ -9,7 +9,7 @@
       android:strokeWidth="1.5"
       android:fillColor="#00000000"
       android:fillType="evenOdd"
-      android:strokeColor="#ffffff"
+      android:strokeColor="@color/secondary_icon"
       android:strokeLineCap="round"/>
   <group>
     <clip-path
@@ -21,7 +21,7 @@
         android:strokeWidth="1.5"
         android:fillColor="#00000000"
         android:fillType="evenOdd"
-        android:strokeColor="#ffffff"
+        android:strokeColor="@color/secondary_icon"
         android:strokeLineCap="round"/>
     <path
         android:pathData="M6.6182,13.0482L25.3819,13.0482L25.3819,8.0482L6.6182,8.0482Z"
@@ -29,7 +29,7 @@
         android:strokeWidth="1.5"
         android:fillColor="#00000000"
         android:fillType="evenOdd"
-        android:strokeColor="#ffffff"
+        android:strokeColor="@color/secondary_icon"
         android:strokeLineCap="round"/>
   </group>
 </vector>
