@@ -103,7 +103,7 @@ public class PolyLoader {
                 int tokenCount;
 
 
-                Log.d(TAG,coordinateLine );
+                //Log.d(TAG,coordinateLine );
                 // Split the line into its sub strings separated by whitespace.
                 rawTokens = coordinateLine.split("\\s");
 
@@ -121,7 +121,7 @@ public class PolyLoader {
 
                         // Parse the token into a double precision number.
                         try {
-                            Log.d(TAG,"token"+rawTokens[i]);
+                            //Log.d(TAG,"token"+rawTokens[i]);
                             results[tokenCount++] = Double.parseDouble(rawTokens[i]);
                         } catch (NumberFormatException e) {
 

@@ -3,6 +3,7 @@ package com.atakmap.android.OTN;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,9 +25,11 @@ import com.atakmap.android.ipc.AtakBroadcast;
 import com.atakmap.android.maps.DeepMapItemQuery;
 import com.atakmap.android.maps.DefaultMapGroup;
 import com.atakmap.android.maps.MapGroup;
+import com.atakmap.android.maps.MapItem;
 import com.atakmap.android.maps.MapView;
 import com.atakmap.android.maps.Marker;
 import com.atakmap.android.maps.Polyline;
+import com.atakmap.android.maps.Shape;
 import com.atakmap.android.overlay.AbstractMapOverlay2;
 import com.atakmap.coremap.log.Log;
 import com.atakmap.coremap.maps.coords.GeoPoint;
@@ -46,14 +49,13 @@ public class OTNGraphOverlay extends AbstractMapOverlay2 {
     // private OTNWorldListModel listItem;
     private MapGroupHierarchyListItem currentList;
     // private MapGroup.MapItemsCallback filter;
-    private List<OTNGraph> grapsh = new LinkedList<OTNGraph>();
+    private List<OTNGraph> graphs = new LinkedList<OTNGraph>();
 
     OTNGraphOverlay(MapView mapView, Context pluginContext) {
         _pluginContext = pluginContext;
         _mapView = mapView;
         _group = new DefaultMapGroup(TAG);
-        _group.setMetaString("iconURI" , "android.resource://" + _pluginContext.getPackageName()
-                + "/" + R.drawable.ic_launcher);
+        _group.setMetaString("iconURI" , "android.resource://"+ "/" + R.drawable.ic_otn1_0_crop);
         Log.d(TAG, "created garph overlay");
 
         Marker point = new Marker(
@@ -92,7 +94,7 @@ public class OTNGraphOverlay extends AbstractMapOverlay2 {
 
                         }
 
-                        List<OTNGraph> graphs = (List<OTNGraph>) graphsBundle.getSerializable("GRAPHS");
+                        List<OTNGraph> tmpgraphs = (List<OTNGraph>) graphsBundle.getSerializable("GRAPHS");
                         if ( graphs == null ) {
                             Log.w(TAG,"failled importing graph list");
                             return;
@@ -105,11 +107,24 @@ public class OTNGraphOverlay extends AbstractMapOverlay2 {
                         }
 
                         OTNGraph selectedGraph = (OTNGraph) graphBundle.getSerializable( "GRAPH" );
+                        // remove old graphs
+                        _group.clearItems();
 
-                        for ( OTNGraph graph: graphs ) {
+                        // add new graphs
+
+                        for ( OTNGraph graph: tmpgraphs ) {
                             Polyline tmp =graph.getBorder();
+
+
                             if ( tmp != null ) {
+                                tmp.setStrokeColor(Color.BLUE);
+                                tmp.setFillColor(Color.RED); // @ gabri have fun
+                                //tmp.setStyle(Shape.STYLE_FILLED_MASK); makes it invisible ?
+                                //tmp.setStrokeWeight(); from 1.0 - 6.0
+                                //tmp.setBasicLineStyle(); int
+                                // othe shit in the end...
                                 _group.addItem(tmp);
+
                             } else {
                                 Log.w(TAG , "graph does not have polyy");
                             }
@@ -120,9 +135,9 @@ public class OTNGraphOverlay extends AbstractMapOverlay2 {
                 }
             }
         };
+
         Log.d(TAG,"setting  broadcast reciver callback");
         AtakBroadcast.DocumentedIntentFilter mcFilter = new AtakBroadcast.DocumentedIntentFilter();
-        mcFilter.addAction(OTNDropDownReceiver.FIND_GRAPHS);
         mcFilter.addAction(OTNDropDownReceiver.SET_GRAPHS);
         AtakBroadcast.getInstance().registerReceiver(selectegraphReciver, mcFilter );
     }

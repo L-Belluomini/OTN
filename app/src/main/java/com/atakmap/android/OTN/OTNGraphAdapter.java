@@ -81,7 +81,7 @@ public class OTNGraphAdapter extends ArrayAdapter {
         setAdBuilder.setMessage("Are you sure to set" + graph.getGraphPath() + "?" );
         setAdBuilder.setPositiveButton("ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                Intent intent = new Intent( OTNDropDownReceiver.SET_GRAPHS);
+                Intent intent = new Intent( OTNDropDownReceiver.SET_SELECTED_GRAPH);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("GRAPH" ,(Serializable) getItem(position) );
                 //Log.d("OTNdropDownButton" , bundle.toString());
@@ -97,10 +97,12 @@ public class OTNGraphAdapter extends ArrayAdapter {
 
         TextView nameTV = view.findViewById(R.id.graph_name);
         if ( nameTV != null ){
-            nameTV.setText( graph.getGraphPath() );
+            nameTV.setText( graph.getGraphPath().substring( graph.getGraphPath().lastIndexOf("/") ) );
         }
+
         ImageButton selecetdGraphButton = view.findViewById(R.id.graph_button_select);
         if ( selecetdGraphButton != null) {
+
             selecetdGraphButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -109,12 +111,15 @@ public class OTNGraphAdapter extends ArrayAdapter {
                 }
             });
 
-            if ( ! ( selectedGraph == null)){
+            if ( ! ( selectedGraph == null) ){
+                Log.d(TAG,"selGraph " +selectedGraph.getEdgeHash());
                 if ( graph.getEdgeHash().equals(selectedGraph.getEdgeHash() )) {
+                    Log.d(TAG, "setting selceted graph button");
                     selecetdGraphButton.setSelected(true); //doesn't work as intended, shows every graph as selected
                 }
-            } else{
+            }else {
                 selecetdGraphButton.setSelected(false);
+                Log.d(TAG,"selectedgraph null");
             }
 
 
@@ -125,7 +130,6 @@ public class OTNGraphAdapter extends ArrayAdapter {
                 View profileView = LayoutInflater.from(pContext).inflate( R.layout.profiles_listitem , null );
                 TextView profileName = profileView.findViewById(R.id.profile_name);
                 profileName.setText( profile.getName() );
-                //Log.d("OTNgrapadapter porfile" , profile.getName() );
                 if ( graph.isProfileCH( profile ) ) {
                     profileName.setTextColor(Color.RED);
                     isch = true;
