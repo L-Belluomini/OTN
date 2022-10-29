@@ -1,8 +1,8 @@
 
 package com.atakmap.android.OTN.plugin;
 
+import com.atakmap.android.OTN.OTNMapComponent;
 import com.atakmap.android.ipc.AtakBroadcast;
-import com.atakmap.android.OTN.OTNDropDownReceiver;
 
 import android.app.Activity;
 import android.content.Context;
@@ -78,7 +78,7 @@ public class OTNTool extends Tool implements ToolDescriptor {
 
         //arg2.setVisibility(ViewGroup.INVISIBLE);
         Intent i = new Intent(
-                OTNDropDownReceiver.SHOW_PLUGIN);
+                OTNMapComponent.SHOW_PLUGIN);
         AtakBroadcast.getInstance().sendBroadcast(i);
     }
 

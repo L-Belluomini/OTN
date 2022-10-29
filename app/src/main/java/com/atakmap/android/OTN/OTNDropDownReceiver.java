@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
@@ -28,10 +27,6 @@ public class OTNDropDownReceiver extends DropDownReceiver implements
     public static final String TAG = OTNDropDownReceiver.class
             .getSimpleName();
 
-    public static final String SHOW_PLUGIN = "com.atakmap.android.OTN.SHOW_PLUGIN";
-    public static final String SET_GRAPHS = "com.atakmap.android.OTN.SET_GRAPHS";
-    public static final String FIND_GRAPHS = "com.atakmap.android.OTN.FIND_GRAPHS";
-    public static final String SET_SELECTED_GRAPH = "com.atakmap.android.OTN.SET_SELECTED_GRAPH";
     private final View templateView;
     private final Context pluginContext;
     private MapView _view;
@@ -58,7 +53,7 @@ public class OTNDropDownReceiver extends DropDownReceiver implements
             @Override
             public void onClick(View view) {
                 Log.d(TAG , "refreshcallback");
-                Intent intent = new Intent( OTNDropDownReceiver.FIND_GRAPHS);
+                Intent intent = new Intent( OTNMapComponent.FIND_GRAPHS);
                 AtakBroadcast.getInstance().sendBroadcast(intent);
             }
         });
@@ -83,13 +78,13 @@ public class OTNDropDownReceiver extends DropDownReceiver implements
             return;
 
         switch (action){
-            case (SHOW_PLUGIN): {
+            case (OTNMapComponent.SHOW_PLUGIN): {
                 Log.d(TAG, "showing plugin drop down");
                 showDropDown(templateView, HALF_WIDTH, FULL_HEIGHT, FULL_WIDTH,
                     HALF_HEIGHT, false, this);
                 break;
             }
-            case (SET_GRAPHS):{
+            case (OTNMapComponent.SET_GRAPHS):{
                 Bundle graphsBundle = intent.getBundleExtra("GRAPHS");
                 if (graphsBundle == null) {
                     Log.w(TAG,"failled importing bundle");

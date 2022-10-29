@@ -5,40 +5,28 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.ListView;
-import android.widget.Toast;
 
 import com.atakmap.android.OTN.plugin.R;
 import com.atakmap.android.hierarchy.HierarchyListFilter;
 import com.atakmap.android.hierarchy.HierarchyListItem;
-import com.atakmap.android.hierarchy.action.Search;
-import com.atakmap.android.hierarchy.action.Visibility;
-import com.atakmap.android.hierarchy.action.Visibility2;
-import com.atakmap.android.hierarchy.items.AbstractHierarchyListItem2;
 import com.atakmap.android.hierarchy.items.MapGroupHierarchyListItem;
 import com.atakmap.android.ipc.AtakBroadcast;
 import com.atakmap.android.maps.DeepMapItemQuery;
 import com.atakmap.android.maps.DefaultMapGroup;
 import com.atakmap.android.maps.MapGroup;
-import com.atakmap.android.maps.MapItem;
 import com.atakmap.android.maps.MapView;
 import com.atakmap.android.maps.Marker;
 import com.atakmap.android.maps.Polyline;
-import com.atakmap.android.maps.Shape;
 import com.atakmap.android.overlay.AbstractMapOverlay2;
+import com.atakmap.android.user.FocusBroadcastReceiver;
 import com.atakmap.coremap.log.Log;
 import com.atakmap.coremap.maps.coords.GeoPoint;
 
-import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 import java.util.UUID;
 
 public class OTNGraphOverlay extends AbstractMapOverlay2 {
@@ -50,12 +38,14 @@ public class OTNGraphOverlay extends AbstractMapOverlay2 {
     private MapGroupHierarchyListItem currentList;
     // private MapGroup.MapItemsCallback filter;
     private List<OTNGraph> graphs = new LinkedList<OTNGraph>();
+    private Map<String , String> bordersMap;
 
     OTNGraphOverlay(MapView mapView, Context pluginContext) {
         _pluginContext = pluginContext;
         _mapView = mapView;
         _group = new DefaultMapGroup(TAG);
         _group.setMetaString("iconURI" , "android.resource://"+  R.drawable.ic_otn1_0_crop);
+        bordersMap = new HashMap<String , String>();
         Log.d(TAG, "created garph overlay");
 
         Marker point = new Marker(
@@ -86,7 +76,7 @@ public class OTNGraphOverlay extends AbstractMapOverlay2 {
                     return;
 
                 switch (action) {
-                    case (OTNDropDownReceiver.SET_GRAPHS):{
+                    case (OTNMapComponent.SET_GRAPHS):{
                         Bundle graphsBundle = intent.getBundleExtra("GRAPHS");
                         if (graphsBundle == null) {
                             Log.w(TAG,"failled importing bundle");
@@ -107,14 +97,16 @@ public class OTNGraphOverlay extends AbstractMapOverlay2 {
                         }
 
                         OTNGraph selectedGraph = (OTNGraph) graphBundle.getSerializable( "GRAPH" );
+
                         // remove old graphs
                         _group.clearItems();
+                        bordersMap.clear();
 
                         // add new graphs
 
                         for ( OTNGraph graph: tmpgraphs ) {
                             Polyline tmp =graph.getBorder();
-
+                            bordersMap.put( graph.getEdgeHash() , tmp.getUID() );
 
                             if ( tmp != null ) {
                                 tmp.setStrokeColor(Color.BLUE);
@@ -123,6 +115,8 @@ public class OTNGraphOverlay extends AbstractMapOverlay2 {
                                 //tmp.setStrokeWeight(); from 1.0 - 6.0
                                 //tmp.setBasicLineStyle(); int
                                 // othe shit in the end...
+                                tmp.setTitle(graph.getGraphPath());
+
                                 _group.addItem(tmp);
 
                             } else {
@@ -132,13 +126,26 @@ public class OTNGraphOverlay extends AbstractMapOverlay2 {
 
                         break;
                     }
+                    case (OTNMapComponent.FOCUS_BRODER): {
+                        Bundle borderhashBundle = intent.getBundleExtra("BorderHash");
+                        if (borderhashBundle == null) {
+                            Log.w(TAG,"failled importing bundle");
+                            return;
+                        }
+                        String borderHash = (String) borderhashBundle.getSerializable("BorderHash");
+                        Intent focusIntent = new Intent(FocusBroadcastReceiver.FOCUS );
+                        focusIntent.putExtra("uid", bordersMap.get(borderHash) );
+                        focusIntent.putExtra("useTightZoom",true);
+                        AtakBroadcast.getInstance().sendBroadcast(focusIntent);
+                        break;
+                    }
                 }
             }
         };
 
         Log.d(TAG,"setting  broadcast reciver callback");
         AtakBroadcast.DocumentedIntentFilter mcFilter = new AtakBroadcast.DocumentedIntentFilter();
-        mcFilter.addAction(OTNDropDownReceiver.SET_GRAPHS);
+        mcFilter.addAction(OTNMapComponent.SET_GRAPHS);
         AtakBroadcast.getInstance().registerReceiver(selectegraphReciver, mcFilter );
     }
 

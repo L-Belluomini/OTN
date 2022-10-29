@@ -5,9 +5,7 @@ package com.atakmap.android.OTN;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.widget.Toast;
 
 import com.atakmap.android.OTN.router.OTNOfflineRouter;
@@ -22,7 +20,6 @@ import com.atakmap.android.dropdown.DropDownMapComponent;
 
 import com.atakmap.android.preference.AtakPreferences;
 import com.atakmap.android.routes.RoutePlannerInterface;
-import com.atakmap.android.user.geocode.GeocodeManager;
 import com.atakmap.coremap.filesystem.FileSystemUtils;
 import com.atakmap.coremap.io.IOProvider;
 import com.atakmap.coremap.io.IOProviderFactory;
@@ -39,12 +36,15 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.Serializable;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.LinkedList;
-import java.util.List;
 
 public class OTNMapComponent extends DropDownMapComponent {
 
+    public static final String SHOW_PLUGIN = "com.atakmap.android.OTN.SHOW_PLUGIN";
+    public static final String SET_GRAPHS = "com.atakmap.android.OTN.SET_GRAPHS";
+    public static final String FIND_GRAPHS = "com.atakmap.android.OTN.FIND_GRAPHS";
+    public static final String SET_SELECTED_GRAPH = "com.atakmap.android.OTN.SET_SELECTED_GRAPH";
+    public static final String FOCUS_BRODER = "com.atakmap.android.OTN.FOCUS_BRODER";
     private static final String TAG = "OTNMapComponent";
     private Context pluginContext;
     private Context _context;
@@ -113,8 +113,8 @@ public class OTNMapComponent extends DropDownMapComponent {
 
         Log.d(TAG, "registering the plugin filter");
         DocumentedIntentFilter ddFilter = new DocumentedIntentFilter();
-        ddFilter.addAction(OTNDropDownReceiver.SHOW_PLUGIN);
-        ddFilter.addAction(OTNDropDownReceiver.SET_GRAPHS);
+        ddFilter.addAction(SHOW_PLUGIN);
+        ddFilter.addAction(SET_GRAPHS);
         registerDropDownReceiver(ddr, ddFilter);
 
         final BroadcastReceiver selectegraphReciver = new BroadcastReceiver() {
@@ -126,7 +126,7 @@ public class OTNMapComponent extends DropDownMapComponent {
                     return;
 
                 switch (action) {
-                    case (OTNDropDownReceiver.SET_SELECTED_GRAPH):
+                    case (SET_SELECTED_GRAPH):
                         Bundle graphBundle = intent.getBundleExtra("GRAPH");
                         if (graphBundle == null) {
                             Log.w(TAG,"failled setting bundle");
@@ -143,7 +143,7 @@ public class OTNMapComponent extends DropDownMapComponent {
 
                         break;
 
-                    case (OTNDropDownReceiver.FIND_GRAPHS):
+                    case (FIND_GRAPHS):
                         findnSetGraphs();
                         pushGraphs();
 
@@ -152,8 +152,8 @@ public class OTNMapComponent extends DropDownMapComponent {
             }
         };
         DocumentedIntentFilter mcFilter = new DocumentedIntentFilter();
-        mcFilter.addAction(OTNDropDownReceiver.FIND_GRAPHS);
-        mcFilter.addAction(OTNDropDownReceiver.SET_SELECTED_GRAPH);
+        mcFilter.addAction(FIND_GRAPHS);
+        mcFilter.addAction(SET_SELECTED_GRAPH);
         AtakBroadcast.getInstance().registerReceiver(selectegraphReciver, mcFilter );
 
         // map overlay
@@ -249,7 +249,7 @@ public class OTNMapComponent extends DropDownMapComponent {
 
     protected void pushGraphs(){
         Intent i = new Intent(
-                OTNDropDownReceiver.SET_GRAPHS);
+                SET_GRAPHS);
         Bundle bundleGraphs = new Bundle();
         bundleGraphs.putSerializable("GRAPHS" ,(Serializable) this.graphs );
         Log.d(this.TAG , bundleGraphs.toString());

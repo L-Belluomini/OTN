@@ -2,7 +2,6 @@ package com.atakmap.android.OTN;
 
 
 import android.app.AlertDialog;
-import android.app.ExpandableListActivity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,11 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ExpandableListAdapter;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -30,8 +26,6 @@ import java.io.Serializable;
 import java.util.List;
 
 
-import com.graphhopper.config.CHProfile;
-import com.graphhopper.config.LMProfile;
 import com.graphhopper.config.Profile;
 
 public class OTNGraphAdapter extends ArrayAdapter {
@@ -81,7 +75,7 @@ public class OTNGraphAdapter extends ArrayAdapter {
         setAdBuilder.setMessage("Are you sure to set" + graph.getGraphPath() + "?" );
         setAdBuilder.setPositiveButton("ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                Intent intent = new Intent( OTNDropDownReceiver.SET_SELECTED_GRAPH);
+                Intent intent = new Intent( OTNMapComponent.SET_SELECTED_GRAPH);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("GRAPH" ,(Serializable) getItem(position) );
                 //Log.d("OTNdropDownButton" , bundle.toString());
