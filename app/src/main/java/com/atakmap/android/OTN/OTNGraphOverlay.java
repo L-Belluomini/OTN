@@ -55,7 +55,7 @@ public class OTNGraphOverlay extends AbstractMapOverlay2 {
         _pluginContext = pluginContext;
         _mapView = mapView;
         _group = new DefaultMapGroup(TAG);
-        _group.setMetaString("iconURI" , "android.resource://"+ "/" + R.drawable.ic_otn1_0_crop);
+        _group.setMetaString("iconURI" , "android.resource://"+  R.drawable.ic_otn1_0_crop);
         Log.d(TAG, "created garph overlay");
 
         Marker point = new Marker(
