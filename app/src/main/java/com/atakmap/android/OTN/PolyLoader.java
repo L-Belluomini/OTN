@@ -43,7 +43,7 @@ public class PolyLoader {
     public List<GeoPoint> loadPolygon() {
         BufferedReader bufferedReader = null;
         String sectionLine;
-        double[] coordinates;
+        Double[] coordinates;
         List<GeoPoint> polygonPath = null;
         GeoPoint tmp;
         try {
@@ -76,7 +76,7 @@ public class PolyLoader {
 
                 // Parse the line into its coordinates
                 coordinates = parseCoordinates(sectionLine);
-                if( coordinates == null ) {
+                if( coordinates == null || coordinates[0] == null || coordinates[1] == null ) {
                     continue;
                 }
                 tmp = new GeoPoint( coordinates[1] , coordinates[0]  );
@@ -84,7 +84,7 @@ public class PolyLoader {
             }
 
         } catch (Exception e){
-            Log.e("polyloader" , e.toString() );
+            Log.e("polyloader" , e.toString() + " outside function");
         }
         return polygonPath ;
 
@@ -100,9 +100,9 @@ public class PolyLoader {
              * @return A pair of coordinate values, first is longitude, second is
              *         latitude.
              */
-            private double[] parseCoordinates(String coordinateLine) {
+            private Double[] parseCoordinates(String coordinateLine) {
                 String[] rawTokens;
-                double[] results;
+                Double[] results;
                 int tokenCount;
 
 
@@ -112,7 +112,7 @@ public class PolyLoader {
 
                 // Copy the non-zero tokens into a result array.
                 tokenCount = 0;
-                results = new double[2];
+                results = new Double[2];
                 for (int i = 0; i < rawTokens.length; i++) {
                     if (rawTokens[i].length() > 0) {
                         if (tokenCount > 2) {
@@ -128,7 +128,8 @@ public class PolyLoader {
                             results[tokenCount] = tmpDouble;
                             tokenCount++;
                         } catch (NumberFormatException e) {
-                            Log.e(TAG,e.toString());
+                            Log.e(TAG,e.toString() + " inside function");
+                            return null;
                         }
                     }
                 }
