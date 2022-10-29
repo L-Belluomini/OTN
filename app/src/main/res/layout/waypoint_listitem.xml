@@ -6,8 +6,8 @@
     <ImageButton
         android:id="@+id/move_down_btn"
         style="@style/customImageButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="24dp"
+        android:layout_height="24sp"
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
         android:layout_marginStart="4dp"
@@ -16,11 +16,11 @@
     <ImageButton
         android:id="@+id/move_up_btn"
         style="@style/customImageButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         android:layout_centerVertical="true"
-        android:layout_toEndOf="@+id/move_down_btn"
         android:layout_marginHorizontal="4dp"
+        android:layout_toEndOf="@+id/move_down_btn"
         android:src="@drawable/btn_up" />
 
     <LinearLayout
@@ -51,12 +51,12 @@
     <ImageButton
         android:id="@+id/waypoint_delete_btn"
         style="@style/customImageButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_marginVertical="10dp"
-        android:layout_marginHorizontal="4dp"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginHorizontal="4dp"
+        android:layout_marginVertical="10dp"
         android:src="@drawable/btn_trash" />
 
 </RelativeLayout>
