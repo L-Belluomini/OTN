@@ -24,5 +24,15 @@
         android:spinnerMode="dialog"
         android:textColor="@color/white" />
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:textColor="#FFF"
+        android:textSize="16sp"
+        android:text="Waypoints:" />
+
+
 
 </com.atakmap.android.routes.RoutePlannerOptionsView>

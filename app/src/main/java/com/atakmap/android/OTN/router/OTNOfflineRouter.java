@@ -2,10 +2,13 @@ package com.atakmap.android.OTN.router;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.LinearLayout;
 
 import com.atakmap.android.OTN.OTNGraph;
 import com.atakmap.android.OTN.OTNrequest;
@@ -88,6 +91,24 @@ public class OTNOfflineRouter implements RoutePlannerInterface, AdapterView.OnIt
         profileSpinner.setAdapter(profileAdapter);
         profileSpinner.setOnItemSelectedListener( this );
 
+        // way point UI
+        Button wayPointDialogButton = view.findViewById(R.id.waypoint_dialog);
+        wayPointDialogButton.setOnClickListener( new View.OnClickListener() {
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(pluginContext);
+                builder.setView( (LinearLayout) LayoutInflater.from(pluginContext).inflate (R.layout.route_planner_waypoints, null));
+                builder.setNegativeButton("", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        //AlertDialog.this.getDialog().cancel();
+                    }
+                });
+
+             builder.create();
+             builder.show();
+        }
+
+
+        });
        /* Button profileButton = view.findViewById(R.id.button);
         profileButton.setOnClickListener( new View.OnClickListener() {
             @Override
