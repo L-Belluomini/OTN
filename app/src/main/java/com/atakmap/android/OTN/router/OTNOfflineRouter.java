@@ -92,7 +92,7 @@ public class OTNOfflineRouter implements RoutePlannerInterface, AdapterView.OnIt
         profileSpinner.setOnItemSelectedListener( this );
 
         // way point UI
-        Button wayPointDialogButton = view.findViewById(R.id.waypoint_dialog);
+        /*Button wayPointDialogButton = view.findViewById(R.id.waypoint_dialog);
         wayPointDialogButton.setOnClickListener( new View.OnClickListener() {
             public void onClick(View view) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(pluginContext);
@@ -108,7 +108,8 @@ public class OTNOfflineRouter implements RoutePlannerInterface, AdapterView.OnIt
         }
 
 
-        });
+        });*/
+
        /* Button profileButton = view.findViewById(R.id.button);
         profileButton.setOnClickListener( new View.OnClickListener() {
             @Override
