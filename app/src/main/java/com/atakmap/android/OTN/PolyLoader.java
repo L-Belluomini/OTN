@@ -76,6 +76,9 @@ public class PolyLoader {
 
                 // Parse the line into its coordinates
                 coordinates = parseCoordinates(sectionLine);
+                if( coordinates == null ) {
+                    continue;
+                }
                 tmp = new GeoPoint( coordinates[1] , coordinates[0]  );
                 polygonPath.add ( tmp);
             }
@@ -112,23 +115,23 @@ public class PolyLoader {
                 results = new double[2];
                 for (int i = 0; i < rawTokens.length; i++) {
                     if (rawTokens[i].length() > 0) {
-                        // Ensure we have no more than 2 coordinate values.
                         if (tokenCount > 2) {
                             continue;
                         }
-                        // Ensure we found two tokens.
 
-
-                        // Parse the token into a double precision number.
                         try {
                             //Log.d(TAG,"token"+rawTokens[i]);
-                            results[tokenCount++] = Double.parseDouble(rawTokens[i]);
+                            Double tmpDouble = Double.parseDouble(rawTokens[i]);
+                            if( tmpDouble == null){
+                                return null;
+                            }
+                            results[tokenCount] = tmpDouble;
+                            tokenCount++;
                         } catch (NumberFormatException e) {
-
+                            Log.e(TAG,e.toString());
                         }
                     }
                 }
-
 
 
                 return results;
