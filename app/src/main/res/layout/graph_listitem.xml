@@ -68,5 +68,4 @@
         android:text="BORDERS"
         android:textColor="@drawable/secondary_button_textcolor" />
 
-
 </RelativeLayout>
