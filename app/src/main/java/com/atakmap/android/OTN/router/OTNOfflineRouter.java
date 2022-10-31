@@ -8,10 +8,13 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 
 import com.atakmap.android.OTN.OTNGraph;
 import com.atakmap.android.OTN.OTNrequest;
+import com.atakmap.android.OTN.OTNwaypoitRouterOptionAdapter;
 import com.atakmap.android.OTN.plugin.R;
 import com.atakmap.android.gui.PluginSpinner;
 import com.atakmap.android.routes.RoutePlannerInterface;
@@ -23,12 +26,18 @@ import com.atakmap.coremap.log.Log;
 import com.graphhopper.GraphHopperConfig;
 import com.graphhopper.config.Profile;
 
+import java.util.LinkedList;
+import java.util.List;
+
+import com.atakmap.coremap.maps.coords.GeoPoint;
+
 public class OTNOfflineRouter implements RoutePlannerInterface, AdapterView.OnItemSelectedListener  {
     private final String TAG = "OTNOfflineRouter";
     private int selectedProfile = 0;
     private OTNrequest.ProfileType selectedType ;
     private final Context pluginContext;
     private  final OTNGraph graph;
+    private final List<GeoPoint> waypoints = new LinkedList<>();
 
 
 
@@ -92,6 +101,18 @@ public class OTNOfflineRouter implements RoutePlannerInterface, AdapterView.OnIt
         profileSpinner.setOnItemSelectedListener( this );
 
         // way point UI
+        ListView waypointLayout = ( ListView ) view.findViewById(R.id.waypoint_list);
+        ArrayAdapter<GeoPoint> waypointAdapter = new OTNwaypoitRouterOptionAdapter(pluginContext , R.layout.waypoint_listitem , waypoints);
+        waypointLayout.setAdapter(waypointAdapter);
+
+        ImageButton pointDropperButton = view.findViewById(R.id.point_dropper_btn);
+        pointDropperButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
         /*Button wayPointDialogButton = view.findViewById(R.id.waypoint_dialog);
         wayPointDialogButton.setOnClickListener( new View.OnClickListener() {
             public void onClick(View view) {

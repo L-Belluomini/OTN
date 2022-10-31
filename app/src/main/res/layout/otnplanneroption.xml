@@ -121,7 +121,7 @@
         android:paddingEnd="21dp"
         android:scrollbarStyle="outsideOverlay"
         tools:listitem="@layout/waypoint_listitem"
-        android:background="@color/charcoal_100"/>
+        android:background="@color/charcoal_100"/>GeoPoint
 
 
 
