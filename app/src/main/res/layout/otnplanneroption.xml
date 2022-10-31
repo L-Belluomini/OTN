@@ -7,6 +7,7 @@
     android:orientation="vertical">
 
     <TextView
+        android:id="@+id/route_plan_method_txtview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -26,6 +27,7 @@
         android:textColor="@color/white" />
 
     <TextView
+        android:id="@+id/waypoint_txtview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -34,26 +36,32 @@
         android:textSize="16sp"
         android:text="Waypoints:" />
 
-    <LinearLayout
+    <RelativeLayout
+        android:id="@+id/new_waypoint_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical">
+        android:paddingVertical="4dp">
 
         <ImageButton
             android:id="@+id/waypoint_add_btn"
             style="@style/customImageButton"
             android:layout_width="32dp"
             android:layout_height="32dp"
+            android:layout_centerVertical="true"
+            android:layout_marginHorizontal="4dp"
+            android:padding="4dp"
             android:src="@drawable/btn_add" />
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_toEndOf="@+id/waypoint_add_btn"
+            android:layout_toStartOf="@+id/point_dropper_btn"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="4dp"
             android:orientation="vertical">
             <EditText
-                android:id="@+id/route_start_address"
+                android:id="@+id/waypoint_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:maxLines="1"
@@ -63,53 +71,42 @@
                 android:textSize="16sp"
                 android:inputType="textNoSuggestions" />
             <TextView
-                android:id="@+id/route_start_coord"
+                android:id="@+id/waypoint_coord"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:textSize="14sp"/>
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <ImageButton
+            android:id="@+id/point_dropper_btn"
+            style="@style/customImageButton"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@+id/history_btn"
+            android:src="@drawable/point_dropper" />
+        <ImageButton
+            android:id="@+id/history_btn"
+            style="@style/customImageButton"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@+id/clear_btn"
             android:layout_marginStart="4dp"
-            android:orientation="vertical">
+            android:src="@drawable/btn_history"/>
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <ImageButton
-                    android:id="@+id/point_dropper_btn"
-                    style="@style/customImageButton"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:padding="4dp"
-                    android:src="@drawable/point_dropper"/>
-                <ImageButton
-                    android:id="@+id/history_btn"
-                    style="@style/customImageButton"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_marginStart="4dp"
-                    android:padding="4dp"
-                    android:src="@drawable/btn_history"/>
-            </LinearLayout>
+        <ImageButton
+            android:id="@+id/clear_btn"
+            style="@style/customImageButton"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginHorizontal="4dp"
+            android:src="@drawable/btn_delete" />
 
-            <Button
-                android:id="@+id/clear_btn"
-                android:layout_width="match_parent"
-                android:layout_height="32dp"
-                android:layout_marginTop="4dp"
-                android:text="CLEAR"
-                android:textSize="12sp"
-                android:background="@drawable/secondary_button"
-                android:textColor="@drawable/secondary_button_textcolor"/>
-
-        </LinearLayout>
-
-    </LinearLayout>
+    </RelativeLayout>
 
 
     <ListView
