@@ -106,9 +106,10 @@ public class OTNGraphOverlay extends AbstractMapOverlay2 {
 
                         for ( OTNGraph graph: tmpgraphs ) {
                             Polyline tmp =graph.getBorder();
-                            bordersMap.put( graph.getEdgeHash() , tmp.getUID() );
+
 
                             if ( tmp != null ) {
+                                bordersMap.put( graph.getEdgeHash() , tmp.getUID() );
                                 tmp.setStrokeColor(Color.BLUE);
                                 tmp.setFillColor(Color.RED); // @ gabri have fun
                                 //tmp.setStyle(Shape.STYLE_FILLED_MASK); makes it invisible ?
@@ -127,12 +128,14 @@ public class OTNGraphOverlay extends AbstractMapOverlay2 {
                         break;
                     }
                     case (OTNMapComponent.FOCUS_BRODER): {
-                        Bundle borderhashBundle = intent.getBundleExtra("BorderHash");
-                        if (borderhashBundle == null) {
-                            Log.w(TAG,"failled importing bundle");
-                            return;
+                        Log.d(TAG, "focus intne launched");
+                        String borderHash = intent.getStringExtra("BorderHash");
+
+                        if (borderHash == null){
+                            Log.d(TAG, "focus NO hash" );
+                            break;
                         }
-                        String borderHash = (String) borderhashBundle.getSerializable("BorderHash");
+                        Log.d(TAG, "focus hash" + borderHash);
                         Intent focusIntent = new Intent(FocusBroadcastReceiver.FOCUS );
                         focusIntent.putExtra("uid", bordersMap.get(borderHash) );
                         focusIntent.putExtra("useTightZoom",true);
@@ -146,6 +149,7 @@ public class OTNGraphOverlay extends AbstractMapOverlay2 {
         Log.d(TAG,"setting  broadcast reciver callback");
         AtakBroadcast.DocumentedIntentFilter mcFilter = new AtakBroadcast.DocumentedIntentFilter();
         mcFilter.addAction(OTNMapComponent.SET_GRAPHS);
+        mcFilter.addAction(OTNMapComponent.FOCUS_BRODER);
         AtakBroadcast.getInstance().registerReceiver(selectegraphReciver, mcFilter );
     }
 

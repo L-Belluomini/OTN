@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -138,6 +139,17 @@ public class OTNGraphAdapter extends ArrayAdapter {
                 profilesLayout.addView(profileView);
             }
         }
+
+        Button showBorder = (Button) view.findViewById(R.id.btn_show_borders);
+        showBorder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG,"border button" + graph.getGraphPath() );
+                Intent showBorderIntent = new Intent( OTNMapComponent.FOCUS_BRODER);
+                showBorderIntent.putExtra("BorderHash", graph.getEdgeHash() );
+                AtakBroadcast.getInstance().sendBroadcast(showBorderIntent);
+            }
+        });
 
         return view;
     }

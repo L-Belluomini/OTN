@@ -248,8 +248,7 @@ public class OTNMapComponent extends DropDownMapComponent {
     }
 
     protected void pushGraphs(){
-        Intent i = new Intent(
-                SET_GRAPHS);
+        Intent i = new Intent(SET_GRAPHS);
         Bundle bundleGraphs = new Bundle();
         bundleGraphs.putSerializable("GRAPHS" ,(Serializable) this.graphs );
         Log.d(this.TAG , bundleGraphs.toString());
