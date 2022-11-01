@@ -22,4 +22,6 @@
     <!-- STATUS -->
     <color name="alert_100">#F52D2D</color>
     <color name="succeSs_100">#0EA900</color>
+    <!-- OVERLAY -->
+    <color name="overlay_red">#66FF9D9D</color>
 </resources>

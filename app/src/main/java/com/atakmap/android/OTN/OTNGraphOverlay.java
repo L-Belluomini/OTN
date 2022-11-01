@@ -111,8 +111,10 @@ public class OTNGraphOverlay extends AbstractMapOverlay2 {
                             if ( tmp != null ) {
                                 bordersMap.put( graph.getEdgeHash() , tmp.getUID() );
                                 tmp.setStrokeColor(Color.BLUE);
-                                tmp.setFillColor(Color.RED); // @ gabri have fun
-                                //tmp.setStyle(Shape.STYLE_FILLED_MASK); makes it invisible ?
+                                //tmp.setFillColor(Color.RED);
+                                //tmp.setStyle(tmp.STYLE_FILLED_MASK);
+                                tmp.setColor( Color.argb(66,255,157,157), true);// @ gabri have fun
+
                                 //tmp.setStrokeWeight(); from 1.0 - 6.0
                                 //tmp.setBasicLineStyle(); int
                                 // othe shit in the end...
