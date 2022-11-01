@@ -1,27 +1,42 @@
 package com.atakmap.android.OTN.router;
 
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 
 import com.atakmap.android.OTN.OTNGraph;
 import com.atakmap.android.OTN.OTNrequest;
+import com.atakmap.android.OTN.OTNwaypoitRouterOptionAdapter;
 import com.atakmap.android.OTN.plugin.R;
+import com.atakmap.android.dropdown.DropDownManager;
 import com.atakmap.android.gui.PluginSpinner;
+import com.atakmap.android.ipc.AtakBroadcast;
 import com.atakmap.android.routes.RoutePlannerInterface;
 import com.atakmap.android.routes.RouteGenerationTask;
 import com.atakmap.android.routes.RoutePlannerOptionsView;
 
 
+import com.atakmap.android.toolbar.ToolManagerBroadcastReceiver;
+import com.atakmap.android.user.MapClickTool;
 import com.atakmap.coremap.log.Log;
 import com.graphhopper.GraphHopperConfig;
 import com.graphhopper.config.Profile;
+
+import java.util.LinkedList;
+import java.util.List;
+
+import com.atakmap.coremap.maps.coords.GeoPoint;
 
 public class OTNOfflineRouter implements RoutePlannerInterface, AdapterView.OnItemSelectedListener  {
     private final String TAG = "OTNOfflineRouter";
@@ -29,7 +44,9 @@ public class OTNOfflineRouter implements RoutePlannerInterface, AdapterView.OnIt
     private OTNrequest.ProfileType selectedType ;
     private final Context pluginContext;
     private  final OTNGraph graph;
+    private final List<GeoPoint> waypoints = new LinkedList<>();
 
+    private static final String MAP_CLICK = "com.atakmap.android.OTN.MAP_CLICK";
 
 
 
@@ -37,6 +54,8 @@ public class OTNOfflineRouter implements RoutePlannerInterface, AdapterView.OnIt
         this.pluginContext = pluginContext;
         this.graph = graph;
         this.selectedType= type;
+
+
 
     }
 
@@ -77,7 +96,6 @@ public class OTNOfflineRouter implements RoutePlannerInterface, AdapterView.OnIt
     public RoutePlannerOptionsView getOptionsView(AlertDialog parent){
         RoutePlannerOptionsView view= (RoutePlannerOptionsView) LayoutInflater.from(pluginContext).inflate(R.layout.otnplanneroption, null); //@gabri for waypoint
 
-
         // profile
         PluginSpinner profileSpinner = ( PluginSpinner) view.findViewById(R.id.route_plan_method);
         ArrayAdapter<String> profileAdapter = new ArrayAdapter<>( pluginContext , android.R.layout.simple_spinner_dropdown_item );
@@ -92,6 +110,45 @@ public class OTNOfflineRouter implements RoutePlannerInterface, AdapterView.OnIt
         profileSpinner.setOnItemSelectedListener( this );
 
         // way point UI
+        ListView waypointLayout = ( ListView ) view.findViewById(R.id.waypoint_list);
+        ArrayAdapter<GeoPoint> waypointAdapter = new OTNwaypoitRouterOptionAdapter(pluginContext , R.layout.waypoint_listitem , waypoints);
+        waypointLayout.setAdapter(waypointAdapter);
+        waypoints.add( new GeoPoint( 0,0));
+
+        ImageButton pointDropperButton = view.findViewById(R.id.point_dropper_btn);
+        pointDropperButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bundle toolBundle = new Bundle();
+                toolBundle.putParcelable("callback" , new Intent( MAP_CLICK ) );
+                ToolManagerBroadcastReceiver.getInstance().startTool(MapClickTool.TOOL_NAME , toolBundle);
+                if ( ToolManagerBroadcastReceiver.getInstance().getActiveTool() instanceof MapClickTool) {
+                    DropDownManager.getInstance().hidePane();
+                    parent.hide();
+                }
+            }
+        });
+
+        // if more brodcast are need move to dedicated reciver ? maybe...
+        AtakBroadcast.getInstance().registerReceiver ( new BroadcastReceiver( ) {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                Log.d(TAG , "brodcast recived");
+                if ( intent.getAction().equals(MAP_CLICK) ){
+                    parent.show();
+                    DropDownManager.getInstance().unHidePane();
+                    GeoPoint waypointNew = GeoPoint.parseGeoPoint( intent.getStringExtra("point") );
+                    if ( waypointNew == null || !waypointNew.isValid() ){
+                        return;
+                    }
+                    waypoints.add( waypointNew);
+                    waypointAdapter.notifyDataSetChanged();
+
+                    Log.d(TAG , waypoints.toString() );
+                }
+            }
+        } , new AtakBroadcast.DocumentedIntentFilter( MAP_CLICK ) );
+
         /*Button wayPointDialogButton = view.findViewById(R.id.waypoint_dialog);
         wayPointDialogButton.setOnClickListener( new View.OnClickListener() {
             public void onClick(View view) {
