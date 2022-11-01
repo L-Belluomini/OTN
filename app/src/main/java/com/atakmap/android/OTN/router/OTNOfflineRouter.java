@@ -110,17 +110,18 @@ public class OTNOfflineRouter implements RoutePlannerInterface, AdapterView.OnIt
         profileSpinner.setOnItemSelectedListener( this );
 
         // way point UI
+        waypoints.add( new GeoPoint( 0,0));
         ListView waypointLayout = ( ListView ) view.findViewById(R.id.waypoint_list);
         ArrayAdapter<GeoPoint> waypointAdapter = new OTNwaypoitRouterOptionAdapter(pluginContext , R.layout.waypoint_listitem , waypoints);
         waypointLayout.setAdapter(waypointAdapter);
-        waypoints.add( new GeoPoint( 0,0));
+
 
         ImageButton pointDropperButton = view.findViewById(R.id.point_dropper_btn);
         pointDropperButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Bundle toolBundle = new Bundle();
-                toolBundle.putParcelable("callback" , new Intent( MAP_CLICK ) );
+                toolBundle.putParcelable("callback" , new Intent( MAP_CLICK ).putExtra("wayPointNumber" , waypoints.size() ) );
                 ToolManagerBroadcastReceiver.getInstance().startTool(MapClickTool.TOOL_NAME , toolBundle);
                 if ( ToolManagerBroadcastReceiver.getInstance().getActiveTool() instanceof MapClickTool) {
                     DropDownManager.getInstance().hidePane();
@@ -139,6 +140,10 @@ public class OTNOfflineRouter implements RoutePlannerInterface, AdapterView.OnIt
                     DropDownManager.getInstance().unHidePane();
                     GeoPoint waypointNew = GeoPoint.parseGeoPoint( intent.getStringExtra("point") );
                     if ( waypointNew == null || !waypointNew.isValid() ){
+                        return;
+                    }
+
+                    if ( intent.getIntExtra("wayPointNumber", -1 ) != waypoints.size() ){
                         return;
                     }
                     waypoints.add( waypointNew);

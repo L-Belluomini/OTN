@@ -25,10 +25,10 @@ public class OTNwaypoitRouterOptionAdapter extends ArrayAdapter {
     private List<GeoPoint> _waypointsList;
 
     public OTNwaypoitRouterOptionAdapter(@NonNull Context context, int resource, List<GeoPoint> waypointsList ) {
-        super(context, resource);
+        super(context, resource , waypointsList);
+        Log.d(TAG , "waypoint list adapter new ");
         pContext = context;
         _resource = resource;
-        _waypointsList=waypointsList;
     }
     @Override
     public View getView (int position , View convertView , ViewGroup parent){
