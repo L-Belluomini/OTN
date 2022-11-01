@@ -15,9 +15,11 @@ import com.atakmap.coremap.conversions.CoordinateFormatUtilities;
 
 import java.util.List;
 
+import com.atakmap.coremap.log.Log;
 import com.atakmap.coremap.maps.coords.GeoPoint;
 
 public class OTNwaypoitRouterOptionAdapter extends ArrayAdapter {
+    private final String TAG = "OTNwaypoitRouterOptionAdapter";
     private Context pContext;
     private int _resource;
     private List<GeoPoint> _waypointsList;
@@ -31,13 +33,13 @@ public class OTNwaypoitRouterOptionAdapter extends ArrayAdapter {
     @Override
     public View getView (int position , View convertView , ViewGroup parent){
         View view = convertView;
-
-        if (view == null){
+        Log.d(TAG , "waypoint list adapter view");
+        if ( view == null ){
             view = LayoutInflater.from(pContext).inflate( _resource , null );
         }
         GeoPoint waypoint = (GeoPoint) getItem(position);
         TextView cordsText = view.findViewById(R.id.new_waypoint_coords);
-        cordsText.setText(CoordinateFormatUtilities.formatToString (waypoint , CoordinateFormat.MGRS));
+        cordsText.setText( CoordinateFormatUtilities.formatToString (waypoint , CoordinateFormat.MGRS) );
 
         return view;
     }
