@@ -28,7 +28,7 @@ import com.atakmap.android.routes.RoutePlannerOptionsView;
 
 
 import com.atakmap.android.toolbar.ToolManagerBroadcastReceiver;
-import com.atakmap.android.user.MapClickTool;
+import com.atakmap.android.routes.MapClickTool;
 import com.atakmap.coremap.log.Log;
 import com.graphhopper.GraphHopperConfig;
 import com.graphhopper.config.Profile;
@@ -111,7 +111,7 @@ public class OTNOfflineRouter implements RoutePlannerInterface, AdapterView.OnIt
 
         // way point UI
         waypoints.add( new GeoPoint( 0,0));
-        ListView waypointLayout = ( ListView ) view.findViewById(R.id.waypoint_list);
+        NonScrollListView waypointLayout = ( NonScrollListView ) view.findViewById(R.id.waypoint_list);
         ArrayAdapter<GeoPoint> waypointAdapter = new OTNwaypoitRouterOptionAdapter(pluginContext , R.layout.waypoint_listitem , waypoints);
         waypointLayout.setAdapter(waypointAdapter);
 
