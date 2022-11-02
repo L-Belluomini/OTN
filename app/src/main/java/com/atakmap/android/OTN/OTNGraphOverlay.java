@@ -18,6 +18,7 @@ import com.atakmap.android.maps.MapGroup;
 import com.atakmap.android.maps.MapView;
 import com.atakmap.android.maps.Marker;
 import com.atakmap.android.maps.Polyline;
+import com.atakmap.android.maps.Shape;
 import com.atakmap.android.overlay.AbstractMapOverlay2;
 import com.atakmap.android.user.FocusBroadcastReceiver;
 import com.atakmap.coremap.log.Log;
@@ -110,10 +111,11 @@ public class OTNGraphOverlay extends AbstractMapOverlay2 {
 
                             if ( tmp != null ) {
                                 bordersMap.put( graph.getEdgeHash() , tmp.getUID() );
-                                tmp.setStrokeColor(Color.BLUE);
                                 //tmp.setFillColor(Color.RED);
-                                //tmp.setStyle(tmp.STYLE_FILLED_MASK);
-                                tmp.setColor( Color.argb(66,255,157,157), true);// @ gabri have fun
+                                //tmp.setStyle( Polyline.STYLE_CLOSED_MASK );
+                                //tmp.setStyle( Shape.STYLE_FILLED_MASK );
+                                tmp.setStrokeColor(Color.BLUE);
+                                //tmp.setFillColor( Color.argb(66,255,157,157));// @ gabri have fun
 
                                 //tmp.setStrokeWeight(); from 1.0 - 6.0
                                 //tmp.setBasicLineStyle(); int
