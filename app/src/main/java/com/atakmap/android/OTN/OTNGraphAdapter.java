@@ -92,7 +92,7 @@ public class OTNGraphAdapter extends ArrayAdapter {
 
         TextView nameTV = view.findViewById(R.id.graph_name);
         if ( nameTV != null ){
-            nameTV.setText( graph.getGraphPath().substring( graph.getGraphPath().lastIndexOf("/") ) );
+            nameTV.setText( graph.getGraphPath().substring( graph.getGraphPath().lastIndexOf("/")+1 ) );
         }
 
         ImageButton selecetdGraphButton = view.findViewById(R.id.graph_button_select);

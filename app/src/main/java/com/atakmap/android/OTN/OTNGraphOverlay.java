@@ -120,7 +120,7 @@ public class OTNGraphOverlay extends AbstractMapOverlay2 {
                                 //tmp.setStrokeWeight(); from 1.0 - 6.0
                                 //tmp.setBasicLineStyle(); int
                                 // othe shit in the end...
-                                tmp.setTitle(graph.getGraphPath());
+                                tmp.setTitle( graph.getGraphPath().substring( graph.getGraphPath().lastIndexOf("/")+1 ) );
 
                                 _group.addItem(tmp);
 
