@@ -45,7 +45,8 @@ public class OTNOfflineRouter implements RoutePlannerInterface, AdapterView.OnIt
     private final Context pluginContext;
     private  final OTNGraph graph;
     private final List<GeoPoint> waypoints = new LinkedList<>();
-
+    private AlertDialog _parent;
+    private final ArrayAdapter<GeoPoint> _waypointAdapter;
     private static final String MAP_CLICK = "com.atakmap.android.OTN.MAP_CLICK";
 
 
@@ -54,6 +55,7 @@ public class OTNOfflineRouter implements RoutePlannerInterface, AdapterView.OnIt
         this.pluginContext = pluginContext;
         this.graph = graph;
         this.selectedType= type;
+        _waypointAdapter = new OTNwaypoitRouterOptionAdapter(pluginContext , R.layout.waypoint_listitem , waypoints );
 
 
 
@@ -86,7 +88,7 @@ public class OTNOfflineRouter implements RoutePlannerInterface, AdapterView.OnIt
     public RouteGenerationTask getRouteGenerationTask(
             RouteGenerationTask.RouteGenerationEventListener routeGenerationEventListener){
 
-     return new OTNOfflineroutingTask( routeGenerationEventListener, graph  ,  new OTNrequest(graph.getConfigGH(), selectedProfile , selectedType) );
+     return new OTNOfflineroutingTask( routeGenerationEventListener, graph  ,  new OTNrequest(graph.getConfigGH(), selectedProfile , selectedType) , waypoints );
     }
 
     /**
@@ -94,10 +96,13 @@ public class OTNOfflineRouter implements RoutePlannerInterface, AdapterView.OnIt
      * results.
      */
     public RoutePlannerOptionsView getOptionsView(AlertDialog parent){
-        RoutePlannerOptionsView view= (RoutePlannerOptionsView) LayoutInflater.from(pluginContext).inflate(R.layout.otnplanneroption, null); //@gabri for waypoint
+
+        RoutePlannerOptionsView view= (RoutePlannerOptionsView) LayoutInflater.from(pluginContext).inflate(R.layout.otnplanneroption, null);
+         //@gabri for waypoint
+        _parent=parent;
 
         // profile
-        PluginSpinner profileSpinner = ( PluginSpinner) view.findViewById(R.id.route_plan_method);
+        PluginSpinner profileSpinner = view.findViewById(R.id.route_plan_method);
         ArrayAdapter<String> profileAdapter = new ArrayAdapter<>( pluginContext , android.R.layout.simple_spinner_dropdown_item );
        if (graph == null) {
            Log.w(TAG , "jConfig is null!!");
@@ -110,10 +115,9 @@ public class OTNOfflineRouter implements RoutePlannerInterface, AdapterView.OnIt
         profileSpinner.setOnItemSelectedListener( this );
 
         // way point UI
-        waypoints.add( new GeoPoint( 0,0));
-        ListView waypointLayout = ( ListView ) view.findViewById(R.id.waypoint_list);
-        ArrayAdapter<GeoPoint> waypointAdapter = new OTNwaypoitRouterOptionAdapter(pluginContext , R.layout.waypoint_listitem , waypoints);
-        waypointLayout.setAdapter(waypointAdapter);
+        ListView waypointLayout = view.findViewById(R.id.waypoint_list);
+
+        waypointLayout.setAdapter(_waypointAdapter);
 
 
         ImageButton pointDropperButton = view.findViewById(R.id.point_dropper_btn);
@@ -125,7 +129,7 @@ public class OTNOfflineRouter implements RoutePlannerInterface, AdapterView.OnIt
                 ToolManagerBroadcastReceiver.getInstance().startTool(MapClickTool.TOOL_NAME , toolBundle);
                 if ( ToolManagerBroadcastReceiver.getInstance().getActiveTool() instanceof MapClickTool) {
                     DropDownManager.getInstance().hidePane();
-                    parent.hide();
+                    _parent.hide();
                 }
             }
         });
@@ -136,7 +140,7 @@ public class OTNOfflineRouter implements RoutePlannerInterface, AdapterView.OnIt
             public void onReceive(Context context, Intent intent) {
                 Log.d(TAG , "brodcast recived");
                 if ( intent.getAction().equals(MAP_CLICK) ){
-                    parent.show();
+                    _parent.show();
                     DropDownManager.getInstance().unHidePane();
                     GeoPoint waypointNew = GeoPoint.parseGeoPoint( intent.getStringExtra("point") );
                     if ( waypointNew == null || !waypointNew.isValid() ){
@@ -146,8 +150,8 @@ public class OTNOfflineRouter implements RoutePlannerInterface, AdapterView.OnIt
                     if ( intent.getIntExtra("wayPointNumber", -1 ) != waypoints.size() ){
                         return;
                     }
-                    waypoints.add( waypointNew);
-                    waypointAdapter.notifyDataSetChanged();
+                    _waypointAdapter.add( waypointNew);
+                    //waypointAdapter.notifyDataSetChanged();
 
                     Log.d(TAG , waypoints.toString() );
                 }

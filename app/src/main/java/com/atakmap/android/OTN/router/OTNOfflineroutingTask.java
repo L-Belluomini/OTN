@@ -48,6 +48,7 @@ public class OTNOfflineroutingTask extends RouteGenerationTask{
     private static final String TAG = "OTNOfflineroutingTask";
     private final OTNGraph graph;
     private final OTNrequest takRequest;
+    private List<GeoPoint> _waypoints;
 
 
 
@@ -55,6 +56,13 @@ public class OTNOfflineroutingTask extends RouteGenerationTask{
         super(listener);
         this.graph = graph;
         this.takRequest = takRequest;
+
+    }
+    public OTNOfflineroutingTask(RouteGenerationEventListener listener, OTNGraph graph, OTNrequest takRequest  , List<GeoPoint> waypoints) {
+        super(listener);
+        this.graph = graph;
+        this.takRequest = takRequest;
+        this._waypoints=waypoints;
 
     }
 
@@ -95,11 +103,16 @@ public class OTNOfflineroutingTask extends RouteGenerationTask{
         ghRequest = new GHRequest(origin.getLatitude() , origin.getLongitude() , dest.getLatitude() ,dest.getLongitude());
 
         // IF ENEBALED USE BYWAYOFF
-        if ( byWayOff.size() >0) {
+        if ( byWayOff.size() > 0) { // if not overriden
             for (GeoPoint takwaypoint : byWayOff ) {
                 Log.d(TAG , takwaypoint.toString() );
                 ghRequest.addPoint( new GHPoint( takwaypoint.getLatitude() , takwaypoint.getLongitude() ) );
 
+            }
+        } else if ( _waypoints.size() >0 ) {
+            for (GeoPoint extrawaypoint : _waypoints ) {
+                Log.d(TAG , extrawaypoint.toString() );
+                ghRequest.addPoint( new GHPoint( extrawaypoint.getLatitude() , extrawaypoint.getLongitude() ) );
             }
         }
 

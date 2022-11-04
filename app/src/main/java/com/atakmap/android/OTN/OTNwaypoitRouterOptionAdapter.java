@@ -50,8 +50,8 @@ public class OTNwaypoitRouterOptionAdapter extends ArrayAdapter {
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //remove(waypoint);
-                _waypointsList.remove(position);
+                remove(waypoint);
+                //_waypointsList.remove(position);
 
             }
         });
