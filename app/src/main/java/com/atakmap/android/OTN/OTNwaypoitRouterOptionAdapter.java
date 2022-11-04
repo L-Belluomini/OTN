@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -29,6 +30,7 @@ public class OTNwaypoitRouterOptionAdapter extends ArrayAdapter {
         Log.d(TAG , "waypoint list adapter new ");
         pContext = context;
         _resource = resource;
+        _waypointsList = waypointsList;
     }
     @Override
     public View getView (int position , View convertView , ViewGroup parent){
@@ -40,6 +42,20 @@ public class OTNwaypoitRouterOptionAdapter extends ArrayAdapter {
         GeoPoint waypoint = (GeoPoint) getItem(position);
         TextView cordsText = view.findViewById(R.id.new_waypoint_coords);
         cordsText.setText( CoordinateFormatUtilities.formatToString (waypoint , CoordinateFormat.MGRS) );
+
+        TextView titletext = view.findViewById(R.id.new_waypoint_address);
+        titletext.setText("Waypoint "+Integer.toString(position + 1 ));
+
+        ImageButton deleteButton = view.findViewById(R.id.waypoint_delete_btn);
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //remove(waypoint);
+                _waypointsList.remove(position);
+
+            }
+        });
+
 
         return view;
     }
