@@ -109,7 +109,7 @@
     </RelativeLayout>
 
 
-    <ListView
+    <com.atakmap.android.OTN.router.NonScrollListView
         android:id="@+id/waypoint_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -117,9 +117,6 @@
         android:dividerHeight="1dp"
         android:scrollbars="none"
         tools:listitem="@layout/waypoint_listitem"
-        android:background="@color/charcoal_100"/>
-
-
-
+        android:background="#1affffff"/>
 
 </com.atakmap.android.routes.RoutePlannerOptionsView>

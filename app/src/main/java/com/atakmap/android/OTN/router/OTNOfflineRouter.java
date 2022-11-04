@@ -103,9 +103,6 @@ public class OTNOfflineRouter implements RoutePlannerInterface, AdapterView.OnIt
            Log.w(TAG , "jConfig is null!!");
            return view; // todo tell user does not work but dont kill app
        }
-       // resete waypoints
-        waypoints.clear();
-
         for (  Profile item : graph.getConfigGH().getProfiles() ){
             profileAdapter.add( item.getName() );
         }
@@ -113,6 +110,7 @@ public class OTNOfflineRouter implements RoutePlannerInterface, AdapterView.OnIt
         profileSpinner.setOnItemSelectedListener( this );
 
         // way point UI
+        waypoints.add( new GeoPoint( 0,0));
         ListView waypointLayout = ( ListView ) view.findViewById(R.id.waypoint_list);
         ArrayAdapter<GeoPoint> waypointAdapter = new OTNwaypoitRouterOptionAdapter(pluginContext , R.layout.waypoint_listitem , waypoints);
         waypointLayout.setAdapter(waypointAdapter);
@@ -122,7 +120,6 @@ public class OTNOfflineRouter implements RoutePlannerInterface, AdapterView.OnIt
         pointDropperButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d(TAG , "add waypoint callback");
                 Bundle toolBundle = new Bundle();
                 toolBundle.putParcelable("callback" , new Intent( MAP_CLICK ).putExtra("wayPointNumber" , waypoints.size() ) );
                 ToolManagerBroadcastReceiver.getInstance().startTool(MapClickTool.TOOL_NAME , toolBundle);
