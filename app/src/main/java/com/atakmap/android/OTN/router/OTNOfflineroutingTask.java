@@ -100,16 +100,24 @@ public class OTNOfflineroutingTask extends RouteGenerationTask{
         Log.d(TAG , Boolean.toString( hopper.load( ) ) );
 
 
-        ghRequest = new GHRequest(origin.getLatitude() , origin.getLongitude() , dest.getLatitude() ,dest.getLongitude());
 
+        if ( byWayOff.size() == 0 && _waypoints.size() == 0){
+            ghRequest = new GHRequest(origin.getLatitude() , origin.getLongitude() , dest.getLatitude() ,dest.getLongitude());
+        } else {
+            ghRequest = new GHRequest();
+        }
         // IF ENEBALED USE BYWAYOFF
         if ( byWayOff.size() > 0) { // if not overriden
+            byWayOff.add( 0 , origin);
+            byWayOff.add(dest); // append
             for (GeoPoint takwaypoint : byWayOff ) {
                 Log.d(TAG , takwaypoint.toString() );
                 ghRequest.addPoint( new GHPoint( takwaypoint.getLatitude() , takwaypoint.getLongitude() ) );
 
             }
         } else if ( _waypoints.size() >0 ) {
+            _waypoints.add( 0 , origin);
+            _waypoints.add( dest); // append
             for (GeoPoint extrawaypoint : _waypoints ) {
                 Log.d(TAG , extrawaypoint.toString() );
                 ghRequest.addPoint( new GHPoint( extrawaypoint.getLatitude() , extrawaypoint.getLongitude() ) );
@@ -180,6 +188,7 @@ public class OTNOfflineroutingTask extends RouteGenerationTask{
                     bestResponse.getPoints().getLon ( pointIndex ) == instructionList.get( cueIndex ).getPoints().getLon(0) ) {
                 // set point as waypoint
                 waypoint.get(pointIndex).setMetaString("type" , "b-m-p-w" );
+                waypoint.get(pointIndex).setMetaString("title" ,"WP" + Integer.toString(pointIndex +1 ) );
                 // set relative nav cue
                 cue = instructionList.get(cueIndex).getTurnDescription(translation);
                 navCue = new NavigationCue(UUID.randomUUID().toString() , cue , cue ) ;
