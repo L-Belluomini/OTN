@@ -184,7 +184,7 @@
             android:gravity="center">
 
             <ImageView
-                android:id="@+id/icon_delete"
+                android:id="@+id/dialog_delete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/btn_confirm" />
