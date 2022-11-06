@@ -71,6 +71,13 @@ public class OTNGraphAdapter extends ArrayAdapter {
         if (graph == null ) {
             return view;
         }
+
+        TextView nameTV = view.findViewById(R.id.graph_name);
+        if ( nameTV != null ){
+            nameTV.setText( graph.getGraphPath().substring( graph.getGraphPath().lastIndexOf("/")+1 ) );
+        }
+
+        // graph select dialog
         AlertDialog.Builder setAdBuilder = new AlertDialog.Builder(MapView._mapView.getContext()) ;
         setAdBuilder.setTitle("Set graph");
         setAdBuilder.setMessage("Are you sure to set" + graph.getGraphPath() + "?" );
@@ -89,14 +96,9 @@ public class OTNGraphAdapter extends ArrayAdapter {
                 // User cancelled the dialog
             }
         });
-
-        TextView nameTV = view.findViewById(R.id.graph_name);
-        if ( nameTV != null ){
-            nameTV.setText( graph.getGraphPath().substring( graph.getGraphPath().lastIndexOf("/")+1 ) );
-        }
-
+        // sellect callback
         ImageButton selecetdGraphButton = view.findViewById(R.id.graph_button_select);
-        if ( selecetdGraphButton != null) {
+
 
             selecetdGraphButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -106,39 +108,41 @@ public class OTNGraphAdapter extends ArrayAdapter {
                 }
             });
 
-            if ( ! ( selectedGraph == null) ){
-                Log.d(TAG,"selGraph " +selectedGraph.getEdgeHash());
-                if ( graph.getEdgeHash().equals(selectedGraph.getEdgeHash() )) {
+            selecetdGraphButton.setImageResource(R.drawable.btn_check_empty);
+            Log.d(TAG, "selectedgraph null");
+            // magae seleted graph UI
+            if ( selectedGraph != null ) {
+                Log.d(TAG, "selGraph " + selectedGraph.getEdgeHash());
+                if (graph.getEdgeHash().equals(selectedGraph.getEdgeHash())) {
                     Log.d(TAG, "setting selceted graph button");
-                    selecetdGraphButton.setSelected(true); //doesn't work as intended, shows every graph as selected
+                    selecetdGraphButton.setImageResource(R.drawable.btn_check_selected);
+                } else {
+
                 }
-            }else {
-                selecetdGraphButton.setSelected(false);
-                Log.d(TAG,"selectedgraph null");
             }
 
 
-            LinearLayout profilesLayout =(LinearLayout) view.findViewById(R.id.profile_list);
-            profilesLayout.removeAllViews();
-            boolean isch = false;
-            for (Profile profile: graph.getConfigGH().getProfiles() ) {
-                View profileView = LayoutInflater.from(pContext).inflate( R.layout.profiles_listitem , null );
-                TextView profileName = profileView.findViewById(R.id.profile_name);
-                profileName.setText( profile.getName() );
-                if ( graph.isProfileCH( profile ) ) {
-                    profileName.setTextColor(Color.RED);
-                    isch = true;
-                }
-                if ( graph.isProfilelm( profile ) ) {
-                    if (isch) {
-                        profileName.setTextColor(Color.CYAN);
-                    } else {
-                        profileName.setTextColor(Color.BLUE);
-                    }
-                }
-                profilesLayout.addView(profileView);
+        LinearLayout profilesLayout =(LinearLayout) view.findViewById(R.id.profile_list);
+        profilesLayout.removeAllViews();
+        boolean isch = false;
+        for (Profile profile: graph.getConfigGH().getProfiles() ) {
+            View profileView = LayoutInflater.from(pContext).inflate( R.layout.profiles_listitem , null );
+            TextView profileName = profileView.findViewById(R.id.profile_name);
+            profileName.setText( profile.getName() );
+            if ( graph.isProfileCH( profile ) ) {
+                profileName.setTextColor(Color.RED);
+                isch = true;
             }
+            if ( graph.isProfilelm( profile ) ) {
+                if (isch) {
+                    profileName.setTextColor(Color.CYAN);
+                } else {
+                    profileName.setTextColor(Color.BLUE);
+                }
+            }
+            profilesLayout.addView(profileView);
         }
+
 
         Button showBorder = (Button) view.findViewById(R.id.btn_show_borders);
         showBorder.setOnClickListener(new View.OnClickListener() {

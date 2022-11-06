@@ -59,10 +59,7 @@ public class OTNMapComponent extends DropDownMapComponent {
 
     private OTNGraphOverlay overlay;
 
-
     public OTNMapComponent(){    }
-
-
 
     @Override
     public void onStart(final Context context, final MapView view) {
@@ -79,7 +76,6 @@ public class OTNMapComponent extends DropDownMapComponent {
                          final MapView view) {
         Log.d(TAG, "onResume");
 
-
     }
 
     @Override
@@ -93,7 +89,6 @@ public class OTNMapComponent extends DropDownMapComponent {
         pluginContext = context;
         pluginContext.setTheme(R.style.ATAKPluginTheme);
         super.onCreate(pluginContext, intent, view);
-
 
         ddr = new OTNDropDownReceiver(
                 view, pluginContext);
@@ -120,35 +115,35 @@ public class OTNMapComponent extends DropDownMapComponent {
         final BroadcastReceiver selectegraphReciver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context pluginContext, Intent intent) {
-                Log.w(TAG,"failled setting bundle");
-                final String action = intent.getAction();
-                if (action == null)
-                    return;
+            Log.w(TAG,"failled setting bundle");
+            final String action = intent.getAction();
+            if (action == null)
+                return;
 
-                switch (action) {
-                    case (SET_SELECTED_GRAPH):
-                        Bundle graphBundle = intent.getBundleExtra("GRAPH");
-                        if (graphBundle == null) {
-                            Log.w(TAG,"failled setting bundle");
-                            return;
+            switch (action) {
+                case (SET_SELECTED_GRAPH):
+                    Bundle graphBundle = intent.getBundleExtra("GRAPH");
+                    if (graphBundle == null) {
+                        Log.w(TAG,"failled setting bundle");
+                        return;
 
-                        }
-                        tmpGraph =  (OTNGraph) graphBundle.getSerializable("GRAPH");
-                        if ( tmpGraph == null ) {
-                            Log.w(TAG,"failled importing selected graph");
-                            return;
-                        }
-                        Log.d(TAG , tmpGraph.toString());
-                        updateRouters();
+                    }
+                    tmpGraph =  (OTNGraph) graphBundle.getSerializable("GRAPH");
+                    if ( tmpGraph == null ) {
+                        Log.w(TAG,"failled importing selected graph");
+                        return;
+                    }
+                    Log.d(TAG , tmpGraph.toString());
+                    updateRouters();
 
-                        break;
+                    break;
 
-                    case (FIND_GRAPHS):
-                        findnSetGraphs();
-                        pushGraphs();
+                case (FIND_GRAPHS):
+                    findnSetGraphs();
+                    pushGraphs();
 
-                        break;
-                }
+                    break;
+            }
             }
         };
         DocumentedIntentFilter mcFilter = new DocumentedIntentFilter();
@@ -228,6 +223,7 @@ public class OTNMapComponent extends DropDownMapComponent {
         view.getMapOverlayManager().removeOverlay( overlay );
 
     }
+
     protected void updateRouters() {
         Log.d(TAG,"updating router");
         for (String routerUID : registeredRouters ){
@@ -242,16 +238,14 @@ public class OTNMapComponent extends DropDownMapComponent {
         // add routr/routers
         _routeManager.registerPlanner ( "OTNOFFlineFast", new OTNOfflineRouter( pluginContext , selectdeGraph , OTNrequest.ProfileType.BEST ) );
         registeredRouters.add( "OTNOFFlineFast" );
-        selectdeGraph = null;
-
-
+        pushGraphs();
     }
 
     protected void pushGraphs(){
         Intent i = new Intent(SET_GRAPHS);
         Bundle bundleGraphs = new Bundle();
         bundleGraphs.putSerializable("GRAPHS" ,(Serializable) this.graphs );
-        Log.d(this.TAG , bundleGraphs.toString());
+        Log.d(TAG , bundleGraphs.toString());
         i.putExtra("GRAPHS", bundleGraphs );
 
         Bundle bundleGraph = new Bundle();

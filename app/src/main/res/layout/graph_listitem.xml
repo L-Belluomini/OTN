@@ -16,7 +16,7 @@
         android:layout_marginHorizontal="4dp"
         android:layout_marginVertical="15dp"
         android:contentDescription="Graph button select"
-        android:src="@drawable/btn_check" />
+         />
 
     <LinearLayout
         android:layout_width="wrap_content"
