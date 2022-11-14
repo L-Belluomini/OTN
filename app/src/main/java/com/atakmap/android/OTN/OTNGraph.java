@@ -71,7 +71,7 @@ public class OTNGraph implements Serializable {
     }
 
     public Polyline getBorder( ) {
-        File polyFile = FileSystemUtils.getItem(FileSystemUtils.TOOL_DATA_DIRECTORY  + graphPath + "/"+ Name+".poly" );
+        File polyFile = FileSystemUtils.getItem(FileSystemUtils.TOOL_DATA_DIRECTORY  + graphPath + "/"+ "border" + ".poly" );
         Log.d(TAG,polyFile.toString());
         if (! polyFile.exists()) {
             return null;
