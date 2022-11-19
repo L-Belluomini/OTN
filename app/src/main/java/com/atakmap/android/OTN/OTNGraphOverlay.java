@@ -122,6 +122,7 @@ public class OTNGraphOverlay extends AbstractMapOverlay2 {
                                 //tmp.setBasicLineStyle(); int
                                 // othe shit in the end...
                                 tmp.setTitle( graph.getGraphPath().substring( graph.getGraphPath().lastIndexOf("/")+1 ) );
+                                tmp.setMetaString("iconUri" , "android.resource://"+  _pluginContext.getPackageName() + "/" + R.drawable.ic_otn1_0_crop );
 
                                 _group.addItem(tmp);
 
