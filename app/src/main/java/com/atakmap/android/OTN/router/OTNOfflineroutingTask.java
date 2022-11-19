@@ -63,7 +63,7 @@ public class OTNOfflineroutingTask extends RouteGenerationTask{
         this.graph = graph;
         this.takRequest = takRequest;
         this._waypoints=waypoints;
-
+        Log.d(TAG , "new");
     }
 
 
@@ -106,6 +106,7 @@ public class OTNOfflineroutingTask extends RouteGenerationTask{
         } else {
             ghRequest = new GHRequest();
         }
+
         // IF ENEBALED USE BYWAYOFF
         if ( byWayOff.size() > 0) { // if not overriden
             byWayOff.add( 0 , origin);
@@ -170,7 +171,7 @@ public class OTNOfflineroutingTask extends RouteGenerationTask{
         ResponsePath  bestResponse = hopResponse.getBest();
 
         hopper.close( );
-        Log.d(TAG,"hopper clesed");
+        Log.d(TAG,"hopper closed");
 
 
         final InstructionList instructionList = bestResponse.getInstructions();

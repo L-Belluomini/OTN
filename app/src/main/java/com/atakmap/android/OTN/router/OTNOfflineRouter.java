@@ -56,6 +56,7 @@ public class OTNOfflineRouter implements RoutePlannerInterface, AdapterView.OnIt
         this.graph = graph;
         this.selectedType= type;
         _waypointAdapter = new OTNwaypoitRouterOptionAdapter(pluginContext , R.layout.waypoint_listitem , waypoints );
+        Log.d(TAG , "offline router constructor");
 
 
 
@@ -87,7 +88,7 @@ public class OTNOfflineRouter implements RoutePlannerInterface, AdapterView.OnIt
      */
     public RouteGenerationTask getRouteGenerationTask(
             RouteGenerationTask.RouteGenerationEventListener routeGenerationEventListener){
-
+        Log.d(TAG , "get gen task");
      return new OTNOfflineroutingTask( routeGenerationEventListener, graph  ,  new OTNrequest(graph.getConfigGH(), selectedProfile , selectedType) , waypoints );
     }
 

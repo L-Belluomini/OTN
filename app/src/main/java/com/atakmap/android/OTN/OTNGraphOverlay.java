@@ -45,7 +45,8 @@ public class OTNGraphOverlay extends AbstractMapOverlay2 {
         _pluginContext = pluginContext;
         _mapView = mapView;
         _group = new DefaultMapGroup(TAG);
-        _group.setMetaString("iconURI" , "android.resource://"+  R.drawable.ic_otn1_0_crop);
+        _group.setMetaString("iconUri" , "android.resource://"+  _pluginContext.getPackageName() + "/" + R.drawable.ic_otn1_0_crop);
+        Log.d(TAG , _group.getMetaString("iconUri" , "not"));
         bordersMap = new HashMap<String , String>();
         Log.d(TAG, "created garph overlay");
 
@@ -174,6 +175,7 @@ public class OTNGraphOverlay extends AbstractMapOverlay2 {
                     baseAdapter );
         else
             this.currentList.refresh(baseAdapter, hierarchyListFilter);
+        Log.d(TAG , this.currentList.getIconUri());
 
         return this.currentList;
     }
