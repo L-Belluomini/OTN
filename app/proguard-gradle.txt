@@ -55,6 +55,15 @@
 -keep class * implements transapps.maps.plugin.lifecycle.Lifecycle {
 }
 
+#-keep @com.fasterxml.jackson.annotation.JsonIgnoreProperties class * { *; }
+#-keep class com.fasterxml.** { *; }
+#-keep class org.codehaus.** { *; }
+-keepnames class com.fasterxml.jackson.** { *; }
+#-keepclassmembers public final enum com.fasterxml.jackson.annotation.JsonAutoDetect$Visibility {
+#    public static final com.fasterxml.jackson.annotation.JsonAutoDetect$Visibility *;
+#}
+
+
 # overcome an existing bug in the gradle subsystem (3.5.x)
 #-keep class module-info
 
@@ -68,7 +77,7 @@
 #graphhopper
 -keep class com.graphhopper.util.TranslationMap
 -keep class com.graphhopper.routing.lm.LandmarkStorage
-
+-keep class com.graphhopper.routing.ev.** { *; }
 
 
 ##---------------Begin: proguard configuration for Gson  ----------
