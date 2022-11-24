@@ -15,8 +15,7 @@
         android:layout_centerVertical="true"
         android:layout_marginHorizontal="4dp"
         android:layout_marginVertical="15dp"
-        android:contentDescription="Graph button select"
-         />
+        android:contentDescription="Graph button select" />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -52,11 +51,12 @@
         android:layout_centerVertical="true"
         android:layout_marginHorizontal="4dp"
         android:layout_marginVertical="15dp"
-        android:layout_toStartOf="@id/btn_show_borders"
+        android:layout_alignParentEnd="true"
         android:background="@android:color/transparent"
         android:contentDescription="Graph info"
         android:src="@drawable/btn_info" />
 
+    <!--
     <Button
         android:id="@+id/btn_show_borders"
         style="@style/secondaryButton"
@@ -67,5 +67,6 @@
         android:layout_marginEnd="4dp"
         android:text="BORDERS"
         android:textColor="@drawable/secondary_button_textcolor" />
+        -->
 
 </RelativeLayout>

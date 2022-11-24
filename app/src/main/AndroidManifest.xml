@@ -7,7 +7,7 @@
 
     <application 
         android:allowBackup="false"
-        android:icon="@drawable/ic_otn1_0_crop"
+        android:icon="@drawable/otn_logo"
         android:label="@string/app_name"
         android:description="@string/app_desc"
         android:extractNativeLibs="true"

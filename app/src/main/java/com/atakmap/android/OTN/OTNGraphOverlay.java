@@ -18,7 +18,6 @@ import com.atakmap.android.maps.MapGroup;
 import com.atakmap.android.maps.MapView;
 import com.atakmap.android.maps.Marker;
 import com.atakmap.android.maps.Polyline;
-import com.atakmap.android.maps.Shape;
 import com.atakmap.android.overlay.AbstractMapOverlay2;
 import com.atakmap.android.user.FocusBroadcastReceiver;
 import com.atakmap.coremap.log.Log;
@@ -45,7 +44,7 @@ public class OTNGraphOverlay extends AbstractMapOverlay2 {
         _pluginContext = pluginContext;
         _mapView = mapView;
         _group = new DefaultMapGroup(TAG);
-        _group.setMetaString("iconUri" , "android.resource://"+  _pluginContext.getPackageName() + "/" + R.drawable.ic_otn1_0_crop);
+        _group.setMetaString("iconUri" , "android.resource://"+  _pluginContext.getPackageName() + "/" + R.drawable.otn_logo);
         Log.d(TAG , _group.getMetaString("iconUri" , "not"));
         bordersMap = new HashMap<String , String>();
         Log.d(TAG, "created garph overlay");
@@ -122,7 +121,7 @@ public class OTNGraphOverlay extends AbstractMapOverlay2 {
                                 //tmp.setBasicLineStyle(); int
                                 // othe shit in the end...
                                 tmp.setTitle( graph.getGraphPath().substring( graph.getGraphPath().lastIndexOf("/")+1 ) );
-                                tmp.setMetaString("iconUri" , "android.resource://"+  _pluginContext.getPackageName() + "/" + R.drawable.ic_otn1_0_crop );
+                                tmp.setMetaString("iconUri" , "android.resource://"+  _pluginContext.getPackageName() + "/" + R.drawable.otn_logo);
 
                                 _group.addItem(tmp);
 

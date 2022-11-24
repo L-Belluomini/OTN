@@ -70,10 +70,11 @@
 
     <ListView
         android:id="@+id/graph_list"
+        cli
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scrollbarStyle="outsideOverlay"
-        android:paddingEnd="21dp"
+        android:paddingEnd="10dp"
         android:divider="@color/neon_green"
         android:dividerHeight="1dp"
         tools:listitem="@layout/graph_listitem" />

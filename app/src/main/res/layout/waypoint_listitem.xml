@@ -4,37 +4,31 @@
     android:layout_height="wrap_content">
 
     <ImageButton
-        android:id="@+id/move_down_btn"
-        style="@style/customImageButton"
-        android:layout_width="24dp"
-        android:layout_height="24sp"
-        android:layout_alignParentStart="true"
-        android:layout_centerVertical="true"
-        android:layout_marginStart="4dp"
-        android:src="@drawable/btn_down" />
-
-    <ImageButton
-        android:id="@+id/move_up_btn"
+        android:id="@+id/waypoint_delete_btn"
         style="@style/customImageButton"
         android:layout_width="24dp"
         android:layout_height="24dp"
+        android:scaleType="fitXY"
+        android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
         android:layout_marginHorizontal="4dp"
-        android:layout_toEndOf="@+id/move_down_btn"
-        android:src="@drawable/btn_up" />
+        android:layout_marginVertical="10dp"
+        android:src="@drawable/btn_trash" />
 
     <LinearLayout
+        android:layout_marginEnd="4dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_toEndOf="@id/move_up_btn"
-        android:layout_toStartOf="@id/waypoint_delete_btn"
+        android:layout_toEndOf="@id/waypoint_delete_btn"
+        android:layout_alignParentEnd="true"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/new_waypoint_address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:maxLines="1"
             android:singleLine="true"
             android:textSize="16sp" />
@@ -47,16 +41,5 @@
             android:textSize="14sp" />
 
     </LinearLayout>
-
-    <ImageButton
-        android:id="@+id/waypoint_delete_btn"
-        style="@style/customImageButton"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_alignParentEnd="true"
-        android:layout_centerVertical="true"
-        android:layout_marginHorizontal="4dp"
-        android:layout_marginVertical="10dp"
-        android:src="@drawable/btn_trash" />
 
 </RelativeLayout>

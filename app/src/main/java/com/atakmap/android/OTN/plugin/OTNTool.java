@@ -34,7 +34,7 @@ public class OTNTool extends Tool implements ToolDescriptor {
     @Override
     public Drawable getIcon() {
         return (context == null) ? null
-                : context.getResources().getDrawable(R.drawable.ic_otn1_0_crop);
+                : context.getResources().getDrawable(R.drawable.otn_logo);
     }
 
     @Override
