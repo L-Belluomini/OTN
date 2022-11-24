@@ -70,7 +70,6 @@
 
     <ListView
         android:id="@+id/graph_list"
-        cli
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scrollbarStyle="outsideOverlay"
