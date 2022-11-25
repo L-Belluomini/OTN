@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -108,7 +109,17 @@ public class OTNDropDownReceiver extends DropDownReceiver implements
                 ListView graphListView = (ListView) templateView.findViewById(R.id.graph_list);
                 ArrayAdapter graphListAdapter = new OTNGraphAdapter(pluginContext , R.layout.graph_listitem , graphs , selectedGraph );
                 graphListView.setAdapter(graphListAdapter);
-                // highlight selceted graph
+
+                graphListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        OTNGraph graph = (OTNGraph) adapterView.getAdapter().getItem(i);
+                        Log.d(TAG,"list item click" + graph.getGraphPath() );
+                        Intent showBorderIntent = new Intent( OTNMapComponent.FOCUS_BRODER);
+                        showBorderIntent.putExtra("BorderHash", graph.getEdgeHash() );
+                        AtakBroadcast.getInstance().sendBroadcast(showBorderIntent);
+                    }
+                });
 
                 //text.setText( graphs.get(0).getGraphPath() +" dir and profile name:"+graphs.get(0).getConfigGH().getProfiles().get(0).getName() );
                 break;
