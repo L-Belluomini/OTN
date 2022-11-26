@@ -51,22 +51,20 @@
         android:layout_centerVertical="true"
         android:layout_marginHorizontal="4dp"
         android:layout_marginVertical="15dp"
-        android:layout_alignParentEnd="true"
+        android:layout_toStartOf="@id/btn_focus_borders"
         android:background="@android:color/transparent"
         android:contentDescription="Graph info"
         android:src="@drawable/btn_info" />
 
-    <!--
     <Button
-        android:id="@+id/btn_show_borders"
+        android:id="@+id/btn_focus_borders"
         style="@style/secondaryButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:layout_marginEnd="4dp"
-        android:text="BORDERS"
+        android:text="FOCUS"
         android:textColor="@drawable/secondary_button_textcolor" />
-        -->
 
 </RelativeLayout>

@@ -144,8 +144,8 @@ public class OTNGraphAdapter extends ArrayAdapter {
         }
 
 
-        /*Button showBorder = (Button) view.findViewById(R.id.btn_show_borders);
-        showBorder.setOnClickListener(new View.OnClickListener() {
+        Button focusBorder = (Button) view.findViewById(R.id.btn_focus_borders);
+        focusBorder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.d(TAG,"border button" + graph.getGraphPath() );
@@ -153,7 +153,7 @@ public class OTNGraphAdapter extends ArrayAdapter {
                 showBorderIntent.putExtra("BorderHash", graph.getEdgeHash() );
                 AtakBroadcast.getInstance().sendBroadcast(showBorderIntent);
             }
-        });*/
+        });
 
         return view;
     }

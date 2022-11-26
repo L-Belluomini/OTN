@@ -114,7 +114,7 @@ public class OTNDropDownReceiver extends DropDownReceiver implements
                 ArrayAdapter graphListAdapter = new OTNGraphAdapter(pluginContext , R.layout.graph_listitem , graphs , selectedGraph );
                 graphListView.setAdapter(graphListAdapter);
 
-                graphListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                /*graphListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                         OTNGraph graph = (OTNGraph) adapterView.getAdapter().getItem(i);
@@ -123,7 +123,7 @@ public class OTNDropDownReceiver extends DropDownReceiver implements
                         showBorderIntent.putExtra("BorderHash", graph.getEdgeHash() );
                         AtakBroadcast.getInstance().sendBroadcast(showBorderIntent);
                     }
-                });
+                });*/
 
                 //text.setText( graphs.get(0).getGraphPath() +" dir and profile name:"+graphs.get(0).getConfigGH().getProfiles().get(0).getName() );
                 break;
