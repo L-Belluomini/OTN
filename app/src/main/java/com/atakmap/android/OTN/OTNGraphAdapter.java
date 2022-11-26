@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -152,6 +153,22 @@ public class OTNGraphAdapter extends ArrayAdapter {
                 Intent showBorderIntent = new Intent( OTNMapComponent.FOCUS_BRODER);
                 showBorderIntent.putExtra("BorderHash", graph.getEdgeHash() );
                 AtakBroadcast.getInstance().sendBroadcast(showBorderIntent);
+            }
+        });
+
+        Button showInfoB = view.findViewById(R.id.btn_graph_info);
+
+        AlertDialog.Builder getinfoADB = new AlertDialog.Builder(MapView._mapView.getContext()) ;
+        getinfoADB.setTitle("graph info");
+        ScrollView infoview = (ScrollView) LayoutInflater.from(pContext).inflate( R.layout.grapinfodialog , null );
+        TextView graphinfoTV = infoview.findViewById(R.id.graphinfo);
+        graphinfoTV.setText( graph.getConfigGH().toString() );
+        getinfoADB.setView(infoview);
+        showInfoB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog infoAD = getinfoADB.create();
+                infoAD.show();
             }
         });
 
