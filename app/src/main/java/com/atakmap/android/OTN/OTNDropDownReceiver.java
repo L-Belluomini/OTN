@@ -9,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Toast;
 
 //import androidx.recyclerview.widget.RecyclerView;
 
@@ -106,6 +107,9 @@ public class OTNDropDownReceiver extends DropDownReceiver implements
                 }
 
                 OTNGraph selectedGraph = (OTNGraph) graphBundle.getSerializable( "GRAPH" );
+
+                Toast.makeText(pluginContext, "List changed, found " + Integer.toString(graphs.size()) + " graphs", Toast.LENGTH_LONG).show();
+
                 ListView graphListView = (ListView) templateView.findViewById(R.id.graph_list);
                 ArrayAdapter graphListAdapter = new OTNGraphAdapter(pluginContext , R.layout.graph_listitem , graphs , selectedGraph );
                 graphListView.setAdapter(graphListAdapter);

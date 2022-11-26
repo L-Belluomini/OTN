@@ -64,7 +64,7 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:contentDescription="Refresh"
-            android:src="@drawable/btn_refresh" />
+            android:src="@drawable/btn_refresh_state" />
 
     </RelativeLayout>
 
