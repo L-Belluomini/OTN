@@ -18,6 +18,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.atakmap.android.OTN.plugin.R;
 import com.atakmap.android.ipc.AtakBroadcast;
@@ -156,18 +157,18 @@ public class OTNGraphAdapter extends ArrayAdapter {
             }
         });
 
-        Button showInfoB = view.findViewById(R.id.btn_graph_info);
+        ImageButton showInfoB = view.findViewById(R.id.btn_graph_info);
 
         AlertDialog.Builder getinfoADB = new AlertDialog.Builder(MapView._mapView.getContext()) ;
         getinfoADB.setTitle("graph info");
-        ScrollView infoview = (ScrollView) LayoutInflater.from(pContext).inflate( R.layout.grapinfodialog , null );
+        ConstraintLayout infoview = (ConstraintLayout) LayoutInflater.from(pContext).inflate( R.layout.grapinfodialog , null );
         TextView graphinfoTV = infoview.findViewById(R.id.graphinfo);
         graphinfoTV.setText( graph.getConfigGH().toString() );
         getinfoADB.setView(infoview);
+        AlertDialog infoAD = getinfoADB.create();
         showInfoB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertDialog infoAD = getinfoADB.create();
                 infoAD.show();
             }
         });
