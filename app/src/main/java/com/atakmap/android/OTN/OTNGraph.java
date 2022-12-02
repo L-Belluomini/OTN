@@ -16,14 +16,10 @@ import java.util.List;
 import java.util.UUID;
 
 public class OTNGraph implements Serializable {
-    private String TAG = "OTNgraph" ;
-    private String Name ;
+    private static String TAG = "OTNgraph" ;
     private GraphHopperConfig configGH;
-    private  String graphPath;
+    private String graphPath;
     private String Hash ="";
-    // Private boundingBox;
-    // private String dateFile;
-    // private String dateBuild;
 
 
     public  OTNGraph (String graphPath , GraphHopperConfig jconfig){
@@ -31,6 +27,7 @@ public class OTNGraph implements Serializable {
         this.graphPath = graphPath;
 
         this.configGH.putObject( "graph.location" , FileSystemUtils.getItem( FileSystemUtils.TOOL_DATA_DIRECTORY + graphPath ).getPath() );
+        this.configGH.putObject("grap.dataaces" , "MMAP");
     }
 
     public String getGraphPath() {
