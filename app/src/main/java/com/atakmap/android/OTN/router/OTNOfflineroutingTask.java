@@ -149,7 +149,7 @@ public class OTNOfflineroutingTask extends RouteGenerationTask{
 
         ghRequest.setLocale ( Locale.ENGLISH ); // @leo add support for multi locale & support to force it
 
-        if ( ! takRequest.isChCapable() | takRequest.getProfileType() == OTNrequest.ProfileType.BESTFLEXIBLE ) {
+        if ( ! takRequest.isChCapable() | takRequest.getProfileType() == OTNrequest.ProfileType.BESTFLEXIBLE  | ! shapelist.isEmpty() ) {
             ghRequest.putHint(Parameters.CH.DISABLE , true);
             Log.d(TAG , "ch disabled");
         }
