@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.widget.BaseAdapter;
 
@@ -18,6 +19,7 @@ import com.atakmap.android.maps.MapGroup;
 import com.atakmap.android.maps.MapView;
 import com.atakmap.android.maps.Marker;
 import com.atakmap.android.maps.Polyline;
+import com.atakmap.android.maps.Shape;
 import com.atakmap.android.overlay.AbstractMapOverlay2;
 import com.atakmap.android.user.FocusBroadcastReceiver;
 import com.atakmap.coremap.log.Log;
@@ -106,16 +108,18 @@ public class OTNGraphOverlay extends AbstractMapOverlay2 {
                         // add new graphs
 
                         for ( OTNGraph graph: tmpgraphs ) {
-                            Polyline tmp =graph.getBorder();
-
-
+                            Polyline tmp = graph.getBorder();
                             if ( tmp != null ) {
                                 bordersMap.put( graph.getEdgeHash() , tmp.getUID() );
-                                //tmp.setFillColor(Color.RED);
-                                //tmp.setStyle( Polyline.STYLE_CLOSED_MASK );
-                                //tmp.setStyle( Shape.STYLE_FILLED_MASK );
-                                tmp.setStrokeColor(Color.BLUE);
-                                //tmp.setFillColor( Color.argb(66,255,157,157));// @ gabri have fun
+
+                                //tmp.setStyle(Shape.BASIC_LINE_STYLE_SOLID );
+                                tmp.setStyle(Shape.BASIC_LINE_STYLE_OUTLINED );
+                                tmp.setStrokeColor(Color.RED);
+                                tmp.setStrokeWeight( 6 ); // from 1 to 6
+                                tmp.setFillAlpha(124); // 0 - 255
+                                tmp.setStyle(Shape.STYLE_FILLED_MASK);
+                                //tmp.setFill
+                                tmp.setFillColor( Color.BLUE); // @ gabri have fun
 
                                 //tmp.setStrokeWeight(); from 1.0 - 6.0
                                 //tmp.setBasicLineStyle(); int
