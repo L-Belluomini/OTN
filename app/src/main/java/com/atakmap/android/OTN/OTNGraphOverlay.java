@@ -21,6 +21,7 @@ import com.atakmap.android.maps.Marker;
 import com.atakmap.android.maps.Polyline;
 import com.atakmap.android.maps.Shape;
 import com.atakmap.android.overlay.AbstractMapOverlay2;
+import com.atakmap.android.preference.AtakPreferences;
 import com.atakmap.android.user.FocusBroadcastReceiver;
 import com.atakmap.coremap.log.Log;
 import com.atakmap.coremap.maps.coords.GeoPoint;
@@ -33,14 +34,19 @@ import java.util.UUID;
 
 public class OTNGraphOverlay extends AbstractMapOverlay2 {
     private final static String TAG = "OTNgraphOverlay";
-    private MapView _mapView;
-    private Context _pluginContext;
-    private DefaultMapGroup _group;
+    final static String ID_COLOR_STROKE = "otn_color_stroke";
+    final static String ID_COLOR_FILL = "otn_color_fill";
+    private final MapView _mapView;
+    private final Context _pluginContext;
+    private final DefaultMapGroup _group;
     // private OTNWorldListModel listItem;
     private MapGroupHierarchyListItem currentList;
     // private MapGroup.MapItemsCallback filter;
-    private List<OTNGraph> graphs = new LinkedList<OTNGraph>();
-    private Map<String , String> bordersMap;
+    private final List<OTNGraph> graphs = new LinkedList<OTNGraph>();
+    private final Map<String , String> bordersMap;
+    private int strokeColor;
+    private int fillColor;
+    private AtakPreferences _prefs;
 
     OTNGraphOverlay(MapView mapView, Context pluginContext) {
         _pluginContext = pluginContext;
@@ -50,6 +56,10 @@ public class OTNGraphOverlay extends AbstractMapOverlay2 {
         Log.d(TAG , _group.getMetaString("iconUri" , "not"));
         bordersMap = new HashMap<String , String>();
         Log.d(TAG, "created garph overlay");
+
+        _prefs = new AtakPreferences(mapView);
+        fillColor = _prefs.get ( ID_COLOR_FILL, Color.BLUE );
+        strokeColor = _prefs.get ( ID_COLOR_STROKE, Color.BLUE );
 
         Marker point = new Marker(
                 new GeoPoint(43.85866, 11.10757),
@@ -88,7 +98,7 @@ public class OTNGraphOverlay extends AbstractMapOverlay2 {
                         }
 
                         List<OTNGraph> tmpgraphs = (List<OTNGraph>) graphsBundle.getSerializable("GRAPHS");
-                        if ( graphs == null ) {
+                        if ( tmpgraphs == null ) {
                             Log.w(TAG,"failled importing graph list");
                             return;
                         }
@@ -106,24 +116,20 @@ public class OTNGraphOverlay extends AbstractMapOverlay2 {
                         bordersMap.clear();
 
                         // add new graphs
-
                         for ( OTNGraph graph: tmpgraphs ) {
                             Polyline tmp = graph.getBorder();
                             if ( tmp != null ) {
                                 bordersMap.put( graph.getEdgeHash() , tmp.getUID() );
 
+                                tmp.setStrokeColor(strokeColor);
+                                tmp.setFillColor( fillColor);
+
+                                // @ gabri have fun
+                                tmp.setStrokeWeight( 6 ); // from 1 to 6
+                                tmp.setFillAlpha(250); // 0 - 255
                                 //tmp.setStyle(Shape.BASIC_LINE_STYLE_SOLID );
                                 tmp.setStyle(Shape.BASIC_LINE_STYLE_OUTLINED );
-                                tmp.setStrokeColor(Color.RED);
-                                tmp.setStrokeWeight( 6 ); // from 1 to 6
-                                tmp.setFillAlpha(124); // 0 - 255
-                                tmp.setStyle(Shape.STYLE_FILLED_MASK);
-                                //tmp.setFill
-                                tmp.setFillColor( Color.BLUE); // @ gabri have fun
 
-                                //tmp.setStrokeWeight(); from 1.0 - 6.0
-                                //tmp.setBasicLineStyle(); int
-                                // othe shit in the end...
                                 tmp.setTitle( graph.getGraphPath().substring( graph.getGraphPath().lastIndexOf("/")+1 ) );
                                 tmp.setMetaString("iconUri" , "android.resource://"+  _pluginContext.getPackageName() + "/" + R.drawable.otn_logo);
 
@@ -142,7 +148,7 @@ public class OTNGraphOverlay extends AbstractMapOverlay2 {
 
                         if (borderHash == null){
                             Log.d(TAG, "focus NO hash" );
-                            break;
+                            return;
                         }
                         Log.d(TAG, "focus hash" + borderHash);
                         Intent focusIntent = new Intent(FocusBroadcastReceiver.FOCUS );
@@ -150,6 +156,13 @@ public class OTNGraphOverlay extends AbstractMapOverlay2 {
                         focusIntent.putExtra("useTightZoom",true);
                         AtakBroadcast.getInstance().sendBroadcast(focusIntent);
                         break;
+
+                    }
+                    case (OTNMapComponent.SET_BORDER_COLOR): {
+                        strokeColor = intent.getIntExtra ( ID_COLOR_STROKE , strokeColor );
+                        fillColor = intent.getIntExtra ( ID_COLOR_FILL , strokeColor );
+                        _prefs.set ( ID_COLOR_FILL , fillColor );
+                        _prefs.set ( ID_COLOR_STROKE , strokeColor );
                     }
                 }
             }
@@ -173,14 +186,12 @@ public class OTNGraphOverlay extends AbstractMapOverlay2 {
         if (!MapGroupHierarchyListItem.addToObjList(this._group))
             return null;
 
-        if (this.currentList == null || this.currentList.isDisposed())
+        if (this.currentList == null || this.currentList.isDisposed() )
             this.currentList = new MapGroupHierarchyListItem(null,
                     this._mapView, this._group, null , hierarchyListFilter,
                     baseAdapter );
         else
             this.currentList.refresh(baseAdapter, hierarchyListFilter);
-        Log.d(TAG , this.currentList.getIconUri());
-
         return this.currentList;
     }
 

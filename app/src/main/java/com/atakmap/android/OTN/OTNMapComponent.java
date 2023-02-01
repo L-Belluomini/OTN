@@ -45,6 +45,7 @@ public class OTNMapComponent extends DropDownMapComponent {
     public static final String FIND_GRAPHS = "com.atakmap.android.OTN.FIND_GRAPHS";
     public static final String SET_SELECTED_GRAPH = "com.atakmap.android.OTN.SET_SELECTED_GRAPH";
     public static final String FOCUS_BRODER = "com.atakmap.android.OTN.FOCUS_BRODER";
+    public static final String SET_BORDER_COLOR = "com.atakmap.android.OTN.SET_BORDER_COLOR";
     private static final String TAG = "OTNMapComponent";
     private Context pluginContext;
     private Context _context;
@@ -209,9 +210,7 @@ public class OTNMapComponent extends DropDownMapComponent {
         // register other route planners
         // querry serivce db and create realtive routers
 
-        //TEST||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-        Log.d(TAG , view.getMapOverlayManager().getOverlays().toString());
-        Log.d(TAG , view.getRootGroup().getChildGroups().toString());
+        //TEST///////////////////////////////////////////////////////////////////////////////////////////////////
     }
 
     @Override
