@@ -26,6 +26,8 @@ import com.atakmap.coremap.io.IOProviderFactory;
 import com.atakmap.coremap.log.Log;
 import com.atakmap.android.OTN.plugin.R;
 
+import com.atakmap.app.preferences.ToolsPreferenceFragment;
+
 import com.atakmap.android.routes.RoutePlannerManager;
 import com.atakmap.android.routes.RouteMapComponent;
 import com.google.gson.Gson;
@@ -211,6 +213,17 @@ public class OTNMapComponent extends DropDownMapComponent {
         // querry serivce db and create realtive routers
 
         //TEST///////////////////////////////////////////////////////////////////////////////////////////////////
+
+        ////////////////////// PREFERENCES /////////////////////////////
+        ToolsPreferenceFragment
+                .register(
+                        new ToolsPreferenceFragment.ToolPreference(
+                                "OTN Preferences",
+                                "Custom preferences for OTN plugin",
+                                "OTNPreference",
+                                context.getResources().getDrawable(
+                                        R.drawable.otn_logo, null),
+                                new OTNPreferenceFragment(context)));
     }
 
     @Override
