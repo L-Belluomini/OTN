@@ -312,6 +312,7 @@ public class OTNMapComponent extends DropDownMapComponent {
         } catch ( Exception e) {
             Log.e( TAG ,"An error occurred, reading " );
             Log.e ( TAG , e.toString());
+            return null;
         }
         return new OTNGraph("/OTN/graphs/" + dir , tmpConfig );
     }
