@@ -118,6 +118,7 @@ public class OTNGraphOverlay extends AbstractMapOverlay2 {
                         // add new graphs
                         for ( OTNGraph graph: tmpgraphs ) {
                             Polyline tmp = graph.getBorder();
+
                             if ( tmp != null ) {
                                 bordersMap.put( graph.getEdgeHash() , tmp.getUID() );
 
@@ -214,151 +215,7 @@ public class OTNGraphOverlay extends AbstractMapOverlay2 {
     public DeepMapItemQuery getQueryFunction() {
         return null;
     }
-    public MapGroup getMapGroup() {
-        return _group;
-    }
-/*
-    public class OTNWorldListModel extends AbstractHierarchyListItem2
-            implements Search, Visibility2, View.OnClickListener {
-
-        private final static String TAG = "OTNWorldListModel";
-
-        private View _header, _footer;
-
-        public OTNWorldListModel() {
-            this.asyncRefresh = true;
-        }
-
-        @Override
-        public String getTitle() {
-            return OTNGraphOverlay.this.getName();
-        }
-
-        @Override
-        public String getIconUri() {
-            return "android.resource://" + _pluginContext.getPackageName()
-                    + "/" + R.drawable.ic_launcher;
-
-        }
-
-        public int getPreferredListIndex() {
-            return 5;
-        }
-
-        @Override
-        public int getDescendantCount() {
-            return 0;
-        }
-
-        @Override
-        public Object getUserObject() {
-            return this;
-        }
-
-        @Override
-        public View getExtraView() {
-            return null;
-        }
-
-        @Override
-        public View getHeaderView() {
-            if (_header == null) {
-                _header = LayoutInflater.from(_pluginContext).inflate(
-                        R.layout.overlay_header, _mapView, false);
-                _header.findViewById(R.id.header_button)
-                        .setOnClickListener(this);
-            }
-            return _header;
-        }
-
-        @Override
-        public View getFooterView() {
-            if (_footer == null) {
-                _footer = LayoutInflater.from(_pluginContext).inflate(
-                        R.layout.overlay_footer, _mapView, false);
-                _footer.findViewById(R.id.footer_button)
-                        .setOnClickListener(this);
-            }
-            return _footer;
-        }
-
-        @Override
-        public void refreshImpl() {
-
-            List<HierarchyListItem> filtered = new ArrayList<>();
-
-            List<ExampleLayer> layers = getLayers();
-            for (ExampleLayer l : layers) {
-                LayerHierarchyListItem item = new LayerHierarchyListItem(l);
-                if (this.filter.accept(item))
-                    filtered.add(item);
-            }
-            List<ExampleMultiLayer> multilayers = getMultiLayers();
-            for (ExampleMultiLayer ml : multilayers) {
-                LayerHierarchyListItem item = new LayerHierarchyListItem(ml);
-                if (this.filter.accept(item))
-                    filtered.add(item);
-            }
-
-            // Sort
-            sortItems(filtered);
-
-            // Update
-            updateChildren(filtered);
-
-        }
 
 
-
-        @Override
-        public void dispose() {
-            disposeChildren();
-        }
-
-        @Override
-        public boolean hideIfEmpty() {
-            return true;
-        }
-
-        @Override
-        public boolean isMultiSelectSupported() {
-            return false;
-        }
-
-        @Override
-        public boolean setVisible(boolean visible) {
-            List<Visibility> actions = getChildActions(Visibility.class);
-            boolean ret = !actions.isEmpty();
-            for (Visibility del : actions)
-                ret &= del.setVisible(visible);
-            return ret;
-        }
-
-        @Override
-        public Set<HierarchyListItem> find(String searchTerms) {
-            searchTerms = searchTerms.toLowerCase();
-            Set<HierarchyListItem> results = new HashSet<>();
-            List<HierarchyListItem> items = getChildren();
-            for (HierarchyListItem item : items) {
-                if (item.getTitle().toLowerCase().contains(searchTerms))
-                    results.add(item);
-            }
-            return results;
-        }
-
-        @Override
-        public void onClick(View v) {
-            if (v instanceof Button)
-                Toast.makeText(_mapView.getContext(),
-                        ((Button) v).getText(),
-                        Toast.LENGTH_LONG).show();
-        }
-    }
-
-    //public  class OTNmapgGRoup extends MapGroup {
-
-    //}
-
- */
 }
 

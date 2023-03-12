@@ -159,16 +159,25 @@ public class OTNGraphAdapter extends ArrayAdapter {
 
         ImageButton showInfoB = view.findViewById(R.id.btn_graph_info);
 
-        AlertDialog.Builder getinfoADB = new AlertDialog.Builder(MapView._mapView.getContext()) ;
-        getinfoADB.setTitle("graph info");
-        ConstraintLayout infoview = (ConstraintLayout) LayoutInflater.from(pContext).inflate( R.layout.grapinfodialog , null );
-        TextView graphinfoTV = infoview.findViewById(R.id.graphinfo);
-        graphinfoTV.setText( graph.getConfigGH().toString() );
-        getinfoADB.setView(infoview);
-        AlertDialog infoAD = getinfoADB.create();
+
         showInfoB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                AlertDialog.Builder getinfoADB = new AlertDialog.Builder(MapView._mapView.getContext()) ;
+                getinfoADB.setTitle("graph info");
+                ConstraintLayout infoview = (ConstraintLayout) LayoutInflater.from(pContext).inflate( R.layout.grapinfodialog , null );
+                TextView graphinfoTV = infoview.findViewById(R.id.graphinfo);
+                graphinfoTV.setText (
+                        graph.getConfigGH().toString() + "\n"
+                        +"edge number: "+ Integer.toString( graph.getEdges() ) + "\n"
+                        + "nodes number: " + Integer.toString( graph.getNodes() ) + "\n"
+                        + "Bound box: " + graph.getBondBox().toString() + "\n"
+                        //+ " area: " +  Double.toString( graph.getArea() )
+
+                        );
+
+                getinfoADB.setView(infoview);
+                AlertDialog infoAD = getinfoADB.create();
                 infoAD.show();
             }
         });
