@@ -27,7 +27,7 @@ public class OTNGraph implements Serializable {
         this.graphPath = graphPath;
 
         this.configGH.putObject( "graph.location" , FileSystemUtils.getItem( FileSystemUtils.TOOL_DATA_DIRECTORY + graphPath ).getPath() );
-        this.configGH.putObject("grap.dataaces" , "MMAP");
+        this.configGH.putObject("graph.dataaces" , "MMAP");
     }
 
     public String getGraphPath() {
