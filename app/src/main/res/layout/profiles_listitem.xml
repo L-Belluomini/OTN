@@ -9,6 +9,7 @@
         android:id="@+id/profile_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="3sp"
         android:textColor="@color/white"
         android:maxLines="1"
         android:textSize="12sp"

@@ -1,17 +1,22 @@
 
 package com.atakmap.android.OTN;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 //import androidx.recyclerview.widget.RecyclerView;
+
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.atak.plugins.impl.PluginLayoutInflater;
 import com.atakmap.android.OTN.plugin.R;
@@ -20,6 +25,8 @@ import com.atakmap.android.dropdown.DropDownReceiver;
 import com.atakmap.android.ipc.AtakBroadcast;
 import com.atakmap.android.maps.MapView;
 import com.atakmap.coremap.log.Log;
+import com.graphhopper.GraphHopper;
+import com.graphhopper.util.Constants;
 
 import java.util.List;
 
@@ -57,6 +64,32 @@ public class OTNDropDownReceiver extends DropDownReceiver implements
                 Log.d(TAG , "refreshcallback");
                 Intent intent = new Intent( OTNMapComponent.FIND_GRAPHS);
                 AtakBroadcast.getInstance().sendBroadcast(intent);
+            }
+        });
+
+        ImageButton infoBtton =templateView.findViewById( R.id.help_button);
+        infoBtton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder getinfoADB = new AlertDialog.Builder(MapView._mapView.getContext()) ;
+                getinfoADB.setTitle("OTN info");
+                ConstraintLayout infoview = (ConstraintLayout) LayoutInflater.from( pluginContext ).inflate( R.layout.grapinfodialog , null );
+                TextView graphinfoTV = infoview.findViewById(R.id.graphinfo);
+                graphinfoTV.setText (
+                       "Version:" + Constants.VERSION +" Build date: " + Constants.BUILD_DATE + "\n"
+                        +"Color of profile indicates type of profile" + "\n"
+                        + "red : Only ch" +"\n"
+                        + "cyan : Both" +"\n"
+                        + "blue : Only lm" +"\n"
+                        + "white : normal"
+
+
+                        //+ "OTN verrsion " + System.print(  )
+                );
+
+                getinfoADB.setView(infoview);
+                AlertDialog infoAD = getinfoADB.create();
+                infoAD.show();
             }
         });
 
