@@ -99,7 +99,7 @@ public class OTNGraph implements Serializable {
         polyLoader.loadPolygon().toArray(tmp);
 
         borderPoly.setPoints( tmp );
-        area = borderPoly.getArea();
+        area = AreaUtilities.calcShapeArea( borderPoly.getPoints() );
         return borderPoly;
     }
 

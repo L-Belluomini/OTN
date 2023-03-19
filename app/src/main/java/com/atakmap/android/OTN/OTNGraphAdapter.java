@@ -173,8 +173,7 @@ public class OTNGraphAdapter extends ArrayAdapter {
                         +"edge number: "+ Integer.toString( graph.getEdges() ) + "\n"
                         + "nodes number: " + Integer.toString( graph.getNodes() ) + "\n"
                         + "Bound box: " + graph.getBondBox().toString() + "\n"
-                        + " area: " + Double.toString( graph.getArea() )
-                        );
+                        + " area: " + Double.toString( graph.getArea()  )  );
 
                 getinfoADB.setView(infoview);
                 AlertDialog infoAD = getinfoADB.create();

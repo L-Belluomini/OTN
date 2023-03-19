@@ -6,7 +6,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -27,6 +26,7 @@ import com.atakmap.android.overlay.AbstractMapOverlay2;
 import com.atakmap.android.overlay.DefaultMapGroupOverlay;
 import com.atakmap.android.preference.AtakPreferences;
 import com.atakmap.android.routes.RoutePlannerInterface;
+import com.atakmap.android.user.FocusBroadcastReceiver;
 import com.atakmap.coremap.filesystem.FileSystemUtils;
 import com.atakmap.coremap.io.IOProvider;
 import com.atakmap.coremap.io.IOProviderFactory;
@@ -139,35 +139,52 @@ public class OTNMapComponent extends DropDownMapComponent {
             if (action == null)
                 return;
 
-            switch (action) {
-                case (SET_SELECTED_GRAPH):
-                    Bundle graphBundle = intent.getBundleExtra("GRAPH");
-                    if (graphBundle == null) {
-                        Log.w(TAG,"failled setting bundle");
-                        return;
+                switch (action) {
+                    case (SET_SELECTED_GRAPH):
+                        Bundle graphBundle = intent.getBundleExtra("GRAPH");
+                        if (graphBundle == null) {
+                            Log.w(TAG,"failled setting bundle");
+                            return;
 
-                    }
-                    tmpGraph =  (OTNGraph) graphBundle.getSerializable("GRAPH");
-                    if ( tmpGraph == null ) {
-                        Log.w(TAG,"failled importing selected graph");
-                        return;
-                    }
-                    Log.d(TAG , tmpGraph.toString());
-                    updateRouters();
+                        }
+                        tmpGraph =  (OTNGraph) graphBundle.getSerializable("GRAPH");
+                        if ( tmpGraph == null ) {
+                            Log.w(TAG,"failled importing selected graph");
+                            return;
+                        }
+                        Log.d(TAG , tmpGraph.toString());
+                        updateRouters();
 
-                    break;
+                        break;
 
-                case (FIND_GRAPHS):
-                    findnSetGraphs();
-                    pushGraphs();
-                    updateOverlay();
-                    break;
-            }
+                    case (FIND_GRAPHS):
+                        findnSetGraphs();
+                        pushGraphs();
+                        updateOverlays();
+                        break;
+
+                    case (OTNMapComponent.FOCUS_BRODER):
+                        Log.d(TAG, "focus intne launched");
+                        String borderHash = intent.getStringExtra("BorderHash");
+
+                        if (borderHash == null){
+                            Log.d(TAG, "focus NO hash" );
+                            return;
+                        }
+                        Log.d(TAG, "focus hash" + borderHash);
+                        Intent focusIntent = new Intent(FocusBroadcastReceiver.FOCUS );
+                        focusIntent.putExtra("uid", bordersMap.get(borderHash) );
+                        //focusIntent.putExtra("useTightZoom",true);
+                        AtakBroadcast.getInstance().sendBroadcast(focusIntent);
+                        break;
+
+                }
             }
         };
         DocumentedIntentFilter mcFilter = new DocumentedIntentFilter();
         mcFilter.addAction(FIND_GRAPHS);
         mcFilter.addAction(SET_SELECTED_GRAPH);
+        mcFilter.addAction(FOCUS_BRODER);
         AtakBroadcast.getInstance().registerReceiver(selectegraphReciver, mcFilter );
 
         // map overlay
@@ -193,7 +210,7 @@ public class OTNMapComponent extends DropDownMapComponent {
         }
 
         findnSetGraphs();
-        updateOverlay();
+        updateOverlays();
 
         // retrive last selceted graph if present and unchanged
         for (OTNGraph tmpGraph : graphs ) {
@@ -320,7 +337,7 @@ public class OTNMapComponent extends DropDownMapComponent {
         }
     }
 
-    private void updateOverlay() {
+    private void updateOverlays() {
         Log.d(TAG, "overlay update");
         // remove old graphs
         mapGroup.clearItems();
@@ -331,8 +348,8 @@ public class OTNMapComponent extends DropDownMapComponent {
         for ( OTNGraph tmpGrap: graphs ) {
             Polyline border = tmpGrap.getBorder();
 
-            border.setStrokeColor( Color.BLUE );
-            border.setFillColor( Color.BLUE );
+            border.setStrokeColor( strokeColor );
+            border.setFillColor( fillColor );
             border.setStrokeWeight( 5 ); // from 1 to 6
 
             //border.setRadialMenu();
@@ -348,8 +365,13 @@ public class OTNMapComponent extends DropDownMapComponent {
                 mapGroup.addItem(border);
             }
         }
+    }
+    /* TODO add specific graph updater
+    private void updateOverlay (){
 
     }
+
+     */
 
     protected OTNGraph getGraphFromDir (String dir){
         GraphHopperConfig tmpConfig = null;
