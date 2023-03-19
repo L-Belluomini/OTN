@@ -5,6 +5,8 @@ package com.atakmap.android.OTN;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -12,12 +14,17 @@ import com.atakmap.android.OTN.router.OTNOfflineRouter;
 import com.atakmap.android.ipc.AtakBroadcast;
 import com.atakmap.android.ipc.AtakBroadcast.DocumentedIntentFilter;
 
+import com.atakmap.android.maps.DefaultMapGroup;
 import com.atakmap.android.maps.MapActivity;
 import com.atakmap.android.maps.MapComponent;
 import com.atakmap.android.maps.MapView;
 import com.atakmap.android.dropdown.DropDownMapComponent;
 
 
+import com.atakmap.android.maps.Polyline;
+import com.atakmap.android.maps.Shape;
+import com.atakmap.android.overlay.AbstractMapOverlay2;
+import com.atakmap.android.overlay.DefaultMapGroupOverlay;
 import com.atakmap.android.preference.AtakPreferences;
 import com.atakmap.android.routes.RoutePlannerInterface;
 import com.atakmap.coremap.filesystem.FileSystemUtils;
@@ -38,7 +45,9 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 
 public class OTNMapComponent extends DropDownMapComponent {
 
@@ -48,19 +57,23 @@ public class OTNMapComponent extends DropDownMapComponent {
     public static final String SET_SELECTED_GRAPH = "com.atakmap.android.OTN.SET_SELECTED_GRAPH";
     public static final String FOCUS_BRODER = "com.atakmap.android.OTN.FOCUS_BRODER";
     public static final String SET_BORDER_COLOR = "com.atakmap.android.OTN.SET_BORDER_COLOR";
+    final static String ID_COLOR_STROKE = "otn_color_stroke";
+    final static String ID_COLOR_FILL = "otn_color_fill";
     private static final String TAG = "OTNMapComponent";
     private Context pluginContext;
     private Context _context;
-    private OTNDropDownReceiver ddr;
-    private MapComponent mc;
     private RoutePlannerManager _routeManager ;
     private LinkedList<String> registeredRouters = new LinkedList<>();
     private LinkedList<OTNGraph> graphs = new LinkedList<>();
+    private final Map<String , String> bordersMap = new HashMap<>();
     private OTNGraph selectdeGraph;
     private OTNGraph tmpGraph;
+    private DefaultMapGroup mapGroup;
     private AtakPreferences _prefs;
 
-    private OTNGraphOverlay overlay;
+    private AbstractMapOverlay2 overlay;
+    private int fillColor;
+    private int strokeColor;
 
     public OTNMapComponent(){    }
 
@@ -93,12 +106,12 @@ public class OTNMapComponent extends DropDownMapComponent {
         pluginContext.setTheme(R.style.ATAKPluginTheme);
         super.onCreate(pluginContext, intent, view);
 
-        ddr = new OTNDropDownReceiver(
+        OTNDropDownReceiver ddr = new OTNDropDownReceiver(
                 view, pluginContext);
 
         // prepare to set the routers
         _context = view.getContext();
-        mc = ( (MapActivity) _context )
+        MapComponent mc = ((MapActivity) _context)
                 .getMapComponent(RouteMapComponent.class);
 
         _routeManager = mc != null
@@ -108,6 +121,9 @@ public class OTNMapComponent extends DropDownMapComponent {
         assert _routeManager != null;
 
         _prefs = new AtakPreferences(view);
+
+        fillColor = _prefs.get ( ID_COLOR_FILL, Color.BLUE );
+        strokeColor = _prefs.get ( ID_COLOR_STROKE, Color.BLUE );
 
         Log.d(TAG, "registering the plugin filter");
         DocumentedIntentFilter ddFilter = new DocumentedIntentFilter();
@@ -144,7 +160,7 @@ public class OTNMapComponent extends DropDownMapComponent {
                 case (FIND_GRAPHS):
                     findnSetGraphs();
                     pushGraphs();
-
+                    updateOverlay();
                     break;
             }
             }
@@ -155,7 +171,12 @@ public class OTNMapComponent extends DropDownMapComponent {
         AtakBroadcast.getInstance().registerReceiver(selectegraphReciver, mcFilter );
 
         // map overlay
-        overlay = new OTNGraphOverlay(view , pluginContext);
+        //overlay = new OTNGraphOverlay(view , pluginContext);
+
+        mapGroup = new DefaultMapGroup("OTNoverlay");
+        overlay = new DefaultMapGroupOverlay ( MapView.getMapView() , mapGroup   );
+        mapGroup.setMetaString("iconUri" , "android.resource://"+  pluginContext.getPackageName() + "/" + R.drawable.otn_logo);
+
         view.getMapOverlayManager().addOverlay( overlay );
         Log.d(TAG , "overlay added");
 
@@ -172,6 +193,7 @@ public class OTNMapComponent extends DropDownMapComponent {
         }
 
         findnSetGraphs();
+        updateOverlay();
 
         // retrive last selceted graph if present and unchanged
         for (OTNGraph tmpGraph : graphs ) {
@@ -296,6 +318,37 @@ public class OTNMapComponent extends DropDownMapComponent {
 
             }
         }
+    }
+
+    private void updateOverlay() {
+        Log.d(TAG, "overlay update");
+        // remove old graphs
+        mapGroup.clearItems();
+        mapGroup.clearGroups();
+
+        bordersMap.clear();
+
+        for ( OTNGraph tmpGrap: graphs ) {
+            Polyline border = tmpGrap.getBorder();
+
+            border.setStrokeColor( Color.BLUE );
+            border.setFillColor( Color.BLUE );
+            border.setStrokeWeight( 5 ); // from 1 to 6
+
+            //border.setRadialMenu();
+            border.setStrokeStyle(Shape.BASIC_LINE_STYLE_DOTTED );
+            border.setFillAlpha( 250 );
+            border.setVisible( true);
+            //border.setStyle(Shape.STYLE_FILLED_MASK); // stroke
+            border.setTitle( tmpGrap.getGraphPath().substring( tmpGrap.getGraphPath().lastIndexOf("/")+1 ) );
+            //border.setMetaString("iconUri" , "android.resource://"+  pluginContext.getPackageName() + "/" + R.drawable.ic_otnlogo_dropdown);
+
+            if ( border != null ) {
+                bordersMap.put(tmpGrap.getEdgeHash(), border.getUID());
+                mapGroup.addItem(border);
+            }
+        }
+
     }
 
     protected OTNGraph getGraphFromDir (String dir){

@@ -1,6 +1,7 @@
 package com.atakmap.android.OTN;
 
 import com.atakmap.android.maps.Polyline;
+import com.atakmap.coremap.conversions.AreaUtilities;
 import com.atakmap.coremap.filesystem.FileSystemUtils;
 import com.atakmap.coremap.log.Log;
 import com.atakmap.coremap.maps.coords.GeoPoint;
@@ -27,6 +28,11 @@ public class OTNGraph implements Serializable {
     private int edges = 0;
     private BBox bondBox;
     private double area;
+    private int borderColor;
+    private int fillColor;
+    private int alphaColor;
+    private int bordeStyle;
+
 
 
     public  OTNGraph (String graphPath , GraphHopperConfig jconfig){
@@ -123,7 +129,10 @@ public class OTNGraph implements Serializable {
     }
 
     public double getArea() {
-        return area;
+        if ( Double.isNaN( area ) ) {
+            getBorder();
+        }
+        return area ;
     }
 
     @Override

@@ -23,6 +23,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import com.atakmap.android.OTN.plugin.R;
 import com.atakmap.android.ipc.AtakBroadcast;
 import com.atakmap.android.maps.MapView;
+import com.atakmap.coremap.conversions.AreaUtilities;
 import com.atakmap.coremap.log.Log;
 
 import java.io.Serializable;
@@ -172,8 +173,7 @@ public class OTNGraphAdapter extends ArrayAdapter {
                         +"edge number: "+ Integer.toString( graph.getEdges() ) + "\n"
                         + "nodes number: " + Integer.toString( graph.getNodes() ) + "\n"
                         + "Bound box: " + graph.getBondBox().toString() + "\n"
-                        //+ " area: " +  Double.toString( graph.getArea() )
-
+                        + " area: " + Double.toString( graph.getArea() )
                         );
 
                 getinfoADB.setView(infoview);

@@ -113,6 +113,8 @@ public class OTNGraphOverlay extends AbstractMapOverlay2 {
 
                         // remove old graphs
                         _group.clearItems();
+                        _group.clearGroups();
+
                         bordersMap.clear();
 
                         // add new graphs
@@ -126,10 +128,10 @@ public class OTNGraphOverlay extends AbstractMapOverlay2 {
                                 tmp.setFillColor( fillColor);
 
                                 // @ gabri have fun
-                                tmp.setStrokeWeight( 6 ); // from 1 to 6
-                                tmp.setFillAlpha(250); // 0 - 255
+                                tmp.setStrokeWeight( 1 ); // from 1 to 6
+                                tmp.setFillAlpha(50); // 0 - 255
                                 //tmp.setStyle(Shape.BASIC_LINE_STYLE_SOLID );
-                                tmp.setStyle(Shape.BASIC_LINE_STYLE_OUTLINED );
+                                tmp.setStyle(Shape.BASIC_LINE_STYLE_DOTTED );
 
                                 tmp.setTitle( graph.getGraphPath().substring( graph.getGraphPath().lastIndexOf("/")+1 ) );
                                 tmp.setMetaString("iconUri" , "android.resource://"+  _pluginContext.getPackageName() + "/" + R.drawable.otn_logo);
@@ -187,13 +189,15 @@ public class OTNGraphOverlay extends AbstractMapOverlay2 {
         if (!MapGroupHierarchyListItem.addToObjList(this._group))
             return null;
 
-        if (this.currentList == null || this.currentList.isDisposed() )
-            this.currentList = new MapGroupHierarchyListItem(null,
-                    this._mapView, this._group, null , hierarchyListFilter,
-                    baseAdapter );
-        else
+        if (this.currentList == null || this.currentList.isDisposed() ) {
+            this.currentList = new MapGroupHierarchyListItem(null, this._mapView, this._group, null, hierarchyListFilter, baseAdapter);
+            Log.d(TAG, "new list");
+        } else {
             this.currentList.refresh(baseAdapter, hierarchyListFilter);
-        return this.currentList;
+            Log.d(TAG, "old lis");
+        }
+
+        return currentList;
     }
 
     @Override
