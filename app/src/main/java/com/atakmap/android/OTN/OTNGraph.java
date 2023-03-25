@@ -31,7 +31,7 @@ public class OTNGraph implements Serializable {
     private int borderColor;
     private int fillColor;
     private int alphaColor;
-    private int bordeStyle;
+    private int borderStyle;
 
 
 
@@ -40,7 +40,6 @@ public class OTNGraph implements Serializable {
         this.graphPath = graphPath;
 
         this.configGH.putObject( "graph.location" , FileSystemUtils.getItem( FileSystemUtils.TOOL_DATA_DIRECTORY + graphPath ).getPath() );
-        this.configGH.putObject("graph.dataaces" , "MMAP");
 
         getNodesAndEdges();
     }

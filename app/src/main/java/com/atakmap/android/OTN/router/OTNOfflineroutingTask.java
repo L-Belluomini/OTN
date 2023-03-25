@@ -20,6 +20,7 @@ import com.atakmap.map.elevation.ElevationManager;
 import com.graphhopper.GHRequest;
 import com.graphhopper.GHResponse;
 import com.graphhopper.GraphHopper;
+import com.graphhopper.GraphHopperConfig;
 import com.graphhopper.ResponsePath;
 import com.graphhopper.json.Statement;
 import com.graphhopper.util.CustomModel;
@@ -92,7 +93,14 @@ public class OTNOfflineroutingTask extends RouteGenerationTask{
         Log.d(TAG,"is ch capable "  + Boolean.toString(takRequest.isChCapable() ));
         Log.d(TAG,"is lm capable "  + Boolean.toString(takRequest.isLmCapable() ));
 
-        hopper.init(graph.getConfigGH());
+        GraphHopperConfig configGH = graph.getConfigGH();
+        Boolean ghmmapOption = prefs.getBoolean(OTNMapComponent.GRAPMEMORYMMAP , true );
+        if ( ghmmapOption) {
+            configGH.putObject("graph.dataaces" , "MMAP");
+        }
+
+
+        hopper.init(configGH);
         Log.d("OTN" , hopper.getGraphHopperLocation() );
         //hopper.setGraphHopperLocation(FileSystemUtils.getItem(FileSystemUtils.TOOL_DATA_DIRECTORY  +  graph.getGraphPath() ).getPath() );
         //hopper.load( FileSystemUtils.getItem(FileSystemUtils.TOOL_DATA_DIRECTORY  +   graph.getGraphPath()).getPath() );

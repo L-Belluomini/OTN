@@ -61,6 +61,7 @@ public class OTNMapComponent extends DropDownMapComponent {
     public final static String ID_COLOR_STROKE = "otn_color_stroke";
     public final static String ID_COLOR_FILL = "otn_color_fill";
     public final static String INSTRUCTION_LANG = "otn_instruction_lang";
+    public final static String GRAPMEMORYMMAP = "otn_graph_memory_map";
     private static final String TAG = "OTNMapComponent";
     private Context pluginContext;
     private Context _context;
