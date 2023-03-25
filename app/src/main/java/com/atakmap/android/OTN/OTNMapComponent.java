@@ -51,6 +51,7 @@ import java.util.Map;
 
 public class OTNMapComponent extends DropDownMapComponent {
 
+    public static final String SHOW_GRAPH_DETAIL = "com.atakmap.android.OTN.SHOW_PLUGIN.DETAIL";
     public static final String SHOW_PLUGIN = "com.atakmap.android.OTN.SHOW_PLUGIN";
     public static final String SET_GRAPHS = "com.atakmap.android.OTN.SET_GRAPHS";
     public static final String FIND_GRAPHS = "com.atakmap.android.OTN.FIND_GRAPHS";

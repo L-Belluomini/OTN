@@ -54,6 +54,7 @@ public class OTNDropDownReceiver extends DropDownReceiver implements
         // developers to look at this Inflator
         templateView = PluginLayoutInflater.inflate(context,
                 R.layout.main_layout, null);
+
         ImageButton refreshButton =  templateView.findViewById(R.id.refresh_button);
         if (refreshButton == null) {
             Log.w( TAG , "refresh button not working");
