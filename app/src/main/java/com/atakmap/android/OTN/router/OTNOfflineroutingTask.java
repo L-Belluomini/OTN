@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.atakmap.android.OTN.OTNGraph;
+import com.atakmap.android.OTN.OTNMapComponent;
 import com.atakmap.android.OTN.OTNrequest;
 import com.atakmap.android.OTN.OTNresponse;
 import com.atakmap.android.drawing.mapItems.DrawingCircle;
@@ -19,9 +20,7 @@ import com.atakmap.map.elevation.ElevationManager;
 import com.graphhopper.GHRequest;
 import com.graphhopper.GHResponse;
 import com.graphhopper.GraphHopper;
-import com.graphhopper.GraphHopperConfig;
 import com.graphhopper.ResponsePath;
-import com.graphhopper.config.Profile;
 import com.graphhopper.json.Statement;
 import com.graphhopper.util.CustomModel;
 import com.graphhopper.util.InstructionList;
@@ -146,8 +145,17 @@ public class OTNOfflineroutingTask extends RouteGenerationTask{
             }
         }
 
+        String lang = prefs.getString (OTNMapComponent.INSTRUCTION_LANG , "en_us" );
+        Locale local;
 
-        ghRequest.setLocale ( Locale.ENGLISH ); // @leo add support for multi locale & support to force it
+        try {
+            local = new Locale(lang);
+        }catch ( Exception e){
+            local = Locale.ENGLISH;
+        }
+
+        ghRequest.setLocale (  local );
+
 
         if ( ! takRequest.isChCapable() | takRequest.getProfileType() == OTNrequest.ProfileType.BESTFLEXIBLE  | ! shapelist.isEmpty() ) {
             ghRequest.putHint(Parameters.CH.DISABLE , true);
