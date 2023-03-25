@@ -111,6 +111,9 @@ public class OTNMapComponent extends DropDownMapComponent {
         OTNDropDownReceiver ddr = new OTNDropDownReceiver(
                 view, pluginContext);
 
+        OTNDropDownGraphDetails ddgd = new OTNDropDownGraphDetails(
+                view, pluginContext);
+
         // prepare to set the routers
         _context = view.getContext();
         MapComponent mc = ((MapActivity) _context)
@@ -132,6 +135,11 @@ public class OTNMapComponent extends DropDownMapComponent {
         ddFilter.addAction(SHOW_PLUGIN);
         ddFilter.addAction(SET_GRAPHS);
         registerDropDownReceiver(ddr, ddFilter);
+
+        ddFilter = new DocumentedIntentFilter();
+        ddFilter.addAction(SHOW_GRAPH_DETAIL);
+        registerDropDownReceiver(ddgd, ddFilter);
+
 
         final BroadcastReceiver selectegraphReciver = new BroadcastReceiver() {
             @Override

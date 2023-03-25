@@ -35,13 +35,11 @@ public class OTNDropDownGraphDetails extends DropDownReceiver {
 
     ////////////////// CONSTRUCTOR////////////////////
 
-    public OTNDropDownGraphDetails(MapView mapView, Context context ){
+    public OTNDropDownGraphDetails(MapView mapView, Context pContext ){
         super(mapView);
 
-        templateView = PluginLayoutInflater.inflate(context,
-                R.layout.graph_details, null);
-
-
+        templateView = PluginLayoutInflater.inflate(pContext,
+                R.layout.otngraph_details, null);
     }
 
 }
