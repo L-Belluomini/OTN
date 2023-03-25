@@ -14,6 +14,7 @@ public class OTNDropDownGraphDetails extends DropDownReceiver {
 
     final static String TAG = "OTNDropDownGraphDetails";
     private View templateView;
+    private OTNGraph graph;
 
     @Override
     protected void disposeImpl() {

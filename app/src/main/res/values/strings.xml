@@ -5,6 +5,23 @@
     <!-- description -->
     <string name="app_desc">Open TAK navigation</string>
 
+    <!-- Helloworld stuff -->
+    <string-array name="country_arrays">
+        <item>Malaysia</item>
+        <item>United States</item>
+        <item>Indonesia</item>
+        <item>France</item>
+        <item>Italy</item>
+        <item>Singapore</item>
+        <item>New Zealand</item>
+        <item>India</item>
+    </string-array>
+
+    <string name="summary">Shows a quick test of launching the file browser</string>
+
+    <string name="full_example_title">Full String Example</string>
+    <string name="full_example_summary">Shows a quick example of how to reference both a title and a summary as a String resource</string>
+
 
 
 

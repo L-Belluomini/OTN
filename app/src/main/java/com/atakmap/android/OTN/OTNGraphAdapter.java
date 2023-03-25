@@ -164,13 +164,13 @@ public class OTNGraphAdapter extends ArrayAdapter {
         showInfoB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d(TAG , "launching graph detail");
+                /*Log.d(TAG , "launching graph detail");
                 Intent intent = new Intent( OTNMapComponent.SHOW_GRAPH_DETAIL);
-                AtakBroadcast.getInstance().sendBroadcast(intent);
-                /*
+                AtakBroadcast.getInstance().sendBroadcast(intent);*/
+
                 AlertDialog.Builder getinfoADB = new AlertDialog.Builder(MapView._mapView.getContext()) ;
                 getinfoADB.setTitle("graph info");
-                ConstraintLayout infoview = (ConstraintLayout) LayoutInflater.from(pContext).inflate( R.layout.grapinfodialog , null );
+                LinearLayout infoview = (LinearLayout) LayoutInflater.from(pContext).inflate( R.layout.grapinfodialog , null );
                 TextView graphinfoTV = infoview.findViewById(R.id.graphinfo);
                 graphinfoTV.setText (
                         graph.getConfigGH().toString() + "\n"
@@ -182,7 +182,6 @@ public class OTNGraphAdapter extends ArrayAdapter {
                 getinfoADB.setView(infoview);
                 AlertDialog infoAD = getinfoADB.create();
                 infoAD.show();
-                */
             }
         });
 
