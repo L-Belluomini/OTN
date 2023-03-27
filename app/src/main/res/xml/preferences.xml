@@ -49,4 +49,10 @@
         android:entryValues="@array/country_arrays"
         />
 
+    <Preference android:key="defaultGraphColor"
+        android:title="preferences_text301"
+        android:summary="preferences_text302"
+        />
+
+
 </PreferenceScreen>

@@ -1,19 +1,27 @@
 package com.atakmap.android.OTN;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.widget.Toast;
 
+import androidx.preference.PreferenceManager;
+
+import com.atakmap.android.gui.ColorPalette;
 import com.atakmap.android.gui.ImportFileBrowserDialog;
 import com.atakmap.android.gui.PanEditTextPreference;
 import com.atakmap.android.OTN.plugin.R;
 import com.atakmap.android.preference.PluginPreferenceFragment;
 import com.atakmap.coremap.filesystem.FileSystemUtils;
+import com.atakmap.coremap.log.Log;
 
 import java.io.File;
+
+import gov.tak.platform.graphics.Color;
 
 public class OTNPreferenceFragment extends PluginPreferenceFragment {
 
@@ -37,12 +45,60 @@ public class OTNPreferenceFragment extends PluginPreferenceFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        try {
+
+        final Preference defaultGraphColor = findPreference(
+                "defaultGraphColor");
+        defaultGraphColor
+                .setOnPreferenceClickListener(
+                        new Preference.OnPreferenceClickListener() {
+                            @Override
+                            public boolean onPreferenceClick(
+                                    Preference preference) {
+
+                                final SharedPreferences _prefs = PreferenceManager
+                                        .getDefaultSharedPreferences(
+                                                getActivity());
+
+                                AlertDialog.Builder b = new AlertDialog.Builder(
+                                        getActivity());
+                                b.setTitle(defaultGraphColor.getTitle());
+                                int color = Color.WHITE;
+                                try {
+                                    color = Integer.parseInt(_prefs.getString(
+                                            "defaultGraphColor",
+                                            Integer.toString(Color.WHITE)));
+                                } catch (Exception e) {
+                                    Log.d(TAG,
+                                            "error occurred getting preference");
+                                }
+                                ColorPalette palette = new ColorPalette(
+                                        getActivity(), color);
+                                b.setView(palette);
+                                final AlertDialog alert = b.create();
+                                ColorPalette.OnColorSelectedListener l = new ColorPalette.OnColorSelectedListener() {
+                                    @Override
+                                    public void onColorSelected(int color,
+                                                                String label) {
+                                        _prefs.edit()
+                                                .putString("defaultGraphColor",
+                                                        Integer.toString(color))
+                                                .apply();
+                                        alert.dismiss();
+                                    }
+                                };
+                                palette.setOnColorSelectedListener(l);
+                                alert.show();
+                                return true;
+                            }
+                        });
+
+
+        /*try {
             ((PanEditTextPreference) findPreference("key_for_helloworld"))
                     .checkValidInteger();
         } catch (Exception ignored) {
         }
-        /*findPreference("test_file_browser")
+        findPreference("test_file_browser")
                 .setOnPreferenceClickListener(new OnPreferenceClickListener() {
                     public boolean onPreferenceClick(Preference pref) {
 
