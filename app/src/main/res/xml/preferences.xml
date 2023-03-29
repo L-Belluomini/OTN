@@ -3,8 +3,9 @@
 //color default graph, routing language, fast mode
     <PreferenceCategory
         android:key="key_for_category"
-        android:title="Test Preference Category (in Plugins they cannot have any members)" />
+        android:title="OTN Preferences" />
 
+    <!--
 
     <com.atakmap.android.gui.PanEditTextPreference
         pluginIcon="@drawable/otn_logo"
@@ -39,19 +40,17 @@
         android:title="Example Check Box"
         android:defaultValue="true"
         />
+    !-->
 
-    <com.atakmap.android.gui.PanListPreference
-        android:key="test4"
-        android:summary="Shows a quick list selection example"
-        android:title="Example list selector"
-        android:defaultValue="Italy"
-        android:entries="@array/country_arrays"
-        android:entryValues="@array/country_arrays"
+    <ListPreference
+        android:key="RoutingInstructionLang"
+        android:summary="Sets the routing instructions language"
+        android:title="Routing Instructions Language"
         />
 
     <Preference android:key="defaultGraphColor"
-        android:title="preferences_text301"
-        android:summary="preferences_text302"
+        android:title="Default Graph Border Color"
+        android:summary="Sets the default graph overlay border color"
         />
 
 

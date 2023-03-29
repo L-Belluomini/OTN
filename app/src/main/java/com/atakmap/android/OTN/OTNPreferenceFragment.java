@@ -9,6 +9,7 @@ import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.widget.Toast;
 
+import androidx.preference.ListPreference;
 import androidx.preference.PreferenceManager;
 
 import com.atakmap.android.gui.ColorPalette;
@@ -92,6 +93,8 @@ public class OTNPreferenceFragment extends PluginPreferenceFragment {
                             }
                         });
 
+        //final ListPreference routingInstructionLang = findPreference("RoutingInstructionLang");
+
 
         /*try {
             ((PanEditTextPreference) findPreference("key_for_helloworld"))
@@ -141,6 +144,6 @@ public class OTNPreferenceFragment extends PluginPreferenceFragment {
 
     @Override
     public String getSubTitle() {
-        return getSubTitle("Tool Preferences", "Hello World Preferences");
+        return getSubTitle("Tool Preferences", "OTN Preferences");
     }
 }

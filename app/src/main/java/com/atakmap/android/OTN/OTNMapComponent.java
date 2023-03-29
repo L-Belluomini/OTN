@@ -58,7 +58,7 @@ public class OTNMapComponent extends DropDownMapComponent {
     public static final String SET_SELECTED_GRAPH = "com.atakmap.android.OTN.SET_SELECTED_GRAPH";
     public static final String FOCUS_BRODER = "com.atakmap.android.OTN.FOCUS_BRODER";
     public static final String SET_BORDER_COLOR = "com.atakmap.android.OTN.SET_BORDER_COLOR";
-    public final static String ID_COLOR_STROKE = "otn_color_stroke";
+    public final static String ID_COLOR_STROKE = "defaultGraphColor";
     public final static String ID_COLOR_FILL = "otn_color_fill";
     public final static String INSTRUCTION_LANG = "otn_instruction_lang";
     public final static String GRAPMEMORYMMAP = "otn_graph_memory_map";
@@ -128,7 +128,7 @@ public class OTNMapComponent extends DropDownMapComponent {
 
         _prefs = new AtakPreferences(view);
 
-        fillColor = _prefs.get ( ID_COLOR_FILL, Color.BLUE );
+        //fillColor = _prefs.get ( ID_COLOR_FILL, Color.BLUE );
         strokeColor = _prefs.get ( ID_COLOR_STROKE, Color.BLUE );
 
         Log.d(TAG, "registering the plugin filter");
@@ -360,7 +360,7 @@ public class OTNMapComponent extends DropDownMapComponent {
             Polyline border = tmpGrap.getBorder();
 
             border.setStrokeColor( strokeColor );
-            border.setFillColor( fillColor );
+            //border.setFillColor( fillColor );
             border.setStrokeWeight( 5 ); // from 1 to 6
 
             //border.setRadialMenu();
