@@ -54,5 +54,12 @@
         android:summary="Sets the default graph overlay border color"
         />
 
+    <com.atakmap.android.gui.PanCheckBoxPreference
+        android:key="otn_graph_memory_map"
+        android:summary="Enables fast mode for routing. Takes less time, but only works on smaller graph"
+        android:title="Routing Fast Mode"
+        android:defaultValue="false"
+        />
+
 
 </PreferenceScreen>

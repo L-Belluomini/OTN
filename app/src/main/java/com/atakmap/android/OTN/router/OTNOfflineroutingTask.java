@@ -94,11 +94,12 @@ public class OTNOfflineroutingTask extends RouteGenerationTask{
         Log.d(TAG,"is lm capable "  + Boolean.toString(takRequest.isLmCapable() ));
 
         GraphHopperConfig configGH = graph.getConfigGH();
-        Boolean ghmmapOption = prefs.getBoolean(OTNMapComponent.GRAPMEMORYMMAP , true );
-        if ( ghmmapOption) {
+        Boolean ghmmapOption = prefs.getBoolean(OTNMapComponent.GRAPH_MEMORY_MAP , false );
+        if ( !ghmmapOption) {
             configGH.putObject("graph.dataaces" , "MMAP");
+        } else{
+            configGH.putObject("graph.dataaces" , "RAM_STORE");
         }
-
 
         hopper.init(configGH);
         Log.d("OTN" , hopper.getGraphHopperLocation() );
