@@ -232,6 +232,7 @@ public class OTNMapComponent extends DropDownMapComponent {
 
         if (selectdeGraph == null){
             if (graphs.size() > 1 ) {
+                pushGraphs();
                 return;
             }
             // if there only one graph set as selected
