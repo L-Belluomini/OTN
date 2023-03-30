@@ -5,6 +5,7 @@ package com.atakmap.android.OTN;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -16,6 +17,8 @@ import com.atakmap.android.ipc.AtakBroadcast.DocumentedIntentFilter;
 import com.atakmap.android.maps.DefaultMapGroup;
 import com.atakmap.android.maps.MapActivity;
 import com.atakmap.android.maps.MapComponent;
+import com.atakmap.android.maps.MapGroup;
+import com.atakmap.android.maps.MapItem;
 import com.atakmap.android.maps.MapView;
 import com.atakmap.android.dropdown.DropDownMapComponent;
 
@@ -49,7 +52,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
-public class OTNMapComponent extends DropDownMapComponent {
+public class OTNMapComponent extends DropDownMapComponent implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     public static final String SHOW_GRAPH_DETAIL = "com.atakmap.android.OTN.SHOW_PLUGIN.DETAIL";
     public static final String SHOW_PLUGIN = "com.atakmap.android.OTN.SHOW_PLUGIN";
@@ -241,12 +244,14 @@ public class OTNMapComponent extends DropDownMapComponent {
 
         pushGraphs();
 
+
         if ( this.graphs.isEmpty( ) ) {
         Log.w(TAG , "no graph found");
         Toast toast = Toast.makeText(pluginContext, "NO OTN graph FOUND", Toast.LENGTH_SHORT); // check right context
         toast.show();
         return;
         }
+
 
 
 
@@ -276,6 +281,8 @@ public class OTNMapComponent extends DropDownMapComponent {
                                         R.drawable.otn_logo, null),
                                 new OTNPreferenceFragment(context)));
     }
+
+
 
     @Override
     protected void onDestroyImpl(Context context, MapView view) {
@@ -359,7 +366,10 @@ public class OTNMapComponent extends DropDownMapComponent {
 
         for ( OTNGraph tmpGrap: graphs ) {
             Polyline border = tmpGrap.getBorder();
-
+            border.setColor(Color.RED);
+            // if red enable
+            //border.setFillAlpha(80);
+                // if after alpa is low, fck ea
             border.setStrokeColor( strokeColor );
             //border.setFillColor( fillColor );
             border.setStrokeWeight( 5 ); // from 1 to 6
@@ -430,4 +440,24 @@ public class OTNMapComponent extends DropDownMapComponent {
         }
     }
 
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if (key == null){
+            return;
+        }
+        if ( key.equals(SET_BORDER_COLOR) ){
+            mapGroup.deepForEachItem(new MapGroup.MapItemsCallback() {
+                @Override
+                public boolean onItemFunction(MapItem item) {
+                    if ( item instanceof Shape ) {
+                        ((Shape) item).setStrokeColor( _prefs.get(SET_BORDER_COLOR, Color.BLUE) );
+                    }
+
+                    return false;
+                }
+            });
+
+        }
+
+    }
 }
