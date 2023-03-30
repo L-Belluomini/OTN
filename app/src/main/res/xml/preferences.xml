@@ -41,11 +41,12 @@
         android:defaultValue="true"
         />
     !-->
-
-    <ListPreference
-        android:key="RoutingInstructionLang"
+    <com.atakmap.android.gui.PanListPreference
+        android:key="otn_routingInstructionLang"
         android:summary="Sets the routing instructions language"
         android:title="Routing Instructions Language"
+        android:entries="@array/gh_instruction_lang_entries"
+        android:entryValues="@array/gh_instruction_lang_entryValues"
         />
 
     <Preference android:key="defaultGraphColor"

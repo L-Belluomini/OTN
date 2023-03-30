@@ -6,6 +6,103 @@
     <string name="app_desc">Open TAK navigation</string>
 
     <!-- Helloworld stuff -->
+    <string-array name="gh_instruction_lang_entryValues">
+        <item>ar</item>
+        <item>ast</item>
+        <item>bg</item>
+        <item>bg_BN</item>
+        <item>ca</item>
+        <item>cs_CZ</item>
+        <item>da_DK</item>
+        <item>de_DE</item>
+        <item>el</item>
+        <item>eo</item>
+        <item>es</item>
+        <item>en_US</item>
+        <item>fa</item>
+        <item>fil</item>
+        <item>fi</item>
+        <item>fr_FR</item>
+        <item>fr_CH</item>
+        <item>gl</item>
+        <item>he</item>
+        <item>hr_HR</item>
+        <item>hsb</item>
+        <item>hu_HU</item>
+        <item>in_ID</item>
+        <item>it</item>
+        <item>ja</item>
+        <item>ko</item>
+        <item>lt_LT</item>
+        <item>nb_NO</item>
+        <item>ne</item>
+        <item>nl</item>
+        <item>pl_PL</item>
+        <item>pt_BR</item>
+        <item>pt_PT</item>
+        <item>ro</item>
+        <item>ru</item>
+        <item>sk</item>
+        <item>sl_SI</item>
+        <item>sr_RS</item>
+        <item>sv_SE</item>
+        <item>tr</item>
+        <item>uk</item>
+        <item>vi_VN</item>
+        <item>zh_CN</item>
+        <item>zh_HK</item>
+        <item>zh_TW</item>
+    </string-array>
+
+    <string-array name="gh_instruction_lang_entries">
+        <item>Arabic</item>
+        <item>Asturian</item>
+        <item>Bulgarian</item>
+        <item>Bengali</item>
+        <item>Catalan</item>
+        <item>Czech</item>
+        <item>Danish</item>
+        <item>German</item>
+        <item>Greek</item>
+        <item>Esperanto</item>
+        <item>Spanish</item>
+        <item>English_US</item>
+        <item>Farsi</item>
+        <item>Filipino</item>
+        <item>Finnish</item>
+        <item>French</item>
+        <item>French_CH</item>
+        <item>Galego</item>
+        <item>Hebrew</item>
+        <item>Croatian</item>
+        <item>Upper Sorbian</item>
+        <item>Hungarian</item>
+        <item>Indonisian</item>
+        <item>Italian</item>
+        <item>Japanese</item>
+        <item>Korean</item>
+        <item>Lithuanian</item>
+        <item>Norwegian bokmål</item>
+        <item>Nepali</item>
+        <item>Nederlands</item>
+        <item>Polish</item>
+        <item>Portuguese_BR</item>
+        <item>Portuguese_PT</item>
+        <item>Romanian</item>
+        <item>Russian</item>
+        <item>Slovakian</item>
+        <item>Slovenian</item>
+        <item>Serbian</item>
+        <item>Swedish</item>
+        <item>Turkish</item>
+        <item>Ukrainian</item>
+        <item>Vietnamese</item>
+        <item>simpl. Chinese</item>
+        <item>trad. Chinese_HK</item>
+        <item>trad. Chinese_TW</item>
+    </string-array>
+
+
     <string-array name="country_arrays">
         <item>Malaysia</item>
         <item>United States</item>

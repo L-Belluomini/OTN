@@ -60,7 +60,7 @@ public class OTNMapComponent extends DropDownMapComponent {
     public static final String SET_BORDER_COLOR = "com.atakmap.android.OTN.SET_BORDER_COLOR";
     public final static String ID_COLOR_STROKE = "defaultGraphColor";
     public final static String ID_COLOR_FILL = "otn_color_fill";
-    public final static String INSTRUCTION_LANG = "otn_instruction_lang";
+    public final static String INSTRUCTION_LANG = "otn_routingInstructionLang";
     public final static String GRAPMEMORYMMAP = "otn_graph_memory_map";
     private static final String TAG = "OTNMapComponent";
     private Context pluginContext;

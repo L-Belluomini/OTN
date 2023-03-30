@@ -9,6 +9,8 @@ import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.preference.ListPreference;
 import androidx.preference.PreferenceManager;
 
@@ -16,11 +18,19 @@ import com.atakmap.android.gui.ColorPalette;
 import com.atakmap.android.gui.ImportFileBrowserDialog;
 import com.atakmap.android.gui.PanEditTextPreference;
 import com.atakmap.android.OTN.plugin.R;
+import com.atakmap.android.gui.PanListPreference;
 import com.atakmap.android.preference.PluginPreferenceFragment;
 import com.atakmap.coremap.filesystem.FileSystemUtils;
 import com.atakmap.coremap.log.Log;
 
+import com.graphhopper.util.TranslationMap;
+
 import java.io.File;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 
 import gov.tak.platform.graphics.Color;
 
@@ -92,9 +102,24 @@ public class OTNPreferenceFragment extends PluginPreferenceFragment {
                                 return true;
                             }
                         });
+        }
 
-        //final ListPreference routingInstructionLang = findPreference("RoutingInstructionLang");
+        /*final Preference otn_routingInstructionLang = findPreference(
+                "otn_routingInstructionLang");
+        otn_routingInstructionLang
+                .setOnPreferenceClickListener(
+                        new Preference.OnPreferenceClickListener() {
+                            @Override
+                            public boolean onClick(
+                                    Preference preference) {
 
+                                final SharedPreferences _prefs = PreferenceManager
+                                        .getDefaultSharedPreferences(
+                                                getActivity());
+
+
+                            }
+                        }*/
 
         /*try {
             ((PanEditTextPreference) findPreference("key_for_helloworld"))
@@ -140,7 +165,6 @@ public class OTNPreferenceFragment extends PluginPreferenceFragment {
                         return true;
                     }
                 });*/
-    }
 
     @Override
     public String getSubTitle() {
