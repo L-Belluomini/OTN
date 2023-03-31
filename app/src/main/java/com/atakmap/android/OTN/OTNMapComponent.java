@@ -134,6 +134,8 @@ public class OTNMapComponent extends DropDownMapComponent implements SharedPrefe
         //fillColor = _prefs.get ( ID_COLOR_FILL, Color.BLUE );
         strokeColor = _prefs.get ( ID_COLOR_STROKE, Color.BLUE );
 
+        _prefs.registerListener(this);
+
         Log.d(TAG, "registering the plugin filter");
         DocumentedIntentFilter ddFilter = new DocumentedIntentFilter();
         ddFilter.addAction(SHOW_PLUGIN);
@@ -143,6 +145,7 @@ public class OTNMapComponent extends DropDownMapComponent implements SharedPrefe
         ddFilter = new DocumentedIntentFilter();
         ddFilter.addAction(SHOW_GRAPH_DETAIL);
         registerDropDownReceiver(ddgd, ddFilter);
+
 
 
         final BroadcastReceiver selectegraphReciver = new BroadcastReceiver() {
