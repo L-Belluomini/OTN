@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.atakmap.android.OTN.OTNGraph;
 import com.atakmap.android.OTN.OTNrequest;
@@ -99,8 +100,12 @@ public class OTNOfflineRouter implements RoutePlannerInterface, AdapterView.OnIt
     public RoutePlannerOptionsView getOptionsView(AlertDialog parent){
 
         RoutePlannerOptionsView view= (RoutePlannerOptionsView) LayoutInflater.from(pluginContext).inflate(R.layout.otnplanneroption, null);
-         //@gabri for waypoint
         _parent=parent;
+
+        // current graph textview
+
+        TextView current_graph_txtview = view.findViewById(R.id.current_graph_txt);
+        current_graph_txtview.setText("Current graph: "+ graph.getGraphPath().substring( graph.getGraphPath().lastIndexOf("/")+1 ));
 
         // profile
         PluginSpinner profileSpinner = view.findViewById(R.id.route_plan_method);
