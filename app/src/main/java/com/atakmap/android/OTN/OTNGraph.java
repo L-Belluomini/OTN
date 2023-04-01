@@ -26,7 +26,7 @@ public class OTNGraph implements Serializable {
     private String _hash ="";
     private int nodes =0;
     private int edges = 0;
-    private BBox bondBox;
+    private BBox boundBox;
     private double area;
     private int borderColor;
     private int fillColor;
@@ -35,7 +35,7 @@ public class OTNGraph implements Serializable {
 
 
 
-    public  OTNGraph (String graphPath , GraphHopperConfig jconfig){
+    public  OTNGraph ( String graphPath , GraphHopperConfig jconfig ) {
         this.configGH = jconfig;
         this.graphPath = graphPath;
 
@@ -84,12 +84,24 @@ public class OTNGraph implements Serializable {
     public Polyline getBorder( ) {
         File polyFile = FileSystemUtils.getItem(FileSystemUtils.TOOL_DATA_DIRECTORY  + graphPath + "/"+ "border" + ".poly" );
         Log.d(TAG,polyFile.toString());
+        Polyline borderPoly = new Polyline( UUID.randomUUID().toString() );
+
         if (! polyFile.exists()) {
-            return null;
+            GeoPoint[] array = new GeoPoint[5];
+            array[0] = new GeoPoint( boundBox.maxLat , boundBox.maxLon );
+            array[1] = new GeoPoint( boundBox.minLat , boundBox.maxLon );
+            array[2] = new GeoPoint( boundBox.minLat , boundBox.minLon );
+            array[3] = new GeoPoint( boundBox.maxLat , boundBox.minLon );
+            array[4] = new GeoPoint( boundBox.maxLat , boundBox.maxLon );
+            borderPoly.setPoints( array );
+            area = AreaUtilities.calcShapeArea( borderPoly.getPoints() );
+            return borderPoly;
+
         }
         Log.d(TAG,"file exist");
         PolyLoader polyLoader = new PolyLoader( polyFile );
-        Polyline borderPoly = new Polyline( UUID.randomUUID().toString() );
+
+
         /*
         Log.d(TAG,polyLoader.loadPolygon().toString());
         Log.d(TAG,polyLoader.loadPolygon().toArray()[1].toString());
@@ -113,7 +125,7 @@ public class OTNGraph implements Serializable {
         hopper.close();
         edges = baseGraph.getEdges();
         nodes = baseGraph.getNodes();
-        bondBox = baseGraph.getBounds();
+        boundBox = baseGraph.getBounds();
 
     }
 
@@ -125,14 +137,15 @@ public class OTNGraph implements Serializable {
         return edges;
     }
 
-    public BBox getBondBox() {
-        return bondBox;
+    public BBox getBoundBox() {
+        return boundBox;
     }
 
     public double getArea() {
         if ( Double.isNaN( area ) ) {
             getBorder();
         }
+
         return area ;
     }
 
