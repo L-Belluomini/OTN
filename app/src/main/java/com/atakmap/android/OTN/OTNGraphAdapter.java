@@ -15,7 +15,6 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -171,15 +170,48 @@ public class OTNGraphAdapter extends ArrayAdapter {
 
                 AlertDialog.Builder getinfoADB = new AlertDialog.Builder(MapView._mapView.getContext()) ;
                 getinfoADB.setTitle("graph info");
-                RelativeLayout infoview = (RelativeLayout) LayoutInflater.from(pContext).inflate( R.layout.grapinfodialog , null );
-                TextView graphinfoTV = infoview.findViewById(R.id.graphinfo);
-                graphinfoTV.setText (
-                        graph.getConfigGH().getProfiles().toString() + "\n"
+                View infoview = (View) LayoutInflater.from(pContext).inflate( R.layout.graphinfodialog, null );
+
+                TextView profilesTV = infoview.findViewById(R.id.configGH_profiles_list);
+                profilesTV.setText (
+                        graph.getConfigGH().getProfiles().toString()
+                );
+
+                TextView profilesCHTV = infoview.findViewById(R.id.configGH_CH_profiles_list);
+                profilesCHTV.setText (
+                        graph.getConfigGH().getCHProfiles().toString()
+                );
+
+                TextView profilesLMTV = infoview.findViewById(R.id.configGH_LM_profiles_list);
+                profilesLMTV.setText (
+                        graph.getConfigGH().getLMProfiles().toString()
+                );
+
+                TextView edgesTV = infoview.findViewById(R.id.edge_numbers);
+                edgesTV.setText (
+                        "Total graph edges: "+ Integer.toString( graph.getEdges() )
+                );
+
+                TextView nodesTV = infoview.findViewById(R.id.nodes_numbers);
+                nodesTV.setText (
+                        "Total graph nodes: "+ Integer.toString( graph.getNodes() )
+                );
+
+                TextView bbTV = infoview.findViewById(R.id.graph_bound_box);
+                bbTV.setText (
+                        "Graph bounding box: "+ Integer.toString( graph.getEdges() )
+                );
+
+                TextView areaTV = infoview.findViewById(R.id.graph_bound_box_area);
+                areaTV.setText (
+                        "Area: " + AreaUtilities.formatArea (Area.METRIC , graph.getArea() ,Area.METER2  )  ); //  todo add area preference and test with no poly
+
+                               /* + "\n"
                         + "edge number: "+ Integer.toString( graph.getEdges() ) + "\n"
                         + "nodes number: " + Integer.toString( graph.getNodes() ) + "\n"
                         + "Bound box: " + graph.getBondBox().toString() + "\n"
                                 + " area: " + AreaUtilities.formatArea (Area.METRIC , graph.getArea() ,Area.METER2  )  ); //  todo add area preference
-
+*/
                 getinfoADB.setView(infoview);
                 AlertDialog infoAD = getinfoADB.create();
                 infoAD.show();

@@ -75,19 +75,23 @@ public class OTNDropDownReceiver extends DropDownReceiver implements
             public void onClick(View view) {
                 AlertDialog.Builder getinfoADB = new AlertDialog.Builder(MapView._mapView.getContext()) ;
                 getinfoADB.setTitle("OTN info");
-                RelativeLayout infoview = (RelativeLayout) LayoutInflater.from( pluginContext ).inflate( R.layout.grapinfodialog , null );
-                TextView graphinfoTV = infoview.findViewById(R.id.graphinfo);
-                graphinfoTV.setText (
-                       "GraphHopper version:" + Constants.VERSION +" Build date: " + Constants.BUILD_DATE + "\n"
-                        + "Color of profile indicates type of profile" + "\n"
+                View infoview = (View) LayoutInflater.from( pluginContext ).inflate( R.layout.otnhelpdialog, null );
+                TextView gh_versionTV = infoview.findViewById(R.id.gh_version);
+                gh_versionTV.setText (
+                        "GraphHopper version: " + Constants.VERSION);
+
+                TextView builddateTV = infoview.findViewById(R.id.otn_build_date);
+                builddateTV.setText(
+                        "Build date: " + Constants.BUILD_DATE );
+
+                /*        + "Color of profile indicates type of profile" + "\n"
                         + "red : Only ch" +"\n"
                         + "cyan : Both" +"\n"
                         + "blue : Only lm" +"\n"
-                        + "white : normal"
+                        + "white : normal" */
 
 
                         //+ "OTN verrsion " + System.print(  )
-                );
 
                 getinfoADB.setView(infoview);
                 AlertDialog infoAD = getinfoADB.create();

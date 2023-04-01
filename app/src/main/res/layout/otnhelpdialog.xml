@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/auto_margin">
+
+    <TextView
+        android:id="@+id/gh_version"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </TextView>
+
+    <TextView
+        android:id="@+id/otn_build_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </TextView>
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider"
+        android:paddingVertical="@dimen/auto_margin"/>
+
+    <TextView
+        android:id="@+id/profile_color_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Profile type legend:">
+    </TextView>
+
+    <TextView
+        android:id="@+id/profile_color_info_CH"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Red profiles are type CH (contraption hierarchy)"
+        android:textColor="@color/red"></TextView>
+
+    <TextView
+        android:id="@+id/profile_color_info_LM"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Blu profiles are type LM (landmark)"
+        android:textColor="@color/blue"></TextView>
+
+    <TextView
+        android:id="@+id/profile_color_info_CHLM"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Cyan profiles are both CH and LM"
+        android:textColor="@color/cyan"></TextView>
+
+    <TextView
+        android:id="@+id/profile_color_info_normal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:text="White profiles are normal type">
+    </TextView>
+
+
+</LinearLayout>

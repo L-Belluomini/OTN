@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/auto_margin">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/configGH_profiles"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="All available profiles:">
+            </TextView>
+
+            <TextView
+                android:id="@+id/configGH_profiles_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </TextView>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider"
+                android:paddingVertical="@dimen/auto_margin"/>
+
+
+            <TextView
+                android:id="@+id/configGH_CH_profiles"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="CH profiles:">
+            </TextView>
+
+            <TextView
+                android:id="@+id/configGH_CH_profiles_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </TextView>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider"
+                android:paddingVertical="@dimen/auto_margin"/>
+
+
+            <TextView
+                android:id="@+id/configGH_LM_profiles"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="LM profiles:">
+            </TextView>
+
+            <TextView
+                android:id="@+id/configGH_LM_profiles_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </TextView>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider"
+                android:paddingVertical="@dimen/auto_margin"/>
+
+            <TextView
+                android:id="@+id/edge_numbers"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </TextView>
+
+            <TextView
+                android:id="@+id/nodes_numbers"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </TextView>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider"
+                android:paddingVertical="@dimen/auto_margin"/>
+
+            <TextView
+                android:id="@+id/graph_bound_box"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </TextView>
+
+            <TextView
+                android:id="@+id/graph_bound_box_area"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </TextView>
+
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
