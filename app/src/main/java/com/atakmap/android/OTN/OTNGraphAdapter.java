@@ -23,6 +23,7 @@ import androidx.annotation.NonNull;
 import com.atakmap.android.OTN.plugin.R;
 import com.atakmap.android.ipc.AtakBroadcast;
 import com.atakmap.android.maps.MapView;
+import com.atakmap.coremap.conversions.Area;
 import com.atakmap.coremap.conversions.AreaUtilities;
 import com.atakmap.coremap.log.Log;
 
@@ -177,7 +178,7 @@ public class OTNGraphAdapter extends ArrayAdapter {
                         + "edge number: "+ Integer.toString( graph.getEdges() ) + "\n"
                         + "nodes number: " + Integer.toString( graph.getNodes() ) + "\n"
                         + "Bound box: " + graph.getBondBox().toString() + "\n"
-                        + "area: " + Double.toString( graph.getArea()  )  );
+                                + " area: " + AreaUtilities.formatArea (Area.METRIC , graph.getArea() ,Area.METER2  )  ); //  todo add area preference
 
                 getinfoADB.setView(infoview);
                 AlertDialog infoAD = getinfoADB.create();
