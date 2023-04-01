@@ -177,7 +177,7 @@ public class OTNMapComponent extends DropDownMapComponent implements SharedPrefe
                         }
                         Log.d(TAG , tmpGraph.toString());
                         updateRouters();
-
+                        updateOverlays();
                         break;
 
                     case (FIND_GRAPHS):
@@ -233,7 +233,7 @@ public class OTNMapComponent extends DropDownMapComponent implements SharedPrefe
         }
 
         findnSetGraphs();
-        updateOverlays();
+
 
         // retrive last selceted graph if present and unchanged
         for (OTNGraph tmpGraph : graphs ) {
@@ -250,7 +250,7 @@ public class OTNMapComponent extends DropDownMapComponent implements SharedPrefe
             // if there only one graph set as selected
             selectdeGraph = graphs.get(0);
         }
-
+        updateOverlays();
         pushGraphs();
 
 
@@ -361,6 +361,7 @@ public class OTNMapComponent extends DropDownMapComponent implements SharedPrefe
                     Log.d(TAG , this.graphs.toString());
                 }
 
+
             }
         }
     }
@@ -385,6 +386,10 @@ public class OTNMapComponent extends DropDownMapComponent implements SharedPrefe
 
             //border.setRadialMenu();
             border.setStrokeStyle(Shape.BASIC_LINE_STYLE_DOTTED );
+
+            if ( tmpGrap == selectdeGraph ) {
+                border.setStrokeStyle(Shape.BASIC_LINE_STYLE_OUTLINED );
+            }
             border.setFillAlpha( 250 );
             border.setVisible( true);
             //border.setStyle(Shape.STYLE_FILLED_MASK); // stroke
