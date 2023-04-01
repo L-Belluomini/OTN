@@ -11,6 +11,9 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import com.atakmap.android.OTN.router.OTNOfflineRouter;
+import com.atakmap.android.data.ClearContentRegistry;
+import com.atakmap.android.data.DataMgmtMapComponent;
+import com.atakmap.android.data.DataMgmtReceiver;
 import com.atakmap.android.ipc.AtakBroadcast;
 import com.atakmap.android.ipc.AtakBroadcast.DocumentedIntentFilter;
 
@@ -52,7 +55,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
-public class OTNMapComponent extends DropDownMapComponent implements SharedPreferences.OnSharedPreferenceChangeListener {
+public class OTNMapComponent extends DropDownMapComponent implements SharedPreferences.OnSharedPreferenceChangeListener  , ClearContentRegistry.ClearContentListener {
 
     public static final String SHOW_GRAPH_DETAIL = "com.atakmap.android.OTN.SHOW_PLUGIN.DETAIL";
     public static final String SHOW_PLUGIN = "com.atakmap.android.OTN.SHOW_PLUGIN";
@@ -135,6 +138,9 @@ public class OTNMapComponent extends DropDownMapComponent implements SharedPrefe
         strokeColor = _prefs.get ( ID_COLOR_STROKE, Color.BLUE );
 
         _prefs.registerListener(this);
+
+        ClearContentRegistry clearCRegist = ClearContentRegistry.getInstance();
+        clearCRegist.registerListener(this);
 
         Log.d(TAG, "registering the plugin filter");
         DocumentedIntentFilter ddFilter = new DocumentedIntentFilter();
@@ -462,5 +468,12 @@ public class OTNMapComponent extends DropDownMapComponent implements SharedPrefe
 
         }
 
+    }
+
+    @Override
+    public void onClearContent(boolean clearmaps) {
+        if (clearmaps) {
+            DataMgmtReceiver.deleteDirs ( new String [] {FileSystemUtils.TOOL_DATA_DIRECTORY + "/OTN/graphs"}, false );
+        }
     }
 }
