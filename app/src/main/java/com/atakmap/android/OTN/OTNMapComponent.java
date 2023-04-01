@@ -451,15 +451,21 @@ public class OTNMapComponent extends DropDownMapComponent implements SharedPrefe
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        Log.d(TAG , "update pref" + key);
         if (key == null){
             return;
         }
-        if ( key.equals(SET_BORDER_COLOR) ){
+        if ( key.equals( ID_COLOR_STROKE ) ){
+            Log.d(TAG , "update colorr border");
             mapGroup.deepForEachItem(new MapGroup.MapItemsCallback() {
                 @Override
                 public boolean onItemFunction(MapItem item) {
+                    Log.d(TAG , "doing all map item");
                     if ( item instanceof Shape ) {
-                        ((Shape) item).setStrokeColor( _prefs.get(SET_BORDER_COLOR, Color.BLUE) );
+                        Log.d(TAG , "Item is shape");
+
+                        ((Shape) item).setStrokeColor( _prefs.get(ID_COLOR_STROKE, Color.BLUE) );
+
                     }
 
                     return false;
