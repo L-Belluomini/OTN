@@ -3,6 +3,9 @@
     <color name="white">#FFFFFF</color>
     <color name="darker_gray">#121212</color>
     <color name="black">#000000</color>
+    <color name="cyan">#ff00ffff</color>
+    <color name="blue">#ff0000ff</color>
+    <color name="red">#ffff0000</color>
 
     <!-- OTN/ARSENAL -->
     <color name="primary_icon">#D8D8D8</color> <!--not specified in ARSENAL but used a lot, I'm making the call to use it for button icons-->
