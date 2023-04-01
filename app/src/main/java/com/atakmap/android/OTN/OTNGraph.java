@@ -90,15 +90,18 @@ public class OTNGraph implements Serializable {
         Log.d(TAG,"file exist");
         PolyLoader polyLoader = new PolyLoader( polyFile );
         Polyline borderPoly = new Polyline( UUID.randomUUID().toString() );
-
+        /*
         Log.d(TAG,polyLoader.loadPolygon().toString());
         Log.d(TAG,polyLoader.loadPolygon().toArray()[1].toString());
         Log.d(TAG,polyLoader.loadPolygon().toArray()[1].toString());
+         */
+
         GeoPoint[] tmp = new GeoPoint[ polyLoader.loadPolygon().size()];
         polyLoader.loadPolygon().toArray(tmp);
 
         borderPoly.setPoints( tmp );
         area = AreaUtilities.calcShapeArea( borderPoly.getPoints() );
+
         return borderPoly;
     }
 
@@ -111,7 +114,6 @@ public class OTNGraph implements Serializable {
         edges = baseGraph.getEdges();
         nodes = baseGraph.getNodes();
         bondBox = baseGraph.getBounds();
-
 
     }
 
