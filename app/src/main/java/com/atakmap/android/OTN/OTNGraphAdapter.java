@@ -14,16 +14,15 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.atakmap.android.OTN.plugin.R;
 import com.atakmap.android.ipc.AtakBroadcast;
 import com.atakmap.android.maps.MapView;
-import com.atakmap.coremap.conversions.Area;
 import com.atakmap.coremap.conversions.AreaUtilities;
 import com.atakmap.coremap.log.Log;
 
@@ -171,14 +170,14 @@ public class OTNGraphAdapter extends ArrayAdapter {
 
                 AlertDialog.Builder getinfoADB = new AlertDialog.Builder(MapView._mapView.getContext()) ;
                 getinfoADB.setTitle("graph info");
-                LinearLayout infoview = (LinearLayout) LayoutInflater.from(pContext).inflate( R.layout.grapinfodialog , null );
+                RelativeLayout infoview = (RelativeLayout) LayoutInflater.from(pContext).inflate( R.layout.grapinfodialog , null );
                 TextView graphinfoTV = infoview.findViewById(R.id.graphinfo);
                 graphinfoTV.setText (
-                        graph.getConfigGH().toString() + "\n"
-                        +"edge number: "+ Integer.toString( graph.getEdges() ) + "\n"
+                        graph.getConfigGH().getProfiles().toString() + "\n"
+                        + "edge number: "+ Integer.toString( graph.getEdges() ) + "\n"
                         + "nodes number: " + Integer.toString( graph.getNodes() ) + "\n"
                         + "Bound box: " + graph.getBondBox().toString() + "\n"
-                        + " area: " + AreaUtilities.formatArea (Area.METRIC , graph.getArea() ,Area.METER2  )  ); //  todo add area preference
+                        + "area: " + Double.toString( graph.getArea()  )  );
 
                 getinfoADB.setView(infoview);
                 AlertDialog infoAD = getinfoADB.create();

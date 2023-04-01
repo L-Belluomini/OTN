@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -74,11 +75,11 @@ public class OTNDropDownReceiver extends DropDownReceiver implements
             public void onClick(View view) {
                 AlertDialog.Builder getinfoADB = new AlertDialog.Builder(MapView._mapView.getContext()) ;
                 getinfoADB.setTitle("OTN info");
-                ConstraintLayout infoview = (ConstraintLayout) LayoutInflater.from( pluginContext ).inflate( R.layout.grapinfodialog , null );
+                RelativeLayout infoview = (RelativeLayout) LayoutInflater.from( pluginContext ).inflate( R.layout.grapinfodialog , null );
                 TextView graphinfoTV = infoview.findViewById(R.id.graphinfo);
                 graphinfoTV.setText (
-                       "Version:" + Constants.VERSION +" Build date: " + Constants.BUILD_DATE + "\n"
-                        +"Color of profile indicates type of profile" + "\n"
+                       "GraphHopper version:" + Constants.VERSION +" Build date: " + Constants.BUILD_DATE + "\n"
+                        + "Color of profile indicates type of profile" + "\n"
                         + "red : Only ch" +"\n"
                         + "cyan : Both" +"\n"
                         + "blue : Only lm" +"\n"
@@ -142,7 +143,7 @@ public class OTNDropDownReceiver extends DropDownReceiver implements
 
                 OTNGraph selectedGraph = (OTNGraph) graphBundle.getSerializable( "GRAPH" );
 
-                Toast.makeText(pluginContext, "List changed, found " + Integer.toString(graphs.size()) + " graphs", Toast.LENGTH_LONG).show();
+                Toast.makeText(pluginContext, "OTN graph list updated, found " + Integer.toString(graphs.size()) + " graphs", Toast.LENGTH_LONG).show();
 
                 ListView graphListView = (ListView) templateView.findViewById(R.id.graph_list);
                 ArrayAdapter graphListAdapter = new OTNGraphAdapter(pluginContext , R.layout.graph_listitem , graphs , selectedGraph );

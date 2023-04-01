@@ -375,7 +375,7 @@ public class OTNMapComponent extends DropDownMapComponent implements SharedPrefe
 
         for ( OTNGraph tmpGrap: graphs ) {
             Polyline border = tmpGrap.getBorder();
-            border.setColor(Color.RED);
+            //border.setColor(Color.RED);
             // if red enable
             //border.setFillAlpha(80);
                 // if after alpa is low, fck ea
