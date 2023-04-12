@@ -33,7 +33,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="?android:attr/listDivider"
-                android:paddingVertical="@dimen/auto_margin"/>
+                android:paddingVertical="9dp"/>
 
 
             <TextView
@@ -53,7 +53,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="?android:attr/listDivider"
-                android:paddingVertical="@dimen/auto_margin"/>
+                android:paddingVertical="9dp"/>
 
 
             <TextView
@@ -73,7 +73,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="?android:attr/listDivider"
-                android:paddingVertical="@dimen/auto_margin"/>
+                android:paddingVertical="9dp"/>
 
             <TextView
                 android:id="@+id/edge_numbers"
@@ -91,7 +91,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="?android:attr/listDivider"
-                android:paddingVertical="@dimen/auto_margin"/>
+                android:paddingVertical="9dp"/>
 
             <TextView
                 android:id="@+id/graph_bound_box"

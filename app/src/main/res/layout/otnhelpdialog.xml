@@ -24,7 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="?android:attr/listDivider"
-        android:paddingVertical="@dimen/auto_margin"/>
+        android:paddingVertical="9dp"/>
 
     <TextView
         android:id="@+id/profile_color_info"
@@ -38,21 +38,21 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Red profiles are type CH (contraption hierarchy)"
-        android:textColor="@color/red"></TextView>
+        android:textColor="@color/red" />
 
     <TextView
         android:id="@+id/profile_color_info_LM"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Blu profiles are type LM (landmark)"
-        android:textColor="@color/blue"></TextView>
+        android:textColor="@color/blue"/>
 
     <TextView
         android:id="@+id/profile_color_info_CHLM"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Cyan profiles are both CH and LM"
-        android:textColor="@color/cyan"></TextView>
+        android:textColor="@color/cyan"/>
 
     <TextView
         android:id="@+id/profile_color_info_normal"
