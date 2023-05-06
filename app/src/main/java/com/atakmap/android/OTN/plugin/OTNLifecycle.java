@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+import com.atak.plugins.impl.AbstractPluginLifecycle;
 import com.atakmap.android.maps.MapComponent;
 import com.atakmap.android.maps.MapView;
 import com.atakmap.android.OTN.OTNMapComponent;
@@ -15,7 +16,7 @@ import android.content.Context;
 import android.content.res.Configuration;
 import com.atakmap.coremap.log.Log;
 
-public class OTNLifecycle implements Lifecycle {
+public class OTNLifecycle extends AbstractPluginLifecycle {
 
     private final Context pluginContext;
     private final Collection<MapComponent> overlays;
@@ -24,10 +25,17 @@ public class OTNLifecycle implements Lifecycle {
     private final static String TAG = "OTNLifecycle";
 
     public OTNLifecycle(Context ctx) {
+        super( ctx, new OTNMapComponent());
         this.pluginContext = ctx;
         this.overlays = new LinkedList<>();
         this.mapView = null;
     }
+    /*public OTNLifecycle(Context ctx) {
+        this.pluginContext = ctx;
+        this.overlays = new LinkedList<>();
+        this.mapView = null;
+    }
+
 
     @Override
     public void onConfigurationChanged(Configuration arg0) {
@@ -99,4 +107,6 @@ public class OTNLifecycle implements Lifecycle {
         for (MapComponent c : this.overlays)
             c.onStop(this.pluginContext, this.mapView);
     }
+    */
+
 }
