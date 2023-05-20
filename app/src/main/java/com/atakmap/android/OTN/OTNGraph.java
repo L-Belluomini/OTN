@@ -1,5 +1,9 @@
 package com.atakmap.android.OTN;
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
 import com.atakmap.android.maps.Polyline;
 import com.atakmap.coremap.conversions.AreaUtilities;
 import com.atakmap.coremap.filesystem.FileSystemUtils;
@@ -15,7 +19,9 @@ import com.graphhopper.storage.BaseGraph;
 import com.graphhopper.util.shapes.BBox;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
+import java.nio.file.Files;
 import java.util.List;
 import java.util.UUID;
 
@@ -28,6 +34,7 @@ public class OTNGraph implements Serializable {
     private int edges = 0;
     private BBox boundBox;
     private double area;
+    private long size;
     private int borderColor;
     private int fillColor;
     private int alphaColor;
@@ -117,15 +124,25 @@ public class OTNGraph implements Serializable {
         return borderPoly;
     }
 
-    private void getNodesAndEdges(){ //todo rename
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void getNodesAndEdges()  { //todo rename
         GraphHopper hopper = new GraphHopper();
+        configGH.putObject("graph.dataaces" , "MMAP");
         hopper.init( configGH );
         hopper.load();
         BaseGraph baseGraph =  hopper.getBaseGraph();
         hopper.close();
+        configGH.putObject("graph.dataaces" , "");
         edges = baseGraph.getEdges();
         nodes = baseGraph.getNodes();
         boundBox = baseGraph.getBounds();
+        try {
+            size =  Files.size(FileSystemUtils.getItem(FileSystemUtils.TOOL_DATA_DIRECTORY + graphPath + "/edges").toPath());
+        } catch ( Exception e ) {
+            Log.e( TAG , e.toString() ) ;
+
+        }
+
 
     }
 
@@ -136,6 +153,8 @@ public class OTNGraph implements Serializable {
     public int getEdges() {
         return edges;
     }
+
+    public long getSize() { return size; }
 
     public BBox getBoundBox() {
         return boundBox;
