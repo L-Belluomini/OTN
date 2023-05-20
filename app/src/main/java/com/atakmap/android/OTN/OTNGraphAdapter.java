@@ -204,13 +204,16 @@ public class OTNGraphAdapter extends ArrayAdapter {
 
                 TextView areaTV = infoview.findViewById(R.id.graph_bound_box_area);
                 areaTV.setText (
-                        "Area: " + AreaUtilities.formatArea (Area.METRIC , graph.getArea() ,Area.METER2  )  ); //  todo add area preference and test with no poly
+                        "Area: " + AreaUtilities.formatArea (Area.METRIC , graph.getArea() ,Area.METER2  )  ); //  todo add area preference
 
                                /* + "\n"
                         + "edge number: "+ Integer.toString( graph.getEdges() ) + "\n"
                         + "nodes number: " + Integer.toString( graph.getNodes() ) + "\n"
                         + "Bound box: " + graph.getBondBox().toString() + "\n"
                                 + " area: " + AreaUtilities.formatArea (Area.METRIC , graph.getArea() ,Area.METER2  )  ); //  todo add area preference
+
+                                // todo  @ gabri size of edges
+                                // raph.getSize()
 */
                 getinfoADB.setView(infoview);
                 AlertDialog infoAD = getinfoADB.create();
