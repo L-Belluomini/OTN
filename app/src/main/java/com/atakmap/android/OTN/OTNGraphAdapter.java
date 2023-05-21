@@ -213,7 +213,8 @@ public class OTNGraphAdapter extends ArrayAdapter {
                                 + " area: " + AreaUtilities.formatArea (Area.METRIC , graph.getArea() ,Area.METER2  )  ); //  todo add area preference
 
                                 // todo  @ gabri size of edges
-                                // raph.getSize()
+                                // graph.getSize()
+                                // add preference map, verry tecnical but helpfull.....
 */
                 getinfoADB.setView(infoview);
                 AlertDialog infoAD = getinfoADB.create();

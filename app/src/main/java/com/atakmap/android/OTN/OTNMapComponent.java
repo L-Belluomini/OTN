@@ -376,6 +376,9 @@ public class OTNMapComponent extends DropDownMapComponent implements SharedPrefe
 
         for ( OTNGraph tmpGrap: graphs ) {
             Polyline border = tmpGrap.getBorder();
+            if ( border == null ) {
+                continue;
+            }
             //border.setColor(Color.RED);
             // if red enable
             //border.setFillAlpha(80);
@@ -396,10 +399,10 @@ public class OTNMapComponent extends DropDownMapComponent implements SharedPrefe
             border.setTitle( tmpGrap.getGraphPath().substring( tmpGrap.getGraphPath().lastIndexOf("/")+1 ) );
             //border.setMetaString("iconUri" , "android.resource://"+  pluginContext.getPackageName() + "/" + R.drawable.ic_otnlogo_dropdown);
 
-            if ( border != null ) {
+
                 bordersMap.put(tmpGrap.getEdgeHash(), border.getUID());
                 mapGroup.addItem(border);
-            }
+
         }
     }
     /* TODO add specific graph updater

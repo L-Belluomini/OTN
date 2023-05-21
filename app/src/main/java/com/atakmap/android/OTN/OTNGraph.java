@@ -16,6 +16,7 @@ import com.graphhopper.config.CHProfile;
 import com.graphhopper.config.LMProfile;
 import com.graphhopper.config.Profile;
 import com.graphhopper.storage.BaseGraph;
+import com.graphhopper.util.Parameters;
 import com.graphhopper.util.shapes.BBox;
 
 import java.io.File;
@@ -94,6 +95,9 @@ public class OTNGraph implements Serializable {
         Polyline borderPoly = new Polyline( UUID.randomUUID().toString() );
 
         if (! polyFile.exists()) {
+            if ( boundBox == null ) {
+                return null;
+            }
             GeoPoint[] array = new GeoPoint[5];
             array[0] = new GeoPoint( boundBox.maxLat , boundBox.maxLon );
             array[1] = new GeoPoint( boundBox.minLat , boundBox.maxLon );
@@ -124,15 +128,15 @@ public class OTNGraph implements Serializable {
         return borderPoly;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
+
     private void getNodesAndEdges()  { //todo rename
         GraphHopper hopper = new GraphHopper();
-        configGH.putObject("graph.dataaces" , "MMAP");
+        configGH.putObject( "graph.dataaccess" , "MMAP");
         hopper.init( configGH );
         hopper.load();
         BaseGraph baseGraph =  hopper.getBaseGraph();
         hopper.close();
-        configGH.putObject("graph.dataaces" , "");
+        configGH.putObject("graph.dataacess" , "");
         edges = baseGraph.getEdges();
         nodes = baseGraph.getNodes();
         boundBox = baseGraph.getBounds();

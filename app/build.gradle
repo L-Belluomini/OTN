@@ -325,7 +325,7 @@ dependencies {
     }
     // tried to use jar jar to remove modle-info https://github.com/google/gson/issues/1627#issuecomment-856734057
     // does not work
-    implementation group: 'org.slf4j', name: 'slf4j-android',version: '1.7.7'
+    runtimeOnly group: 'org.slf4j', name: 'slf4j-android',version: '1.7.7'
 
 
 

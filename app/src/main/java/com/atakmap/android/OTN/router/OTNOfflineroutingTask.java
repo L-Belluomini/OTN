@@ -96,9 +96,9 @@ public class OTNOfflineroutingTask extends RouteGenerationTask{
         GraphHopperConfig configGH = graph.getConfigGH();
         Boolean ghmmapOption = prefs.getBoolean(OTNMapComponent.GRAPH_MEMORY_MAP , false );
         if ( !ghmmapOption) {
-            configGH.putObject("graph.dataaces" , "MMAP");
+            configGH.putObject( "graph.dataaccess" , "MMAP");
         } else{
-            configGH.putObject("graph.dataaces" , "RAM_STORE");
+            configGH.putObject("graph.dataaccess" , "RAM_STORE");
         }
 
         hopper.init(configGH);
