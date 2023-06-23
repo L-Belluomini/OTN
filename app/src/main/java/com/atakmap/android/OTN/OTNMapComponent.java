@@ -135,7 +135,7 @@ public class OTNMapComponent extends DropDownMapComponent implements SharedPrefe
         _prefs = new AtakPreferences(view);
 
         //fillColor = _prefs.get ( ID_COLOR_FILL, Color.BLUE );
-        strokeColor = _prefs.get ( ID_COLOR_STROKE, Color.BLUE );
+
 
         _prefs.registerListener(this);
 
@@ -383,7 +383,7 @@ public class OTNMapComponent extends DropDownMapComponent implements SharedPrefe
             // if red enable
             //border.setFillAlpha(80);
                 // if after alpa is low, fck ea
-            border.setStrokeColor( strokeColor );
+            border.setStrokeColor( _prefs.get ( ID_COLOR_STROKE, Color.BLUE ) );
             //border.setFillColor( fillColor );
             border.setStrokeWeight( 5 ); // from 1 to 6
 
