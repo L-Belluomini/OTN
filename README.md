@@ -13,7 +13,7 @@
 The project started back when the VNS (Vehicle Navigation Sytem) was not yet publicly available, with the same prime objective to deliver an offline routing instrument for the ATAK app.
 OTN manages this making use of [Open Street Map](https://www.openstreetmap.org) data and the [GraphHopper](https://www.graphhopper.com/) routing engine, but the project aims to integrate many other improvements and features.
 
-The project is comprised of two parts, *OTN*, the main plug-in for the ATAK app, and *[OTN-C](https://github.com/L-Belluomini/OTN-companion)(OTN-Companion)*, a computer program to generate the graphs needed for the routing.
+The project is comprised of two parts, *OTN*, the main plug-in for the ATAK app, and *[OTN-C](https://github.com/L-Belluomini/OTN-companion) (OTN-Companion)*, a computer program to generate the graphs needed for the routing.
 
 **A new release is on the way. The project is soon to be out of beta.**
 
