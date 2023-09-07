@@ -26,29 +26,30 @@ OTN can't directly generate a graph for the routing on the phone itself. For thi
 1. On your pc, generate the graphs of the geografical area you need using [OTN-C](https://github.com/L-Belluomini/OTN-companion).
 2. On the GitHub project page, go to releases and download the .apk file relative to your Atak version.
 3. Install the .apk on your smartphone.
-4. On the Atak app, go to the plugins list and load OTN.
-5. Now that OTN is loaded, go to the routes tool and select *OTN offline routing* as the routing method.
-6. Pick a starting point, a destination and a profile.
-7. Success! Here's a cat to celebrate!
+4. Copy the graphs you generated with OTN-C in the atak\tools\otn\graphs directory.
+5. On the Atak app, go to the plugins list and load OTN.
+6. Now that OTN is loaded, go to the routes tool and select *OTN offline routing* as the routing method.
+7. Pick a starting point, a destination and a profile.
+8. Success! Here's a cat to celebrate!
 
 ![image](https://github.com/L-Belluomini/OTN/blob/main/img/51ZjBEW%2BqNL._AC_SX466_.jpg)
 
 ## Current features:
 
-* Route around regions has been implemented.
-* Routing through waypoints is now possible.
-* You can store multiple graphs on your device and easily pick one for each route in app.
-* The routing engine has been updated from GraphHopper 4 to GraphHopper 6.
+* Implementation of route around regions.
+* Possibility to route through waypoints.
+* Support for multiple graph storage on your device. Easy to pick one for each route in app.
+* Ruting engine has been updated from GraphHopper 4 to GraphHopper 6.
 * New GUI realized following Arsenal guidelines.
 * The graph area can now be displayed as an overlay (note: the graph must contain its polyline).
 * New preference menu.
-* It is now possible to toggle the routing mode between memory mode and flash mode.
+* Routing mode toggle between memory mode and flash mode.
 
 ## Future Features:
 
 * 3D routing calculations using DTED.
 * Support for online routing engines.
-* Different vehicles recogntion from the ATAK route system. 
+* Different vehicles recogntion from the ATAK route system.
 
 ## Current limitations:
 
@@ -73,7 +74,7 @@ The steps to compile repo are based on [this](https://www.ballantyne.online/deve
 
 ## Contact
 
-For any issue, suggestion or question, feel free to leave an issue on the [GitHub issues page](https://github.com/L-Belluomini/OTN/issues).
+For any issue, suggestion or question, feel free to open an issue on the [GitHub issues page](https://github.com/L-Belluomini/OTN/issues).
 
 ## License
 
@@ -81,4 +82,4 @@ check the [license.md](https://github.com/L-Belluomini/OTN/blob/main/LICENSE)
 
 ---
 
-plugin developed and tested on a huawei p10 light (android 8.0 API 26) 4gb ram kirin658 cpu atak version 4.7.0.0 developer build (28/07/2022).
+plugin developed and tested on a huawei p10 light (android 8.0 API 26) 4gb ram kirin658 cpu atak version 4.7.0.3 developer build (28/07/2022).
