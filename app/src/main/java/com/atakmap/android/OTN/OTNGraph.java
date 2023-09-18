@@ -36,6 +36,7 @@ public class OTNGraph implements Serializable {
     private BBox boundBox;
     private double area;
     private long size;
+    private boolean isInit = false;
     private int borderColor;
     private int fillColor;
     private int alphaColor;
@@ -49,8 +50,13 @@ public class OTNGraph implements Serializable {
 
         this.configGH.putObject( "graph.location" , FileSystemUtils.getItem( FileSystemUtils.TOOL_DATA_DIRECTORY + graphPath ).getPath() );
 
+    }
+
+    public void init () {
         getNodesAndEdges();
     }
+
+    public boolean isInit(){ return isInit; }
 
     public String getGraphPath() {
         return graphPath;
@@ -151,6 +157,7 @@ public class OTNGraph implements Serializable {
     }
 
     public int getNodes() {
+
         return nodes;
     }
 

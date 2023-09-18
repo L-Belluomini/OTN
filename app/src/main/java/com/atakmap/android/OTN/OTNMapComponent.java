@@ -54,6 +54,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.Set;
 
 public class OTNMapComponent extends DropDownMapComponent implements SharedPreferences.OnSharedPreferenceChangeListener  , ClearContentRegistry.ClearContentListener {
 
@@ -73,8 +74,8 @@ public class OTNMapComponent extends DropDownMapComponent implements SharedPrefe
     private Context _context;
     private RoutePlannerManager _routeManager ;
     private LinkedList<String> registeredRouters = new LinkedList<>();
-    private LinkedList<OTNGraph> graphs = new LinkedList<>();
-    private final Map<String , String> bordersMap = new HashMap<>();
+    private Map< String , OTNGraph > graphs = new HashMap<>();
+    private final Map< String , String > bordersMap = new HashMap<>();
     private OTNGraph selectdeGraph;
     private OTNGraph tmpGraph;
     private DefaultMapGroup mapGroup;
@@ -141,6 +142,17 @@ public class OTNMapComponent extends DropDownMapComponent implements SharedPrefe
 
         ClearContentRegistry clearCRegist = ClearContentRegistry.getInstance();
         clearCRegist.registerListener(this);
+
+        ////////////////////// PREFERENCES /////////////////////////////
+        ToolsPreferenceFragment
+                .register(
+                        new ToolsPreferenceFragment.ToolPreference(
+                                "OTN Preferences",
+                                "Custom preferences for OTN plugin",
+                                "OTNPreference",
+                                context.getResources().getDrawable(
+                                        R.drawable.otn_logo, null),
+                                new OTNPreferenceFragment(context)));
 
         Log.d(TAG, "registering the plugin filter");
         DocumentedIntentFilter ddFilter = new DocumentedIntentFilter();
@@ -236,11 +248,7 @@ public class OTNMapComponent extends DropDownMapComponent implements SharedPrefe
 
 
         // retrive last selceted graph if present and unchanged
-        for (OTNGraph tmpGraph : graphs ) {
-            if ( tmpGraph.getEdgeHash().equals( _prefs.get("OTNSelectedGraph","") ) ){
-                selectdeGraph = tmpGraph;
-            }
-        }
+        selectdeGraph = graphs.get( _prefs.get("OTNSelectedGraph","") );
 
         if (selectdeGraph == null){
             if (graphs.size() > 1 ) {
@@ -248,11 +256,10 @@ public class OTNMapComponent extends DropDownMapComponent implements SharedPrefe
                 return;
             }
             // if there only one graph set as selected
-            selectdeGraph = graphs.get(0);
+            selectdeGraph = graphs.values().iterator().next();
         }
         updateOverlays();
         pushGraphs();
-
 
         if ( this.graphs.isEmpty( ) ) {
         Log.w(TAG , "no graph found");
@@ -260,9 +267,6 @@ public class OTNMapComponent extends DropDownMapComponent implements SharedPrefe
         toast.show();
         return;
         }
-
-
-
 
         //add offline geocorder
         /*
@@ -279,16 +283,7 @@ public class OTNMapComponent extends DropDownMapComponent implements SharedPrefe
 
         //TEST///////////////////////////////////////////////////////////////////////////////////////////////////
 
-        ////////////////////// PREFERENCES /////////////////////////////
-        ToolsPreferenceFragment
-                .register(
-                        new ToolsPreferenceFragment.ToolPreference(
-                                "OTN Preferences",
-                                "Custom preferences for OTN plugin",
-                                "OTNPreference",
-                                context.getResources().getDrawable(
-                                        R.drawable.otn_logo, null),
-                                new OTNPreferenceFragment(context)));
+
     }
 
 
@@ -305,9 +300,9 @@ public class OTNMapComponent extends DropDownMapComponent implements SharedPrefe
 
     protected void updateRouters() {
         Log.d(TAG,"updating router");
-        for (String routerUID : registeredRouters ){
+        for (String routerUID : registeredRouters ) {
             RoutePlannerInterface tmpPlanner = _routeManager.getPlanner( routerUID );
-            if ( tmpPlanner instanceof OTNOfflineRouter  ){
+            if ( tmpPlanner instanceof OTNOfflineRouter  ) {
                 _routeManager.unregisterPlanner(routerUID);
             }
         }
@@ -345,24 +340,17 @@ public class OTNMapComponent extends DropDownMapComponent implements SharedPrefe
             return;
         }
         OTNGraph tmp ;
-        boolean flag;
+        Set<String> oldKeySet;
+        oldKeySet = graphs.keySet();
         for (String dir : grapfsFolder ) {
-            tmp = getGraphFromDir(dir);
-             flag = true;
-            if (tmp != null) {
-                for (OTNGraph element : graphs ) {
-                    if (tmp.getEdgeHash().equals(element.getEdgeHash())) {
-                        flag = false;
-                        break;
-                    }
-                }
-                if ( flag ) {
-                    this.graphs.add(tmp);
-                    Log.d(TAG , this.graphs.toString());
-                }
-
-
+            tmp = getGraphFromDir( dir );
+              if ( graphs.containsKey( tmp.getEdgeHash() ) ) {
+                  graphs.put( tmp.getEdgeHash() , tmp );
+                  oldKeySet.remove( tmp.getEdgeHash( ) );
             }
+        }
+        for ( String oldHash : oldKeySet ){
+            graphs.remove( oldHash );
         }
     }
 
@@ -374,7 +362,7 @@ public class OTNMapComponent extends DropDownMapComponent implements SharedPrefe
 
         bordersMap.clear();
 
-        for ( OTNGraph tmpGrap: graphs ) {
+        for ( OTNGraph tmpGrap: graphs.values() ) {
             Polyline border = tmpGrap.getBorder();
             if ( border == null ) {
                 continue;
