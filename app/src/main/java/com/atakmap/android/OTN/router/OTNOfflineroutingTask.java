@@ -8,13 +8,16 @@ import com.atakmap.android.OTN.OTNMapComponent;
 import com.atakmap.android.OTN.OTNrequest;
 import com.atakmap.android.OTN.OTNresponse;
 import com.atakmap.android.drawing.mapItems.DrawingCircle;
+import com.atakmap.android.maps.Marker;
 import com.atakmap.android.maps.PointMapItem;
 import com.atakmap.android.maps.Shape;
+import com.atakmap.android.routes.Route;
 import com.atakmap.android.routes.RouteGenerationTask;
 import com.atakmap.android.routes.RoutePointPackage;
 import com.atakmap.android.routes.nav.NavigationCue;
 import com.atakmap.android.routes.routearound.RouteAroundRegionManager;
 import com.atakmap.coremap.maps.coords.GeoPoint;
+import com.atakmap.coremap.maps.coords.GeoPointMetaData;
 import com.atakmap.map.elevation.ElevationManager;
 
 import com.graphhopper.GHRequest;
@@ -71,7 +74,7 @@ public class OTNOfflineroutingTask extends RouteGenerationTask{
     public RoutePointPackage generateRoute(SharedPreferences prefs, GeoPoint origin, GeoPoint dest, List<GeoPoint> byWayOff) {
         GHRequest ghRequest;
         // cumulative cycle results
-        List<PointMapItem> waypoint = new LinkedList<>()  ;
+        List<PointMapItem> waypointList = new LinkedList<>()  ;
         Map<String , NavigationCue> waycue = new HashMap<>();
         // aux variable for cycle
         GeoPoint point;
@@ -197,26 +200,24 @@ public class OTNOfflineroutingTask extends RouteGenerationTask{
         for ( int pointIndex = 0 ; pointIndex < bestResponse.getPoints().size() ; pointIndex ++) {
             tmpPoint = new GeoPoint( bestResponse.getPoints().getLat ( pointIndex ) , bestResponse.getPoints().getLon ( pointIndex ) );
             point = new GeoPoint( tmpPoint.getLatitude() , tmpPoint.getLongitude() , ElevationManager.getElevation( tmpPoint , null ) );
-            tmpUid = UUID.randomUUID().toString();
-            tmpMapPoint = new OTNresponse( point , tmpUid  ) ;// TODO: decorate mapitem better ?
-            tmpMapPoint.setMetaString("type" , "b-m-p-c" );
-            waypoint.add ( tmpMapPoint );
 
             if ( bestResponse.getPoints().getLat ( pointIndex ) == instructionList.get( cueIndex ).getPoints().getLat(0) &&
                     bestResponse.getPoints().getLon ( pointIndex ) == instructionList.get( cueIndex ).getPoints().getLon(0) ) {
                 // set point as waypoint
-                waypoint.get(pointIndex).setMetaString("type" , "b-m-p-w" );
-                waypoint.get(pointIndex).setMetaString("title" ,"WP" + Integer.toString(pointIndex +1 ) );
-                // set relative nav cue
-                cue = instructionList.get(cueIndex).getTurnDescription(translation);
-                navCue = new NavigationCue(UUID.randomUUID().toString() , cue , cue ) ;
-                navCue.addCue(NavigationCue.TriggerMode.DISTANCE , 50 );
-                waycue.put(tmpUid , navCue );
+                Marker waypoint =  Route.createWayPoint( new GeoPointMetaData() , UUID.randomUUID().toString() );
+                cue = instructionList.get( cueIndex ).getTurnDescription(translation);
+                navCue = new NavigationCue( UUID.randomUUID().toString() , cue , cue ) ;
+                navCue.addCue( NavigationCue.TriggerMode.DISTANCE , 50 );
+                waycue.put(  waypoint.getUID() , navCue );
                 cueIndex ++;
+            } else {
+                Route.ControlPointMapItem tmpCP = new Route.ControlPointMapItem( point , UUID.randomUUID().toString() );
+                waypointList.add ( tmpCP );
+
             }
 
         }
-        return new RoutePointPackage( waypoint , waycue );
+        return new RoutePointPackage( waypointList , waycue );
     }
 
     private CustomModel createRaModel (ArrayList<Shape> shapelist ){
