@@ -52,9 +52,11 @@ import java.io.FileReader;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class OTNMapComponent extends DropDownMapComponent implements SharedPreferences.OnSharedPreferenceChangeListener  , ClearContentRegistry.ClearContentListener {
 
@@ -74,7 +76,7 @@ public class OTNMapComponent extends DropDownMapComponent implements SharedPrefe
     private Context _context;
     private RoutePlannerManager _routeManager ;
     private LinkedList<String> registeredRouters = new LinkedList<>();
-    private Map< String , OTNGraph > graphs = new HashMap<>();
+    private Map< String , OTNGraph > graphs = new ConcurrentHashMap< String , OTNGraph>();
     private final Map< String , String > bordersMap = new HashMap<>();
     private OTNGraph selectdeGraph;
     private OTNGraph tmpGraph;
@@ -244,8 +246,12 @@ public class OTNMapComponent extends DropDownMapComponent implements SharedPrefe
             return;
         }
 
-        findnSetGraphs();
-
+        if ( this.graphs.isEmpty( ) ) {
+            Log.w(TAG , "no graph found");
+            Toast toast = Toast.makeText(pluginContext, "NO OTN graph FOUND", Toast.LENGTH_SHORT); // check right context
+            toast.show();
+            return;
+        }
 
         // retrive last selceted graph if present and unchanged
         selectdeGraph = graphs.get( _prefs.get("OTNSelectedGraph","") );
@@ -256,17 +262,13 @@ public class OTNMapComponent extends DropDownMapComponent implements SharedPrefe
                 return;
             }
             // if there only one graph set as selected
+            Log.d(TAG, graphs.toString());
             selectdeGraph = graphs.values().iterator().next();
         }
         updateOverlays();
         pushGraphs();
 
-        if ( this.graphs.isEmpty( ) ) {
-        Log.w(TAG , "no graph found");
-        Toast toast = Toast.makeText(pluginContext, "NO OTN graph FOUND", Toast.LENGTH_SHORT); // check right context
-        toast.show();
-        return;
-        }
+
 
         //add offline geocorder
         /*
@@ -340,17 +342,22 @@ public class OTNMapComponent extends DropDownMapComponent implements SharedPrefe
             return;
         }
         OTNGraph tmp ;
-        Set<String> oldKeySet;
-        oldKeySet = graphs.keySet();
+        Set<String> oldKeySet= new HashSet<>();
+        oldKeySet.addAll( graphs.keySet());
+        Log.d ( TAG , "old key set size: " + Integer.toString( oldKeySet.size() ) );
         for (String dir : grapfsFolder ) {
             tmp = getGraphFromDir( dir );
               if ( graphs.containsKey( tmp.getEdgeHash() ) ) {
-                  graphs.put( tmp.getEdgeHash() , tmp );
-                  oldKeySet.remove( tmp.getEdgeHash( ) );
-            }
+                  oldKeySet.remove( tmp.getEdgeHash() );
+              } else {
+                  graphs.put(tmp.getEdgeHash(), tmp);
+              }
         }
-        for ( String oldHash : oldKeySet ){
-            graphs.remove( oldHash );
+        Log.d ( TAG , "old key set size 2 : " + Integer.toString( oldKeySet.size() ) );
+        if (! oldKeySet.isEmpty() ) {
+            for (String oldHash : oldKeySet) {
+                graphs.remove(oldHash);
+            }
         }
     }
 

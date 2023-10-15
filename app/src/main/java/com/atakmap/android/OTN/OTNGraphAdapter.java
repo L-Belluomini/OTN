@@ -27,6 +27,7 @@ import com.atakmap.coremap.conversions.AreaUtilities;
 import com.atakmap.coremap.log.Log;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 
 

@@ -29,7 +29,9 @@ import com.atakmap.coremap.log.Log;
 import com.graphhopper.GraphHopper;
 import com.graphhopper.util.Constants;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class OTNDropDownReceiver extends DropDownReceiver implements
         OnStateListener {
@@ -133,7 +135,7 @@ public class OTNDropDownReceiver extends DropDownReceiver implements
 
                 }
 
-                List<OTNGraph> graphs = (List<OTNGraph>) graphsBundle.getSerializable("GRAPHS");
+                Map< String , OTNGraph > graphs = (Map< String , OTNGraph >) graphsBundle.getSerializable("GRAPHS");
                 if ( graphs == null ) {
                     Log.w(TAG,"failled importing graph list");
                     return;
@@ -150,7 +152,7 @@ public class OTNDropDownReceiver extends DropDownReceiver implements
                 Toast.makeText(pluginContext, "OTN graph list updated, found " + Integer.toString(graphs.size()) + " graphs", Toast.LENGTH_LONG).show();
 
                 ListView graphListView = (ListView) templateView.findViewById(R.id.graph_list);
-                ArrayAdapter graphListAdapter = new OTNGraphAdapter(pluginContext , R.layout.graph_listitem , graphs , selectedGraph );
+                ArrayAdapter graphListAdapter = new OTNGraphAdapter(pluginContext , R.layout.graph_listitem , new ArrayList<OTNGraph>(graphs.values()) , selectedGraph );
                 graphListView.setAdapter(graphListAdapter);
 
                 /*graphListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
