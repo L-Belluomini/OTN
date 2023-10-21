@@ -133,9 +133,12 @@ public class OTNOfflineRouter implements RoutePlannerInterface, AdapterView.OnIt
                 Bundle toolBundle = new Bundle();
                 toolBundle.putParcelable("callback" , new Intent( MAP_CLICK ).putExtra("wayPointNumber" , waypoints.size() ) );
                 ToolManagerBroadcastReceiver.getInstance().startTool(MapClickTool.TOOL_NAME , toolBundle);
+                DropDownManager.getInstance().hidePane();
+                _parent.hide();
                 if ( ToolManagerBroadcastReceiver.getInstance().getActiveTool() instanceof MapClickTool) {
-                    DropDownManager.getInstance().hidePane();
-                    _parent.hide();
+
+                } else {
+                    Log.d(TAG, "Map click tool, not active !!!");
                 }
             }
         });
@@ -163,41 +166,7 @@ public class OTNOfflineRouter implements RoutePlannerInterface, AdapterView.OnIt
                 }
             }
         } , new AtakBroadcast.DocumentedIntentFilter( MAP_CLICK ) );
-
-        /*Button wayPointDialogButton = view.findViewById(R.id.waypoint_dialog);
-        wayPointDialogButton.setOnClickListener( new View.OnClickListener() {
-            public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(pluginContext);
-                builder.setView( (LinearLayout) LayoutInflater.from(pluginContext).inflate (R.layout.route_planner_waypoints, null));
-                builder.setNegativeButton("", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        //AlertDialog.this.getDialog().cancel();
-                    }
-                });
-
-             builder.create();
-             builder.show();
-        }
-
-
-        });*/
-
-       /* Button profileButton = view.findViewById(R.id.button);
-        profileButton.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d(TAG, "button pressed");
-
-            }
-
-
-        });
-
-        */
-
         return view;
-
-
     }
 
 
