@@ -149,7 +149,7 @@ public class OTNDropDownReceiver extends DropDownReceiver implements
 
                 OTNGraph selectedGraph = (OTNGraph) graphBundle.getSerializable( "GRAPH" );
 
-                Toast.makeText(pluginContext, "OTN graph list updated, found " + Integer.toString(graphs.size()) + " graphs", Toast.LENGTH_LONG).show();
+
 
                 ListView graphListView = (ListView) templateView.findViewById(R.id.graph_list);
                 ArrayAdapter graphListAdapter = new OTNGraphAdapter(pluginContext , R.layout.graph_listitem , new ArrayList<OTNGraph>(graphs.values()) , selectedGraph );

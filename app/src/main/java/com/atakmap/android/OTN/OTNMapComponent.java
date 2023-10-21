@@ -358,6 +358,8 @@ public class OTNMapComponent extends DropDownMapComponent implements SharedPrefe
             for (String oldHash : oldKeySet) {
                 graphs.remove(oldHash);
             }
+        } else {
+            Toast.makeText(pluginContext, "OTN graph list updated, found " + Integer.toString(graphs.size()) + " graphs", Toast.LENGTH_LONG).show();
         }
     }
 
