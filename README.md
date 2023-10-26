@@ -55,7 +55,7 @@ OTN can't directly generate a graph for the routing on the phone itself. For thi
 
 * Graphs must be located in *atak\tools\OTN\graphs*.
 * Bloodhund is implemented and should be stable, but further testing is required.
-* Geocode and reverse-geocode are set to the Atak default ones, which from version 4.8.1 and above have been reported to cause some issues on some devices.
+* Geocode and reverse-geocode are set to the Atak default ones, which up to version 4.8.1 and below have been reported to cause some issues on some devices.
 * Errors and/or crashes may still occur. If so enable logcat and kindly share the logs with us. Logs ar found at *atak\support\logs*. We will do our best to fix all bugs.
 
 ## For developers
