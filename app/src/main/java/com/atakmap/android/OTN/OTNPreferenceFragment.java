@@ -83,7 +83,7 @@ public class OTNPreferenceFragment extends PluginPreferenceFragment {
                                             "error occurred getting preference");
                                 }
                                 ColorPalette palette = new ColorPalette(
-                                        getActivity(), color);
+                                        getActivity());
                                 b.setView(palette);
                                 final AlertDialog alert = b.create();
                                 ColorPalette.OnColorSelectedListener l = new ColorPalette.OnColorSelectedListener() {

@@ -443,14 +443,22 @@ public class OTNMapComponent extends DropDownMapComponent implements SharedPrefe
 
     protected void setNewUp( ) {
         IOProvider provider = IOProviderFactory.getProvider();
+        Log.d(TAG,"setting up new folder");
 
         if (! provider.exists( FileSystemUtils.getItem (FileSystemUtils.TOOL_DATA_DIRECTORY  + "/OTN") ) ) {
             if ( provider.mkdir( new File(FileSystemUtils.TOOL_DATA_DIRECTORY  + "/OTN" ) ) ) {
                 provider.mkdir( new File(FileSystemUtils.TOOL_DATA_DIRECTORY  + "/OTN/graphs" ) );
-                Toast toast = Toast.makeText( pluginContext , "NO OTN graph FOUND", Toast.LENGTH_SHORT);
-                toast.show();
+            } else {
+                Log.e(TAG,"impossible to create OTN folder");
+                if ( new File(FileSystemUtils.TOOL_DATA_DIRECTORY  + "/OTN").mkdir() )
+                {
+                    Log.i(TAG,"creation test worked");
+                } else {
+                    Log.w(TAG,"otn dir creation test failed");
+                }
             }
-
+        } else {
+        Log.w(TAG,"otn dir already exist");
         }
     }
 
