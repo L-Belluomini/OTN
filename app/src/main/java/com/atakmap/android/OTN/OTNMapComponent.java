@@ -447,10 +447,11 @@ public class OTNMapComponent extends DropDownMapComponent implements SharedPrefe
         if (! provider.exists( FileSystemUtils.getItem (FileSystemUtils.TOOL_DATA_DIRECTORY  + "/OTN") ) ) {
             if ( provider.mkdir( new File(FileSystemUtils.TOOL_DATA_DIRECTORY  + "/OTN" ) ) ) {
                 provider.mkdir( new File(FileSystemUtils.TOOL_DATA_DIRECTORY  + "/OTN/graphs" ) );
-                Toast toast = Toast.makeText( pluginContext , "NO OTN graph FOUND", Toast.LENGTH_SHORT);
-                toast.show();
+            } else {
+                Log.e(TAG,"impossible to create OTN folder");
             }
-
+        } else {
+        Log.w(TAG,"otn dir already exist");
         }
     }
 
