@@ -5,31 +5,43 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-import com.atak.plugins.impl.AbstractPluginLifecycle;
+import com.atak.plugins.impl.AbstractPlugin;
+import com.atak.plugins.impl.PluginContextProvider;
 import com.atakmap.android.maps.MapComponent;
 import com.atakmap.android.maps.MapView;
 import com.atakmap.android.OTN.OTNMapComponent;
 
-import transapps.maps.plugin.lifecycle.Lifecycle;
+import com.atak.plugins.impl.AbstractPlugin;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
 import com.atakmap.coremap.log.Log;
 
-public class OTNLifecycle extends AbstractPluginLifecycle {
+import gov.tak.api.plugin.IServiceController;
 
+public class OTNLifecycle extends AbstractPlugin {
+
+    /*
     private final Context pluginContext;
     private final Collection<MapComponent> overlays;
     private MapView mapView;
+    */
 
     private final static String TAG = "OTNLifecycle";
 
+    public OTNLifecycle(IServiceController serviceController) {
+        super(serviceController, new OTNTool(serviceController.getService(PluginContextProvider.class).getPluginContext()), new OTNMapComponent());
+    }
+
+    /*
     public OTNLifecycle(Context ctx) {
         super( ctx, new OTNMapComponent());
         this.pluginContext = ctx;
         this.overlays = new LinkedList<>();
         this.mapView = null;
     }
+    */
+
     /*public OTNLifecycle(Context ctx) {
         this.pluginContext = ctx;
         this.overlays = new LinkedList<>();
