@@ -57,7 +57,7 @@ public class OTNGraphOverlay extends AbstractMapOverlay2 {
         bordersMap = new HashMap<String , String>();
         Log.d(TAG, "created garph overlay");
 
-        _prefs = new AtakPreferences(mapView);
+        _prefs = new AtakPreferences(_pluginContext);
         fillColor = _prefs.get ( ID_COLOR_FILL, Color.BLUE );
         strokeColor = _prefs.get ( ID_COLOR_STROKE, Color.BLUE );
 

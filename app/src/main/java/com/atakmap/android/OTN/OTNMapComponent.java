@@ -135,7 +135,7 @@ public class OTNMapComponent extends DropDownMapComponent implements SharedPrefe
                 :null;
         assert _routeManager != null;
 
-        _prefs = new AtakPreferences(view);
+        _prefs = new AtakPreferences(pluginContext);
 
         //fillColor = _prefs.get ( ID_COLOR_FILL, Color.BLUE );
 
