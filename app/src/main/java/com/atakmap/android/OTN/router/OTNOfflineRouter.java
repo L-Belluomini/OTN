@@ -23,7 +23,8 @@ import com.atakmap.android.OTN.plugin.R;
 import com.atakmap.android.dropdown.DropDownManager;
 import com.atakmap.android.gui.PluginSpinner;
 import com.atakmap.android.ipc.AtakBroadcast;
-import com.atakmap.android.routes.RoutePlannerInterface;
+import com.atakmap.android.routes.Route;
+import com.atakmap.android.routes.RoutePlannerInterface2;
 import com.atakmap.android.routes.RouteGenerationTask;
 import com.atakmap.android.routes.RoutePlannerOptionsView;
 
@@ -38,8 +39,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.atakmap.coremap.maps.coords.GeoPoint;
-
-public class OTNOfflineRouter implements RoutePlannerInterface, AdapterView.OnItemSelectedListener  {
+/// NEEDS TO IMPLEMENT NEW INTERFACE (ROUTE PLANNER INTERFACE 2)
+public class OTNOfflineRouter implements RoutePlannerInterface2, AdapterView.OnItemSelectedListener  {
     private final String TAG = "OTNOfflineRouter";
     private int selectedProfile = 0;
     private OTNrequest.ProfileType selectedType ;
@@ -58,9 +59,6 @@ public class OTNOfflineRouter implements RoutePlannerInterface, AdapterView.OnIt
         this.selectedType= type;
         _waypointAdapter = new OTNwaypoitRouterOptionAdapter(pluginContext , R.layout.waypoint_listitem , waypoints );
         Log.d(TAG , "offline router constructor");
-
-
-
     }
 
 
@@ -227,5 +225,44 @@ public class OTNOfflineRouter implements RoutePlannerInterface, AdapterView.OnIt
     }
 
 
+    @Override
+    public String getUniqueIdenfier() {
+        return "OTNOFFlineFast";
+    }
+
+    @Override
+    public Route.RouteMethod getRouteMethod() {
+
+        Log.d(TAG ," Called router method" );
+
+        if (graph == null) {
+            Log.w(TAG , "jConfig is null!!");
+            return Route.RouteMethod.Walking;
+        }
+         Profile tmpProfile = graph.getConfigGH().getProfiles().get( selectedProfile);
+         if ( tmpProfile == null)
+         {
+             return Route.RouteMethod.Walking;
+         }
+            String tmpProfileVehicle = tmpProfile.getVehicle();
+         if ( tmpProfileVehicle == null)
+         {
+             return Route.RouteMethod.Walking;
+         }
+
+
+        if ( tmpProfileVehicle.equals( "car") )
+        {
+            return Route.RouteMethod.Driving;
+        }
+
+        if ( tmpProfileVehicle.equals( "foot") )
+        {
+            return Route.RouteMethod.Walking;
+        }
+
+        Log.w(TAG , "Pofile not Found, default walking");
+        return Route.RouteMethod.Walking;
+    }
 }
 

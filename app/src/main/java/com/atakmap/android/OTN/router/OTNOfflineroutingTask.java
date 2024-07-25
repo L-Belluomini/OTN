@@ -201,15 +201,19 @@ public class OTNOfflineroutingTask extends RouteGenerationTask{
             tmpPoint = new GeoPoint( bestResponse.getPoints().getLat ( pointIndex ) , bestResponse.getPoints().getLon ( pointIndex ) );
             point = new GeoPoint( tmpPoint.getLatitude() , tmpPoint.getLongitude() , ElevationManager.getElevation( tmpPoint , null ) );
 
+            ///// @GABRI TODO LOOK AT WAYPOINT AND CONTROLPOINT AMBIGUITY/////
+
             if ( bestResponse.getPoints().getLat ( pointIndex ) == instructionList.get( cueIndex ).getPoints().getLat(0) &&
                     bestResponse.getPoints().getLon ( pointIndex ) == instructionList.get( cueIndex ).getPoints().getLon(0) ) {
                 // set point as waypoint
-                Marker waypoint =  Route.createWayPoint( new GeoPointMetaData() , UUID.randomUUID().toString() );
+                Marker waypoint =  Route.createWayPoint( new GeoPointMetaData( point ),  UUID.randomUUID().toString() );
+                //Log.d(TAG, "way point type" + waypoint.getType() );
                 cue = instructionList.get( cueIndex ).getTurnDescription(translation);
                 navCue = new NavigationCue( UUID.randomUUID().toString() , cue , cue ) ;
                 navCue.addCue( NavigationCue.TriggerMode.DISTANCE , 50 );
                 waycue.put(  waypoint.getUID() , navCue );
                 cueIndex ++;
+                waypointList.add ( waypoint );
             } else {
                 Route.ControlPointMapItem tmpCP = new Route.ControlPointMapItem( point , UUID.randomUUID().toString() );
                 waypointList.add ( tmpCP );

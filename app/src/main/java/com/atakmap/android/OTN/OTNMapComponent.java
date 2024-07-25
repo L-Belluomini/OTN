@@ -74,7 +74,7 @@ public class OTNMapComponent extends DropDownMapComponent implements SharedPrefe
     private static final String TAG = "OTNMapComponent";
     private Context pluginContext;
     private Context _context;
-    private RoutePlannerManager _routeManager ;
+    private RoutePlannerManager _routeManager ; // TO LOOK AT NEW ROUTE PLANNER
     private LinkedList<String> registeredRouters = new LinkedList<>();
     private Map< String , OTNGraph > graphs = new ConcurrentHashMap< String , OTNGraph>();
     private final Map< String , String > bordersMap = new HashMap<>();
