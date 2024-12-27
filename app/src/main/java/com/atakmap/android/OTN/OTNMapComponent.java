@@ -75,13 +75,15 @@ public class OTNMapComponent extends DropDownMapComponent implements SharedPrefe
     private Context pluginContext;
     private Context _context;
     private RoutePlannerManager _routeManager ; // TO LOOK AT NEW ROUTE PLANNER
-    private LinkedList<String> registeredRouters = new LinkedList<>();
-    private Map< String , OTNGraph > graphs = new ConcurrentHashMap< String , OTNGraph>();
+    private final LinkedList<String> registeredRouters = new LinkedList<>();
+    private final Map< String , OTNGraph > graphs = new ConcurrentHashMap< String , OTNGraph>();
     private final Map< String , String > bordersMap = new HashMap<>();
     private OTNGraph selectdeGraph;
     private OTNGraph tmpGraph;
     private DefaultMapGroup mapGroup;
     private AtakPreferences _prefs;
+
+    private  OTNDropDownReceiver _ddr;
 
     private AbstractMapOverlay2 overlay;
     private int fillColor;
@@ -118,7 +120,7 @@ public class OTNMapComponent extends DropDownMapComponent implements SharedPrefe
         pluginContext.setTheme(R.style.ATAKPluginTheme);
         super.onCreate(pluginContext, intent, view);
 
-        OTNDropDownReceiver ddr = new OTNDropDownReceiver(
+         _ddr = new OTNDropDownReceiver(
                 view, pluginContext);
 
         OTNDropDownGraphDetails ddgd = new OTNDropDownGraphDetails(
@@ -160,7 +162,7 @@ public class OTNMapComponent extends DropDownMapComponent implements SharedPrefe
         DocumentedIntentFilter ddFilter = new DocumentedIntentFilter();
         ddFilter.addAction(SHOW_PLUGIN);
         ddFilter.addAction(SET_GRAPHS);
-        registerDropDownReceiver(ddr, ddFilter);
+        registerDropDownReceiver(_ddr, ddFilter);
 
         ddFilter = new DocumentedIntentFilter();
         ddFilter.addAction(SHOW_GRAPH_DETAIL);

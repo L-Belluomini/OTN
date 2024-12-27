@@ -1,6 +1,7 @@
 
 package com.atakmap.android.OTN;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -73,6 +74,7 @@ public class OTNDropDownReceiver extends DropDownReceiver implements
 
         ImageButton infoBtton =templateView.findViewById( R.id.help_button);
         infoBtton.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onClick(View view) {
                 AlertDialog.Builder getinfoADB = new AlertDialog.Builder(MapView._mapView.getContext()) ;

@@ -36,14 +36,16 @@ public class OTNTool extends AbstractPluginTool implements Disposable{
                 context.getString(R.string.app_name),
                 context.getString(R.string.app_desc),
                 context.getResources().getDrawable(R.drawable.otn_logo),
-                "com.atakmap.android.OTNMapComponent.SHOW_PLUGIN");
+                OTNMapComponent.SHOW_PLUGIN);
 
-        AtakBroadcast.getInstance().registerReceiver(br,
+        /*AtakBroadcast.getInstance().registerReceiver(br,
                 new AtakBroadcast.DocumentedIntentFilter(
-                        "com.atakmap.android.OTN.plugin.iconcount"));
+                        "\"com.atakmap.android.OTNMapComponent.SHOW_PLUGIN"));
+
+         */
     }
 
-    private final BroadcastReceiver br = new BroadcastReceiver() {
+   /* private final BroadcastReceiver br = new BroadcastReceiver() {
         private int count = 0;
 
         @Override
@@ -60,9 +62,11 @@ public class OTNTool extends AbstractPluginTool implements Disposable{
         }
     };
 
+    */
+
     @Override
     public void dispose() {
-        AtakBroadcast.getInstance().unregisterReceiver(br);
+        //AtakBroadcast.getInstance().unregisterReceiver(br);
     }
 
     // public OTNTool(Context context) {this.context = context;}
