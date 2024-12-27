@@ -48,7 +48,7 @@ public class OTNOfflineRouter implements RoutePlannerInterface2, AdapterView.OnI
     private  final OTNGraph graph;
     private final List<GeoPoint> waypoints = new LinkedList<>();
     private AlertDialog _parent;
-    private final ArrayAdapter<GeoPoint> _waypointAdapter;
+    //private final ArrayAdapter<GeoPoint> _waypointAdapter;
     private static final String MAP_CLICK = "com.atakmap.android.OTN.MAP_CLICK";
     private Route.RouteMethod _method = Route.RouteMethod.Driving;
 
@@ -62,7 +62,7 @@ public class OTNOfflineRouter implements RoutePlannerInterface2, AdapterView.OnI
         this.pluginContext = pluginContext;
         this.graph = graph;
         this.selectedType= type;
-        _waypointAdapter = new OTNwaypoitRouterOptionAdapter(pluginContext , R.layout.waypoint_listitem , waypoints );
+        //_waypointAdapter = new OTNwaypoitRouterOptionAdapter(pluginContext , R.layout.waypoint_listitem , waypoints );
     }
 
     public OTNOfflineRouter( Context pluginContext , OTNGraph graph , String ghMethod ){
@@ -101,7 +101,7 @@ public class OTNOfflineRouter implements RoutePlannerInterface2, AdapterView.OnI
     public RouteGenerationTask getRouteGenerationTask(
             RouteGenerationTask.RouteGenerationEventListener routeGenerationEventListener){
         Log.d(TAG , "get gen task");
-     return new OTNOfflineroutingTask( routeGenerationEventListener, graph  ,  new OTNrequest(graph.getConfigGH(), selectedProfile , selectedType) , waypoints );
+     return new OTNOfflineroutingTask( routeGenerationEventListener, graph  ,  new OTNrequest(graph.getConfigGH(), selectedProfile , selectedType)  );
     }
 
     /**
@@ -135,7 +135,7 @@ public class OTNOfflineRouter implements RoutePlannerInterface2, AdapterView.OnI
         }
 
         // way point UI
-        ListView waypointLayout = view.findViewById(R.id.waypoint_list);
+        /*ListView waypointLayout = view.findViewById(R.id.waypoint_list);
 
         waypointLayout.setAdapter(_waypointAdapter);
 
@@ -173,13 +173,15 @@ public class OTNOfflineRouter implements RoutePlannerInterface2, AdapterView.OnI
                     if ( intent.getIntExtra("wayPointNumber", -1 ) != waypoints.size() ){
                         return;
                     }
-                    _waypointAdapter.add( waypointNew);
+                    //_waypointAdapter.add( waypointNew);
                     //waypointAdapter.notifyDataSetChanged();
 
                     Log.d(TAG , waypoints.toString() );
                 }
             }
         } , new AtakBroadcast.DocumentedIntentFilter( MAP_CLICK ) );
+
+         */
         return view;
     }
 

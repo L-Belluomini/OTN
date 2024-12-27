@@ -51,7 +51,7 @@ public class OTNOfflineroutingTask extends RouteGenerationTask{
     private static final String TAG = "OTNOfflineroutingTask";
     private final OTNGraph graph;
     private final OTNrequest takRequest;
-    private List<GeoPoint> _waypoints;
+    //private List<GeoPoint> _waypoints;
 
 
 
@@ -61,12 +61,15 @@ public class OTNOfflineroutingTask extends RouteGenerationTask{
         this.takRequest = takRequest;
 
     }
+    /*
     public OTNOfflineroutingTask(RouteGenerationEventListener listener, OTNGraph graph, OTNrequest takRequest  , List<GeoPoint> waypoints) {
         super(listener);
         this.graph = graph;
         this.takRequest = takRequest;
         this._waypoints= waypoints;
     }
+
+     */
 
 
     @Override
@@ -96,7 +99,7 @@ public class OTNOfflineroutingTask extends RouteGenerationTask{
         Log.d(TAG,"is lm capable "  + Boolean.toString(takRequest.isLmCapable() ));
 
         GraphHopperConfig configGH = graph.getConfigGH();
-        Boolean ghmmapOption = prefs.getBoolean(OTNMapComponent.GRAPH_MEMORY_MAP , false );
+        boolean ghmmapOption = prefs.getBoolean(OTNMapComponent.GRAPH_MEMORY_MAP , false );
         if ( !ghmmapOption) {
             configGH.putObject( "graph.dataaccess" , "MMAP");
         } else{
@@ -111,14 +114,15 @@ public class OTNOfflineroutingTask extends RouteGenerationTask{
 
 
 
-        if ( byWayOff.size() == 0 && _waypoints.size() == 0){
+        //if ( byWayOff.size() == 0 && _waypoints.size() == 0){
+        if (byWayOff.isEmpty()){
             ghRequest = new GHRequest(origin.getLatitude() , origin.getLongitude() , dest.getLatitude() ,dest.getLongitude());
         } else {
             ghRequest = new GHRequest();
         }
 
         // IF ENEBALED USE BYWAYOFF
-        if ( byWayOff.size() > 0) { // if not overriden
+        if (!byWayOff.isEmpty()) { // if not overriden
             byWayOff.add( 0 , origin);
             byWayOff.add(dest); // append
             for (GeoPoint takwaypoint : byWayOff ) {
@@ -126,7 +130,7 @@ public class OTNOfflineroutingTask extends RouteGenerationTask{
                 ghRequest.addPoint( new GHPoint( takwaypoint.getLatitude() , takwaypoint.getLongitude() ) );
 
             }
-        } else if ( _waypoints.size() >0 ) {
+        }/* else if ( _waypoints.size() >0 ) {
             _waypoints.add( 0 , origin);
             _waypoints.add( dest); // append
             for (GeoPoint extrawaypoint : _waypoints ) {
@@ -134,6 +138,7 @@ public class OTNOfflineroutingTask extends RouteGenerationTask{
                 ghRequest.addPoint( new GHPoint( extrawaypoint.getLatitude() , extrawaypoint.getLongitude() ) );
             }
         }
+        */
 
         ghRequest.setProfile (takRequest.getProfile().getName() );
 
@@ -200,8 +205,6 @@ public class OTNOfflineroutingTask extends RouteGenerationTask{
             tmpPoint = new GeoPoint( bestResponse.getPoints().getLat ( pointIndex ) , bestResponse.getPoints().getLon ( pointIndex ) );
             point = new GeoPoint( tmpPoint.getLatitude() , tmpPoint.getLongitude() , ElevationManager.getElevation( tmpPoint , null ) );
 
-            ///// @GABRI TODO LOOK AT WAYPOINT AND CONTROLPOINT AMBIGUITY/////
-
             if ( bestResponse.getPoints().getLat ( pointIndex ) == instructionList.get( cueIndex ).getPoints().getLat(0) &&
                     bestResponse.getPoints().getLon ( pointIndex ) == instructionList.get( cueIndex ).getPoints().getLon(0) ) {
                 // set point as waypoint
@@ -216,7 +219,6 @@ public class OTNOfflineroutingTask extends RouteGenerationTask{
             } else {
                 Route.ControlPointMapItem tmpCP = new Route.ControlPointMapItem( point , UUID.randomUUID().toString() );
                 waypointList.add ( tmpCP );
-
             }
 
         }
