@@ -50,6 +50,11 @@ public class OTNOfflineRouter implements RoutePlannerInterface2, AdapterView.OnI
     private AlertDialog _parent;
     private final ArrayAdapter<GeoPoint> _waypointAdapter;
     private static final String MAP_CLICK = "com.atakmap.android.OTN.MAP_CLICK";
+    private Route.RouteMethod _method = Route.RouteMethod.Driving;
+
+    private static String name = "OTNOFFlineFast";
+
+    private String _ghMethod = "";
 
 
 
@@ -58,9 +63,17 @@ public class OTNOfflineRouter implements RoutePlannerInterface2, AdapterView.OnI
         this.graph = graph;
         this.selectedType= type;
         _waypointAdapter = new OTNwaypoitRouterOptionAdapter(pluginContext , R.layout.waypoint_listitem , waypoints );
-        Log.d(TAG , "offline router constructor");
     }
 
+    public OTNOfflineRouter( Context pluginContext , OTNGraph graph , String ghMethod ){
+        this(pluginContext, graph, OTNrequest.ProfileType.BEST );
+        _ghMethod = ghMethod;
+        _method = OTNGraph.getMethodFromGhMethod(ghMethod);
+        if (_method == null )
+        {
+            _method = Route.RouteMethod.Driving;
+        }
+    }
 
     /**
      * Gets the descriptive name of the planner.
@@ -106,17 +119,20 @@ public class OTNOfflineRouter implements RoutePlannerInterface2, AdapterView.OnI
         current_graph_txtview.setText("Current graph: "+ graph.getGraphPath().substring( graph.getGraphPath().lastIndexOf("/")+1 ));
 
         // profile
-        PluginSpinner profileSpinner = view.findViewById(R.id.route_plan_method);
-        ArrayAdapter<String> profileAdapter = new ArrayAdapter<>( pluginContext , android.R.layout.simple_spinner_dropdown_item );
-       if (graph == null) {
-           Log.w(TAG , "jConfig is null!!");
-           return view; // todo tell user does not work but dont kill app
-       }
-        for (  Profile item : graph.getConfigGH().getProfiles() ){
-            profileAdapter.add( item.getName() );
+        if (_ghMethod.isEmpty() ) {
+            PluginSpinner profileSpinner = view.findViewById(R.id.route_plan_method);
+
+            ArrayAdapter<String> profileAdapter = new ArrayAdapter<>(pluginContext, android.R.layout.simple_spinner_dropdown_item);
+            if (graph == null) {
+                Log.w(TAG, "jConfig is null!!");
+                return view; // todo tell user does not work but dont kill app
+            }
+            for (Profile item : graph.getConfigGH().getProfiles()) {
+                profileAdapter.add(item.getName());
+            }
+            profileSpinner.setAdapter(profileAdapter);
+            profileSpinner.setOnItemSelectedListener(this);
         }
-        profileSpinner.setAdapter(profileAdapter);
-        profileSpinner.setOnItemSelectedListener( this );
 
         // way point UI
         ListView waypointLayout = view.findViewById(R.id.waypoint_list);
@@ -227,42 +243,12 @@ public class OTNOfflineRouter implements RoutePlannerInterface2, AdapterView.OnI
 
     @Override
     public String getUniqueIdenfier() {
-        return "OTNOFFlineFast";
+        return name + _ghMethod;
     }
 
     @Override
     public Route.RouteMethod getRouteMethod() {
-
-        Log.d(TAG ," Called router method" );
-
-        if (graph == null) {
-            Log.w(TAG , "jConfig is null!!");
-            return Route.RouteMethod.Walking;
-        }
-         Profile tmpProfile = graph.getConfigGH().getProfiles().get( selectedProfile);
-         if ( tmpProfile == null)
-         {
-             return Route.RouteMethod.Walking;
-         }
-            String tmpProfileVehicle = tmpProfile.getVehicle();
-         if ( tmpProfileVehicle == null)
-         {
-             return Route.RouteMethod.Walking;
-         }
-
-
-        if ( tmpProfileVehicle.equals( "car") )
-        {
-            return Route.RouteMethod.Driving;
-        }
-
-        if ( tmpProfileVehicle.equals( "foot") )
-        {
-            return Route.RouteMethod.Walking;
-        }
-
-        Log.w(TAG , "Pofile not Found, default walking");
-        return Route.RouteMethod.Walking;
+        return _method;
     }
 }
 

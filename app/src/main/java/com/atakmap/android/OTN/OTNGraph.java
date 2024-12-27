@@ -5,6 +5,7 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 
 import com.atakmap.android.maps.Polyline;
+import com.atakmap.android.routes.Route;
 import com.atakmap.coremap.conversions.AreaUtilities;
 import com.atakmap.coremap.filesystem.FileSystemUtils;
 import com.atakmap.coremap.log.Log;
@@ -185,5 +186,19 @@ public class OTNGraph implements Serializable {
         return graphPath;
     }
 
+    public static Route.RouteMethod getMethodFromGhMethod ( String ghMethod )
+    {
+        if ( ghMethod.equals( "car") )
+        {
+            return Route.RouteMethod.Driving;
+        }
+
+        if ( ghMethod.equals( "foot") )
+        {
+            return Route.RouteMethod.Walking;
+        }
+
+        return null;
+    }
 
 }

@@ -31,7 +31,7 @@ import com.atakmap.android.maps.Shape;
 import com.atakmap.android.overlay.AbstractMapOverlay2;
 import com.atakmap.android.overlay.DefaultMapGroupOverlay;
 import com.atakmap.android.preference.AtakPreferences;
-import com.atakmap.android.routes.RoutePlannerInterface;
+import com.atakmap.android.routes.RoutePlannerInterface2;
 import com.atakmap.android.user.FocusBroadcastReceiver;
 import com.atakmap.coremap.filesystem.FileSystemUtils;
 import com.atakmap.coremap.io.IOProvider;
@@ -173,9 +173,9 @@ public class OTNMapComponent extends DropDownMapComponent implements SharedPrefe
             public void onReceive(Context pluginContext, Intent intent) {
             Log.w(TAG,"failled setting bundle");
             final String action = intent.getAction();
-            if (action == null)
+            if (action == null) {
                 return;
-
+            }
                 switch (action) {
                     case (SET_SELECTED_GRAPH):
                         Bundle graphBundle = intent.getBundleExtra("GRAPH");
@@ -303,10 +303,10 @@ public class OTNMapComponent extends DropDownMapComponent implements SharedPrefe
     protected void updateRouters() {
         Log.d(TAG,"updating router");
         for (String routerUID : registeredRouters ) {
-            RoutePlannerInterface tmpPlanner = _routeManager.getPlanner( routerUID );
-            if ( tmpPlanner instanceof OTNOfflineRouter  ) {
+            //RoutePlannerInterface2 tmpPlanner = _routeManager.getPlanner( routerUID ); TODO: fix ?
+            //if ( tmpPlanner instanceof OTNOfflineRouter  ) {
                 _routeManager.unregisterPlanner(routerUID);
-            }
+            //}
         }
         selectdeGraph = tmpGraph;
         _prefs.set("OTNSelectedGraph",tmpGraph.getEdgeHash());
@@ -445,9 +445,21 @@ public class OTNMapComponent extends DropDownMapComponent implements SharedPrefe
         IOProvider provider = IOProviderFactory.getProvider();
         Log.d(TAG,"setting up new folder");
 
+        File f = FileSystemUtils.getItem("tools/OTN/graphs");
+        if ( f.getParentFile().mkdir())
+        {
+            //IOProviderFactory.mkdir( new File(FileSystemUtils.TOOL_DATA_DIRECTORY  + "/OTN/graphs" ) );
+            f.mkdir();
+            Log.d(TAG, "OTN folder CREATED");
+        } else {
+            Log.e(TAG, "impossible to create OTN folder");
+        }
+
+      /*
         if (! provider.exists( FileSystemUtils.getItem (FileSystemUtils.TOOL_DATA_DIRECTORY  + "/OTN") ) ) {
-            if ( provider.mkdir( new File(FileSystemUtils.TOOL_DATA_DIRECTORY  + "/OTN" ) ) ) {
-                provider.mkdir( new File(FileSystemUtils.TOOL_DATA_DIRECTORY  + "/OTN/graphs" ) );
+
+            if ( IOProviderFactory.mkdir( new File(FileSystemUtils.TOOL_DATA_DIRECTORY  + "/OTN" ) ) ) {
+                IOProviderFactory.mkdir( new File(FileSystemUtils.TOOL_DATA_DIRECTORY  + "/OTN/graphs" ) );
             } else {
                 Log.e(TAG,"impossible to create OTN folder");
                 if ( new File(FileSystemUtils.TOOL_DATA_DIRECTORY  + "/OTN").mkdir() )
@@ -460,6 +472,8 @@ public class OTNMapComponent extends DropDownMapComponent implements SharedPrefe
         } else {
         Log.w(TAG,"otn dir already exist");
         }
+
+       */
     }
 
     @Override

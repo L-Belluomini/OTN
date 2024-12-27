@@ -7,12 +7,13 @@ import android.view.View;
 import android.widget.AdapterView;
 
 import com.atakmap.android.OTN.plugin.R;
+import com.atakmap.android.routes.Route;
 import com.atakmap.android.routes.RouteGenerationTask;
-import com.atakmap.android.routes.RoutePlannerInterface;
+import com.atakmap.android.routes.RoutePlannerInterface2;
 import com.atakmap.android.routes.RoutePlannerOptionsView;
 import com.atakmap.coremap.log.Log;
 
-public class OTNOnlineRouter implements RoutePlannerInterface, AdapterView.OnItemSelectedListener {
+public class OTNOnlineRouter implements RoutePlannerInterface2, AdapterView.OnItemSelectedListener {
     private final Context pluginContext;
 
 
@@ -116,6 +117,16 @@ public class OTNOnlineRouter implements RoutePlannerInterface, AdapterView.OnIte
         }
 
 
+    }
+
+    @Override
+    public String getUniqueIdenfier() {
+        return "OTNOnlineRouter";
+    }
+
+    @Override
+    public Route.RouteMethod getRouteMethod() {
+        return Route.RouteMethod.Driving;
     }
 
     @Override

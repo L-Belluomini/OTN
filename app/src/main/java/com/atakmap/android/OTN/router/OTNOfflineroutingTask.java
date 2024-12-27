@@ -65,8 +65,7 @@ public class OTNOfflineroutingTask extends RouteGenerationTask{
         super(listener);
         this.graph = graph;
         this.takRequest = takRequest;
-        this._waypoints=waypoints;
-        Log.d(TAG , "new");
+        this._waypoints= waypoints;
     }
 
 
