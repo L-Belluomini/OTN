@@ -3,13 +3,8 @@
 <plugin>
 
     <extension
-        type="transapps.maps.plugin.lifecycle.Lifecycle"
-        impl="com.atakmap.android.OTN.plugin.OTNLifecycle"
-        singleton="true" />
-
-    <extension
-        type="transapps.maps.plugin.tool.ToolDescriptor"
-        impl="com.atakmap.android.OTN.plugin.OTNTool"
+        type="gov.tak.api.plugin.IPlugin"
+        impl="com.atakmap.android.otn.plugin.OTNLifeCycle"
         singleton="true" />
 
 </plugin>

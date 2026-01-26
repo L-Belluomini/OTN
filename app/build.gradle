@@ -8,12 +8,12 @@
 
 buildscript {
 
-    ext.PLUGIN_VERSION = "1.0"
-    ext.ATAK_VERSION = "4.8.1"
+    ext.PLUGIN_VERSION = "0.1"
+    ext.ATAK_VERSION = "5.5.0"
 
-    def takdevVersion = '2.+'
+    def takdevVersion = '3.+'
 
-    ext.getValueFromPropertiesFile = { propFile, key ->
+    def getValueFromPropertiesFile = { propFile, key ->
         if(!propFile.isFile() || !propFile.canRead())
             return null
         def prop = new Properties()
@@ -38,7 +38,7 @@ buildscript {
         return getProperty(urlKey, null) != null
     }
 
-    ext.takrepoUrl = getProperty(urlKey, 'http://localhost/')
+    ext.takrepoUrl = getProperty(urlKey, 'https://localhost/')
     ext.takrepoUser = getProperty('takrepo.user', 'invalid')
     ext.takrepoPassword = getProperty('takrepo.password', 'invalid')
     ext.takdevPlugin = getProperty('takdev.plugin', "${rootDir}/../../atak-gradle-takdev.jar")
@@ -55,17 +55,17 @@ buildscript {
             credentials {
                 username = takrepoUser
                 password = takrepoPassword
-    }
+            }
         }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.0.2'
+        classpath 'com.android.tools.build:gradle:8.8.2'
         if(isDevKitEnabled()) {
             classpath "com.atakmap.gradle:atak-gradle-takdev:${takdevVersion}"
         } else {
             classpath files(takdevPlugin)
+        }
     }
- }
 }
 
 allprojects {
@@ -82,102 +82,74 @@ allprojects {
 
 apply plugin: 'com.android.application'
 apply plugin: 'atak-takdev-plugin'
+apply from: "../gradle/typst.gradle"
 
 
+ 
+// The supportedFlavors list is an example configuration.  FMS variants can be added and defined via an 
+// ISO tricode (xyz is an example and not a real country code).   The ISO tricode can be found here
+// Please see the A-3 in https://en.wikipedia.org/wiki/List_of_ISO_3166_country_codes
+
+ 
+// The supportedFlavors list is an example configuration.  FMS variants can be added and defined via an 
+// ISO tricode (xyz is an example and not a real country code).   The ISO tricode can be found here
+// Please see the A-3 in https://en.wikipedia.org/wiki/List_of_ISO_3166_country_codes
 
 
-
-
-// Attempt to get a suitable version name for the plugin based on
-// either a git or svn repository
-def getVersionName() {
-    try {
-            def stdout = new ByteArrayOutputStream()
-            exec {
-                commandLine 'git', 'rev-parse', '--short=8', 'HEAD'
-                standardOutput = stdout
-            }
-            def describe = stdout.toString().trim()
-            println("versionName[git]: $describe")
-            return describe
-    } catch (Exception ignored) {
-       println("error occured, using revision of 1")
-       return 1
-    }
-}
-
-
-// Attempt to get a suitable version code for the plugin based on
-// either a git or svn repository
-def getVersionCode() {
-    try {
-        new ByteArrayOutputStream().withStream { os ->
-                def result = exec {
-                    executable = 'git'
-                    args = ['show', '-s', '--format=%ct']
-                    standardOutput = os
-                    ignoreExitValue = true
-                }
-
-            def outputAsString = os.toString()
-                ext.revision = "$outputAsString".toInteger()
-
-                 println("version[git]: $revision")
-        }
-    } catch (Exception ignored) {
-       println("error occured, using revision of 1")
-       ext.revision = 1
-    }
-
-    return revision
-}
-
+def supportedFlavors = 
+[
+    [ name : 'civ', default: true ],
+    [ name : 'mil' /** example: true **/],
+    [ name : 'gov' ],
+    [ name : 'xyz' ],
+]
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion "20.0.2"
+    compileSdk 35
+    namespace 'com.atakmap.android.otn.plugin'
 
-   dexOptions {
-        jumboMode = true
+    buildFeatures {
+        buildConfig = true
     }
 
-    lintOptions {
-          checkReleaseBuilds true
-          // Or, if you prefer, you can continue to check for errors in release builds,
-          // but continue the build even when errors are found:
-          abortOnError true
-      }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    //kotlinOptions {
+    //    jvmTarget = JavaVersion.VERSION_17
+    //}
+
+    // this is required and should not be removed otherwise the TAK 
+    // inner signing check will fail and the plugin will not load
+    bundle {
+        storeArchive {
+            enable = false
+        }
+    }
+
+    // this is required and should not be removed otherwise the 
+    // plugin will not be able to use native libraries
+    packagingOptions {
+        jniLibs {
+            useLegacyPackaging = true
+        }
+    }
+
 
     signingConfigs {
         debug {
-            def kf = file('../ca/debug.keystore')
-            def kfp = 'android'
-            def ka = 'androiddebugkey'
-            def kp = kfp
-
-            if (kf == null) {
-                 throw new GradleException("No signing key configured!")
-            }
- 
-            storeFile file(kf)
-            if (kfp != null) storePassword kfp
-            if (ka != null) keyAlias ka
-            if (kp != null) keyPassword kp
+            storeFile file("${buildDir}/android_keystore")
+            storePassword "tnttnt"
+            keyAlias "wintec_mapping"
+            keyPassword "tnttnt"
         }
         release {
-            def kf = file('../ca/debug.keystore')
-            def kfp = 'android'
-            def ka = 'androiddebugkey'
-            def kp = kfp
-
-            if (kf == null) {
-                 throw new GradleException("No signing key configured!")
-            }
-
-            storeFile file(kf)
-            if (kfp != null) storePassword kfp
-            if (ka != null) keyAlias ka
-            if (kp != null) keyPassword kp
+            storeFile file("${buildDir}/android_keystore")
+            storePassword "tnttnt"
+            keyAlias "wintec_mapping"
+            keyPassword "tnttnt"
         }
     }
 
@@ -186,10 +158,9 @@ android {
             debuggable true
             matchingFallbacks = ['sdk']
         }
-
         release {
             minifyEnabled true
-            proguardFile 'proguard-gradle.txt'
+            proguardFiles 'proguard-gradle.txt', 'proguard-gradle-repackage.txt'
             signingConfig signingConfigs.release
             matchingFallbacks = ['odk']
         }
@@ -198,72 +169,41 @@ android {
     flavorDimensions "application"
 
     productFlavors {
-        mil {
+        supportedFlavors.each { flav ->
+            "${flav.name}" {
+                getIsDefault().set(flav.default)
+                dimension "application"
 
-            dimension "application"
-            manifestPlaceholders = [atakApiVersion: "com.atakmap.app@" + ATAK_VERSION + ".MIL"]
+                // retain existing application identifiers for civ and mil
+                if (!flav.name.equals("civ") && !flav.name.equals("mil")) {
+                     applicationIdSuffix = ".${flav.name}"
+                }
+                // resolve CIV dependency if flavor specific dependency is not available
+                matchingFallbacks = ['civ']
+
+                // set the api version information
+                def pluginApiFlavor = flav.name.equals('gov') ? 'CIV' : "${flav.name.toUpperCase()}"
+                manifestPlaceholders = [atakApiVersion: "com.atakmap.app@" + ATAK_VERSION + ".${pluginApiFlavor}"]
+
+                // additional variables associated with the flav can be set here once defined above
+                // buildConfigField 'boolean', 'EXAMPLE', "${flav.example}"
+            }
         }
-        civ {
-            getIsDefault().set(true)
-            dimension "application"
-            manifestPlaceholders = [atakApiVersion: "com.atakmap.app@" + ATAK_VERSION + ".CIV"]
+         // additional variables associated with all flavors can be set here
+         applicationVariants.all { variant ->
+             variant.resValue "string", "versionName", variant.versionName
+             buildConfigField 'String', 'ATAK_PACKAGE_NAME', '"com.atakmap.app.civ"'
         }
-        aus {
-            dimension "application"
-            manifestPlaceholders = [atakApiVersion: "com.atakmap.app@" + ATAK_VERSION + ".AUS"]
-        }
-        nzl {
-            dimension "application"
-            manifestPlaceholders = [atakApiVersion: "com.atakmap.app@" + ATAK_VERSION + ".NZL"]
-        }
-        prt {
-            dimension "application"
-            manifestPlaceholders = [atakApiVersion: "com.atakmap.app@" + ATAK_VERSION + ".PRT"]
-        }
-        nor {
-            dimension "application"
-            manifestPlaceholders = [atakApiVersion: "com.atakmap.app@" + ATAK_VERSION + ".NOR"]
-        }
-        hun {
-            dimension "application"
-            manifestPlaceholders = [atakApiVersion: "com.atakmap.app@" + ATAK_VERSION + ".HUN"]
-        }
-        bel {
-            dimension "application"
-            manifestPlaceholders = [atakApiVersion: "com.atakmap.app@" + ATAK_VERSION + ".BEL"]
-        }
-        swe {
-            dimension "application"
-            manifestPlaceholders = [atakApiVersion: "com.atakmap.app@" + ATAK_VERSION + ".SWE"]
-        }
-        natosof {
-            dimension "application"
-            manifestPlaceholders = [atakApiVersion: "com.atakmap.app@" + ATAK_VERSION + ".NATOSOF"]
-        }
-        gbr {
-            dimension "application"
-            manifestPlaceholders = [atakApiVersion: "com.atakmap.app@" + ATAK_VERSION + ".GBR"]
-        }
-        gov {
-            dimension "application"
-            // GOV builds are just CIV api builds with additional information in the strings file 
-            manifestPlaceholders = [atakApiVersion: "com.atakmap.app@" + ATAK_VERSION + ".CIV"]
-        }
-        can {
-            dimension "application"
-            manifestPlaceholders = [atakApiVersion: "com.atakmap.app@" + ATAK_VERSION + ".CAN"]
-        }
-        }
+    }
 
     packagingOptions {
-        exclude 'META-INF/NOTICE.md'
-        exclude 'META-INF/LICENSE.md'
-        exclude 'META-INF/*'
-        exclude 'META-INF/**'
-        exclude 'module-info'
 
-        //resources.excludes.add("META-INF/*")
-        // resources.excludes.add("META-INF/NOTICE.md")
+        resources {
+            excludes += ['META-INF/INDEX.LIST']
+        }
+
+        // Extract native libraries from the APK - required for plugin loading
+        jniLibs.useLegacyPackaging true
     }
 
     sourceSets {
@@ -293,74 +233,83 @@ android {
 
     defaultConfig {
         minSdkVersion 21
-        ndk {
-            abiFilters "armeabi-v7a", "arm64-v8a", "x86"
+        targetSdkVersion 34
+
+        def runTasks = gradle.startParameter.taskNames
+        if(runTasks.toString().contains('bundle')) {
+            ndk {
+                abiFilters "armeabi-v7a", "arm64-v8a"
+            }
+        } else { 
+            ndk {
+                abiFilters "armeabi-v7a", "arm64-v8a", "x86"
+            }
         }
     }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+    lint {
+        abortOnError true
+        checkReleaseBuilds true
+    }
+}
+
+afterEvaluate {
+    project.file('proguard-gradle-repackage.txt').text = "-repackageclasses atakplugin.${rootProject.getName()}"
+
+    try { 
+        tasks.named("compile" + getCommandFlavor() + "ReleaseKotlin") {
+            println "modifying " + getCommandFlavor().toLowerCase() + " kotlin compile options to include: -Xsam-conversions=class"
+            kotlinOptions {
+                freeCompilerArgs += "-Xsam-conversions=class"
+            }
+        }
+    } catch (Exception ignored) { }
+}
+
+// modified code to find the current flavor in progress
+def getCommandFlavor() {
+    String  tskReqStr = getGradle().getStartParameter().getTaskRequests().toString()
+
+    java.util.regex.Pattern pattern
+    if( tskReqStr.contains( "assemble" ) )
+        pattern = java.util.regex.Pattern.compile("assemble(\\w+)(Release|Debug)")
+    else if( tskReqStr.contains( "install" ) )
+        pattern = java.util.regex.Pattern.compile("install(\\w+)(Release|Debug)")
+    else
+        pattern = java.util.regex.Pattern.compile("generate(\\w+)(Release|Debug)")
+
+    java.util.regex.Matcher matcher = pattern.matcher(tskReqStr)
+
+    if( matcher.find() ) {
+        return matcher.group(1)
+    } else {
+        return "Civ"
     }
 }
 
 
 dependencies {
     implementation fileTree(dir: 'libs', include: '*.jar')
-    // https://mvnrepository.com/artifact/com.graphhopper/graphhopper-core
-    implementation (group: 'com.graphhopper', name: 'graphhopper-core', version: '6.0') {
-        exclude group : 'com.fasterxml.jackson.core' // reimported directly to remove module-info
-        exclude group : 'jakarta.xml.bind'// reimported directly to remove multirelease jar
-        exclude group : 'com.fasterxml.jackson.dataformat' // reimported directly to remove module-info
-        exclude group : 'com.fasterxml.jackson.module' // reimported directly to remove module-info
-        exclude group : 'com.fasterxml.woodstox' // reimported directly to remove module-info
-        exclude group : 'org.codehaus.woodstox' // reimported directly to remove module-info
-    }
-    implementation ( group: 'com.graphhopper' , name: 'directions-api-client-hc' , version: '6.0' ) {
-        exclude group : 'com.fasterxml.jackson.core' // reimported directly to remove module-info
-        exclude group : 'jakarta.xml.bind'// reimported directly to remove multirelease jar
-        exclude group : 'com.fasterxml.jackson.dataformat' // reimported directly to remove module-info
-        exclude group : 'com.fasterxml.jackson.module' // reimported directly to remove module-info
-        exclude group : 'com.fasterxml.woodstox' // reimported directly to remove module-info
-        exclude group : 'org.codehaus.woodstox' // reimported directly to remove module-info
-    }
-    // tried to use jar jar to remove modle-info https://github.com/google/gson/issues/1627#issuecomment-856734057
-    // does not work
-    runtimeOnly group: 'org.slf4j', name: 'slf4j-android',version: '1.7.7'
-
-
-
-    implementation files ('../libs/jakarta.xml.bind-api-2.3.2.jar')
-    implementation files ('../libs/gson-2.8.9.jar')
-    implementation files ('../libs/jackson-annotations-2.10.5.jar')
-    implementation files ('../libs/jackson-core-2.10.5.jar')
-    implementation files ('../libs/jackson-databind-2.10.5.1.jar')
-    implementation files ('../libs/jackson-dataformat-xml-2.10.5.jar')
-    implementation files ('../libs/jackson-module-jaxb-annotations-2.10.5.jar')
-    implementation files ('../libs/stax2-api-4.2.1.jar')
-    implementation files ('../libs/woodstox-core-6.2.1.jar')
-
-    implementation ('androidx.constraintlayout:constraintlayout:1.1.0') {
-        exclude module: 'collection'
-        exclude module: 'core'
-        exclude module: 'lifecycle'
-        exclude module: 'core-common'
-        exclude module: 'collection'
-        exclude module: 'customview'
-        exclude module: 'collection'
-    }
-    implementation 'androidx.preference:preference:1.1.1'
-
-
-    /* implementation ('androidx.recyclerview:recyclerview:1.2.1') {
-        exclude module: 'collection'
-        exclude module: 'core'
-        exclude module: 'lifecycle'
-        exclude module: 'core-common'
-        exclude module: 'collection'
-        exclude module: 'customview'
-    }
-
-     */
-
 }
+
+configurations.all {
+    resolutionStrategy.eachDependency { details ->
+        if (details.requested.group == 'androidx.core') {
+            details.useVersion "1.15.0"
+        }
+        if (details.requested.group == 'androidx.lifecycle') {
+            details.useVersion "2.8.7" 
+        }
+        if (details.requested.group == 'androidx.fragment') {
+            details.useVersion "1.8.5"
+        }
+    }   
+}           
+        
+configurations.implementation {
+       exclude group: 'androidx.core', module: 'core-ktx'
+       exclude group: 'androidx.core', module: 'core'
+       exclude group: 'androidx.fragment', module: 'fragment'
+       exclude group: 'androidx.lifecycle', module: 'lifecycle'
+       exclude group: 'androidx.lifecycle', module: 'lifecycle-process'
+}       
 

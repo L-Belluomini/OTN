@@ -1,3 +1,16 @@
+######################################################################
+## Skip down to the 'User Section'
+## Messing with any items in the 'System Section' will void the warranty
+######################################################################
+
+
+######################################################################
+######################################################################
+## System Section
+######################################################################
+######################################################################
+
+
 -dontskipnonpubliclibraryclasses
 -dontshrink
 -dontoptimize
@@ -8,13 +21,10 @@
 -keepattributes SourceFile,LineNumberTable
 
 -applymapping <atak.proguard.mapping>
--repackageclasses atakplugin.otn
 
 -keepattributes *Annotation*
 -keepattributes Signature, InnerClasses
 
-# for testing
--printmapping proguardamppingtest
 
 -keep class * implements android.os.Parcelable {
   public static final android.os.Parcelable$Creator *;
@@ -50,61 +60,37 @@
 
 
 
--keep class * extends transapps.maps.plugin.tool.Tool {
+-keep class * implements gov.tak.api.plugin.IPlugin {
 }
--keep class * implements transapps.maps.plugin.lifecycle.Lifecycle {
+-keep class * extends com.atak.plugins.impl.AbstractPluginTool {
 }
-
-#-keep @com.fasterxml.jackson.annotation.JsonIgnoreProperties class * { *; }
-#-keep class com.fasterxml.** { *; }
-#-keep class org.codehaus.** { *; }
--keepnames class com.fasterxml.jackson.** { *; }
-#-keepclassmembers public final enum com.fasterxml.jackson.annotation.JsonAutoDetect$Visibility {
-#    public static final com.fasterxml.jackson.annotation.JsonAutoDetect$Visibility *;
-#}
-
 
 # overcome an existing bug in the gradle subsystem (3.5.x)
-#-keep class module-info
+-keep class module-info
 
-# projectspecific
+-keep,allowobfuscation @interface gov.tak.api.annotation.DontObfuscate
 
--ignorewarnings
-
-# androidx
-
-
-#graphhopper
--keep class com.graphhopper.util.TranslationMap
--keep class com.graphhopper.routing.lm.LandmarkStorage
--keep class com.graphhopper.routing.ev.** { *; }
+# Do not strip any method/class that is annotated with @DontObfuscate
+-keep @gov.tak.api.annotation.DontObfuscate class * {*;}
+-keepclassmembers class * {
+    @gov.tak.api.annotation.DontObfuscate *;
+}
 
 
-##---------------Begin: proguard configuration for Gson  ----------
-# Gson uses generic type information stored in a class file when working with fields. Proguard
-# removes such information by default, so configure it to keep all of it.
--keepattributes Signature
+######################################################################
+## Messing with any settings above this line will void the Warranty
+######################################################################
 
-# For using GSON @Expose annotation
--keepattributes *Annotation*
 
-# Gson specific classes
-# -dontwarn sun.misc.** buld break test
--keep class com.google.gson.stream.** { *; }
 
-# Application classes that will be serialized/deserialized over Gson
--keep class com.graphhopper.GraphHopperConfig  { <fields>; }
--keep class com.graphhopper.config.Profile  { <fields>; }
--keep class com.graphhopper.config.CHProfile  { <fields>; }
--keep class com.graphhopper.config.LMProfile  { <fields>; }
+######################################################################
+######################################################################
+## User Section
+######################################################################
+######################################################################
 
-# Prevent proguard from stripping interface information from TypeAdapter, TypeAdapterFactory,
-# JsonSerializer, JsonDeserializer instances (so they can be used in @JsonAdapter)
--keep class * extends com.google.gson.TypeAdapter
--keep class * implements com.google.gson.TypeAdapterFactory
--keep class * implements com.google.gson.JsonSerializer
--keep class * implements com.google.gson.JsonDeserializer
+######################################################################
+## below you can add any rules specific to your plugin limited to 
+## dontwarn and keep directives
+######################################################################
 
-## removed config for R8
-
-##---------------End: proguard configuration for Gson  ----------
