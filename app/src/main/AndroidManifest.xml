@@ -6,7 +6,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
 
-    <application 
+    <application
         android:allowBackup="false"
         android:icon="@drawable/otn_logo"
         android:label="@string/app_name"
@@ -18,7 +18,13 @@
         <meta-data android:name="plugin-api" android:value="${atakApiVersion}"/>
         <meta-data android:name="app_desc" android:value="@string/app_desc"/>
 
-
+        <!-- Activity to register plugin with ATAK -->
+        <activity android:name="com.atakmap.app.component"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.atakmap.app.component" />
+            </intent-filter>
+        </activity>
 
     </application>
 

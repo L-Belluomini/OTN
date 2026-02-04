@@ -31,7 +31,7 @@ import com.atakmap.android.maps.Shape;
 import com.atakmap.android.overlay.AbstractMapOverlay2;
 import com.atakmap.android.overlay.DefaultMapGroupOverlay;
 import com.atakmap.android.preference.AtakPreferences;
-import com.atakmap.android.routes.RoutePlannerInterface;
+import com.atakmap.android.routes.RoutePlannerInterface2;
 import com.atakmap.android.user.FocusBroadcastReceiver;
 import com.atakmap.coremap.filesystem.FileSystemUtils;
 import com.atakmap.coremap.io.IOProvider;
@@ -135,7 +135,7 @@ public class OTNMapComponent extends DropDownMapComponent implements SharedPrefe
                 :null;
         assert _routeManager != null;
 
-        _prefs = new AtakPreferences(view);
+        _prefs = new AtakPreferences(view.getContext());
 
         //fillColor = _prefs.get ( ID_COLOR_FILL, Color.BLUE );
 
@@ -303,11 +303,11 @@ public class OTNMapComponent extends DropDownMapComponent implements SharedPrefe
     protected void updateRouters() {
         Log.d(TAG,"updating router");
         for (String routerUID : registeredRouters ) {
-            RoutePlannerInterface tmpPlanner = _routeManager.getPlanner( routerUID );
-            if ( tmpPlanner instanceof OTNOfflineRouter  ) {
-                _routeManager.unregisterPlanner(routerUID);
-            }
+            // In ATAK 5.6.0, directly unregister OTN routers without checking type
+            // since getPlanner API changed
+            _routeManager.unregisterPlanner(routerUID);
         }
+        registeredRouters.clear();
         selectdeGraph = tmpGraph;
         _prefs.set("OTNSelectedGraph",tmpGraph.getEdgeHash());
         tmpGraph = null;

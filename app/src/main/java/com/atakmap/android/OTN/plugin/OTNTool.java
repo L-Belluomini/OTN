@@ -1,88 +1,72 @@
 
 package com.atakmap.android.OTN.plugin;
 
-import com.atakmap.android.OTN.OTNMapComponent;
-import com.atakmap.android.ipc.AtakBroadcast;
-
-import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.os.Bundle;
-import android.view.ViewGroup;
-import com.atakmap.android.maps.MapView;
+
+import com.atak.plugins.impl.AbstractPluginTool;
+import com.atakmap.android.OTN.OTNMapComponent;
+import com.atakmap.android.ipc.AtakBroadcast;
+import com.atakmap.android.navigation.NavButtonManager;
+import com.atakmap.android.navigation.models.NavButtonModel;
 import com.atakmap.coremap.log.Log;
-// import transapps.mapi.MapView; // deprecated
-import transapps.maps.plugin.tool.Group;
-import transapps.maps.plugin.tool.Tool;
-import transapps.maps.plugin.tool.ToolDescriptor;
 
-public class OTNTool extends Tool implements ToolDescriptor {
+import gov.tak.api.util.Disposable;
 
-    private final Context context;
-    private final  String TAG = "OTNtool";
+/**
+ * OTN Plugin Tool for ATAK 5.6.0
+ * Updated from Tool/ToolDescriptor to AbstractPluginTool for new plugin API
+ */
+public class OTNTool extends AbstractPluginTool implements Disposable {
 
-    public OTNTool(Context context) {
-        this.context = context;
-    }
+    private final String TAG = "OTNTool";
 
-    @Override
-    public String getDescription() {
-        return context.getString(R.string.app_name);
-    }
-
-    @Override
-    public Drawable getIcon() {
-        return (context == null) ? null
-                : context.getResources().getDrawable(R.drawable.otn_logo);
-    }
-
-    @Override
-    public Group[] getGroups() {
-        return new Group[] {
-                Group.GENERAL
-        };
-    }
-
-    @Override
-    public String getShortDescription() {
-        return context.getString(R.string.app_name);
-    }
-
-    @Override
-    public Tool getTool() {
-        return this;
-    }
-
-
-
-    @Override
-    public void onActivate(Activity arg0, transapps.mapi.MapView oldMapView, ViewGroup arg2,
-            Bundle arg3,
-            ToolCallback arg4) {
-        MapView mapView;
-
-        // hack to updated API
-        if (oldMapView == null || !(oldMapView.getView() instanceof MapView)) {
-            Log.w(TAG, "This plugin is only compatible with ATAK MapView");
-            return;
-        }
-        mapView = (MapView) oldMapView.getView();
-
-        // Hack to close the dropdown that automatically opens when a tool
-        // plugin is activated.
-        if (arg4 != null) {
-            arg4.onToolDeactivated(this);
-        }
-        // Intent to launch the dropdown or tool
-
-        //arg2.setVisibility(ViewGroup.INVISIBLE);
-        Intent i = new Intent(
+    /**
+     * Constructor for ATAK 5.x plugin tool
+     * @param context The plugin context
+     */
+    public OTNTool(final Context context) {
+        super(context,
+                context.getString(R.string.app_name),
+                context.getString(R.string.app_desc),
+                context.getResources().getDrawable(R.drawable.otn_logo),
                 OTNMapComponent.SHOW_PLUGIN);
-        AtakBroadcast.getInstance().sendBroadcast(i);
+
+        Log.d(TAG, "OTN Tool initialized for ATAK 5.6.0");
+
+        // Register broadcast receiver for icon badge count updates
+        AtakBroadcast.getInstance().registerReceiver(badgeCountReceiver,
+                new AtakBroadcast.DocumentedIntentFilter(
+                        "com.atakmap.android.OTN.plugin.iconcount"));
     }
 
+    /**
+     * Broadcast receiver for updating plugin icon badge count
+     */
+    private final BroadcastReceiver badgeCountReceiver = new BroadcastReceiver() {
+        private int count = 0;
+
+        @Override
+        public void onReceive(Context c, Intent intent) {
+            // Get the button model used by this plugin
+            NavButtonModel mdl = NavButtonManager.getInstance()
+                    .getModelByPlugin(OTNTool.this);
+            if (mdl != null) {
+                // Increment the badge count and refresh
+                mdl.setBadgeCount(++count);
+                NavButtonManager.getInstance().notifyModelChanged(mdl);
+                Log.d(TAG, "Updated badge count to: " + count);
+            }
+        }
+    };
+
+    /**
+     * Clean up resources when plugin is disposed
+     */
     @Override
-    public void onDeactivate(ToolCallback arg0) {
+    public void dispose() {
+        AtakBroadcast.getInstance().unregisterReceiver(badgeCountReceiver);
+        Log.d(TAG, "OTN Tool disposed");
     }
 }
