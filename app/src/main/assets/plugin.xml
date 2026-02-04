@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- OTN Plugin descriptor for ATAK 5.6.0 -->
 <!-- if you change this file, make sure to tick the versionCode in AndroidManifest. -->
 <plugin>
 
+    <!-- Updated to use new ATAK 5.x plugin API -->
     <extension
-        type="transapps.maps.plugin.lifecycle.Lifecycle"
+        type="gov.tak.api.plugin.IPlugin"
         impl="com.atakmap.android.OTN.plugin.OTNLifecycle"
-        singleton="true" />
-
-    <extension
-        type="transapps.maps.plugin.tool.ToolDescriptor"
-        impl="com.atakmap.android.OTN.plugin.OTNTool"
         singleton="true" />
 
 </plugin>

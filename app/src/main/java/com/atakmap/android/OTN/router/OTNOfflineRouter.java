@@ -23,9 +23,10 @@ import com.atakmap.android.OTN.plugin.R;
 import com.atakmap.android.dropdown.DropDownManager;
 import com.atakmap.android.gui.PluginSpinner;
 import com.atakmap.android.ipc.AtakBroadcast;
-import com.atakmap.android.routes.RoutePlannerInterface;
+import com.atakmap.android.routes.RoutePlannerInterface2;
 import com.atakmap.android.routes.RouteGenerationTask;
 import com.atakmap.android.routes.RoutePlannerOptionsView;
+import com.atakmap.android.routes.Route;
 
 
 import com.atakmap.android.toolbar.ToolManagerBroadcastReceiver;
@@ -39,7 +40,7 @@ import java.util.List;
 
 import com.atakmap.coremap.maps.coords.GeoPoint;
 
-public class OTNOfflineRouter implements RoutePlannerInterface, AdapterView.OnItemSelectedListener  {
+public class OTNOfflineRouter implements RoutePlannerInterface2, AdapterView.OnItemSelectedListener  {
     private final String TAG = "OTNOfflineRouter";
     private int selectedProfile = 0;
     private OTNrequest.ProfileType selectedType ;
@@ -71,6 +72,16 @@ public class OTNOfflineRouter implements RoutePlannerInterface, AdapterView.OnIt
      */
     public String getDescriptiveName(){
         return "OTN OFFline router";
+    }
+
+    /**
+     * Gets the unique identifier for this planner.
+     *
+     * @return the unique identifier
+     */
+    @Override
+    public String getUniqueIdenfier() {
+        return "OTNOfflineRouter";
     }
 
     /**
@@ -198,6 +209,19 @@ public class OTNOfflineRouter implements RoutePlannerInterface, AdapterView.OnIt
 
          */
         return true;
+    }
+
+    /**
+     * Gets the route method used by this planner.
+     * Required by RoutePlannerInterface2 in ATAK 5.6.0+
+     *
+     * @return the route method (Driving, Walking, Flying, Swimming, or Watercraft)
+     */
+    @Override
+    public Route.RouteMethod getRouteMethod(){
+        // Return Driving as default for offline routing
+        // You can modify this based on the selected profile if needed
+        return Route.RouteMethod.Driving;
     }
 
 

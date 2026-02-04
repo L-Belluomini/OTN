@@ -7,7 +7,8 @@
 -renamesourcefileattribute SourceFile
 -keepattributes SourceFile,LineNumberTable
 
--applymapping <atak.proguard.mapping>
+# ATAK 5.6.0: ProGuard mapping not needed for CIV builds
+# -applymapping <atak.proguard.mapping>
 -repackageclasses atakplugin.otn
 
 -keepattributes *Annotation*
@@ -53,6 +54,14 @@
 -keep class * extends transapps.maps.plugin.tool.Tool {
 }
 -keep class * implements transapps.maps.plugin.lifecycle.Lifecycle {
+}
+
+# ATAK 5.x plugin API - Keep classes that implement the new plugin interface
+-keep class * implements gov.tak.api.plugin.IPlugin {
+    *;
+}
+-keep class * implements gov.tak.api.plugin.IServiceController {
+    *;
 }
 
 #-keep @com.fasterxml.jackson.annotation.JsonIgnoreProperties class * { *; }
