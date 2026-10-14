@@ -2,11 +2,9 @@ package com.atakmap.android.OTN.router;
 
 import android.content.SharedPreferences;
 import android.util.Log;
-
 import com.atakmap.android.OTN.OTNGraph;
 import com.atakmap.android.OTN.OTNMapComponent;
 import com.atakmap.android.OTN.OTNrequest;
-import com.atakmap.android.OTN.OTNresponse;
 import com.atakmap.android.drawing.mapItems.DrawingCircle;
 import com.atakmap.android.maps.Marker;
 import com.atakmap.android.maps.PointMapItem;
@@ -18,326 +16,137 @@ import com.atakmap.android.routes.nav.NavigationCue;
 import com.atakmap.android.routes.routearound.RouteAroundRegionManager;
 import com.atakmap.coremap.maps.coords.GeoPoint;
 import com.atakmap.coremap.maps.coords.GeoPointMetaData;
-import com.atakmap.map.elevation.ElevationManager;
-
 import com.graphhopper.GHRequest;
 import com.graphhopper.GHResponse;
 import com.graphhopper.GraphHopper;
 import com.graphhopper.GraphHopperConfig;
-import com.graphhopper.ResponsePath;
-import com.graphhopper.json.Statement;
-import com.graphhopper.util.CustomModel;
-import com.graphhopper.util.InstructionList;
-import com.graphhopper.util.JsonFeature;
 import com.graphhopper.util.Parameters;
-import com.graphhopper.util.Translation;
 import com.graphhopper.util.shapes.GHPoint;
-
-
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.GeometryFactory;
-
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 
-
-public class OTNOfflineroutingTask extends RouteGenerationTask{
-
+public class OTNOfflineroutingTask extends RouteGenerationTask {
     private static final String TAG = "OTNOfflineroutingTask";
     private final OTNGraph graph;
     private final OTNrequest takRequest;
-    private List<GeoPoint> _waypoints;
+    private final List<GeoPoint> waypoints;
 
-
-
-    public OTNOfflineroutingTask(RouteGenerationEventListener listener, OTNGraph graph, OTNrequest takRequest  ) {
+    public OTNOfflineroutingTask(RouteGenerationEventListener listener, OTNGraph graph, OTNrequest request) {
+        this(listener, graph, request, Collections.emptyList());
+    }
+    public OTNOfflineroutingTask(RouteGenerationEventListener listener, OTNGraph graph,
+                                OTNrequest request, List<GeoPoint> waypoints) {
         super(listener);
         this.graph = graph;
-        this.takRequest = takRequest;
-
-    }
-    public OTNOfflineroutingTask(RouteGenerationEventListener listener, OTNGraph graph, OTNrequest takRequest  , List<GeoPoint> waypoints) {
-        super(listener);
-        this.graph = graph;
-        this.takRequest = takRequest;
-        this._waypoints=waypoints;
-        Log.d(TAG , "new");
+        this.takRequest = request;
+        this.waypoints = copyPoints(waypoints);
     }
 
+    private static List<GeoPoint> copyPoints(List<GeoPoint> source) {
+        List<GeoPoint> copy = new ArrayList<>();
+        if (source != null) for (GeoPoint point : source) copy.add(new GeoPoint(point));
+        return copy;
+    }
 
-    @Override
-    public RoutePointPackage generateRoute(SharedPreferences prefs, GeoPoint origin, GeoPoint dest, List<GeoPoint> byWayOff) {
-        GHRequest ghRequest;
-        // cumulative cycle results
-        List<PointMapItem> waypointList = new LinkedList<>()  ;
-        Map<String , NavigationCue> waycue = new HashMap<>();
-        // aux variable for cycle
-        GeoPoint point;
-        GeoPoint tmpPoint;
-        int cueIndex = 0;
-        String cue;
-        NavigationCue navCue;
-        String tmpUid;
-        OTNresponse tmpMapPoint;
-
-        if (graph == null ){
-            Log.e(TAG , "jConfig could not be loaded" );
-            return new RoutePointPackage("jConfig could not be loaded");
-        }
+    @Override public RoutePointPackage generateRoute(SharedPreferences prefs, GeoPoint origin,
+                                                    GeoPoint destination, List<GeoPoint> via) {
+        if (graph == null || takRequest == null)
+            return new RoutePointPackage("Select an OTN graph with a routing profile on the phone");
+        if (origin == null || destination == null || !origin.isValid() || !destination.isValid())
+            return new RoutePointPackage("Route endpoints are unavailable");
         GraphHopper hopper = new GraphHopper();
-
-        Log.d(TAG,"by way off " + Integer.toString( byWayOff.size()));
-        Log.d(TAG,takRequest.getProfileType().toString() );
-        Log.d(TAG,"is ch capable "  + Boolean.toString(takRequest.isChCapable() ));
-        Log.d(TAG,"is lm capable "  + Boolean.toString(takRequest.isLmCapable() ));
-
-        GraphHopperConfig configGH = graph.getConfigGH();
-        Boolean ghmmapOption = prefs.getBoolean(OTNMapComponent.GRAPH_MEMORY_MAP , false );
-        if ( !ghmmapOption) {
-            configGH.putObject( "graph.dataaccess" , "MMAP");
-        } else{
-            configGH.putObject("graph.dataaccess" , "RAM_STORE");
-        }
-
-        hopper.init(configGH);
-        Log.d("OTN" , hopper.getGraphHopperLocation() );
-        //hopper.setGraphHopperLocation(FileSystemUtils.getItem(FileSystemUtils.TOOL_DATA_DIRECTORY  +  graph.getGraphPath() ).getPath() );
-        //hopper.load( FileSystemUtils.getItem(FileSystemUtils.TOOL_DATA_DIRECTORY  +   graph.getGraphPath()).getPath() );
-        Log.d(TAG , Boolean.toString( hopper.load( ) ) );
-
-
-
-        if ( byWayOff.size() == 0 && _waypoints.size() == 0){
-            ghRequest = new GHRequest(origin.getLatitude() , origin.getLongitude() , dest.getLatitude() ,dest.getLongitude());
-        } else {
-            ghRequest = new GHRequest();
-        }
-
-        // IF ENEBALED USE BYWAYOFF
-        if ( byWayOff.size() > 0) { // if not overriden
-            byWayOff.add( 0 , origin);
-            byWayOff.add(dest); // append
-            for (GeoPoint takwaypoint : byWayOff ) {
-                Log.d(TAG , takwaypoint.toString() );
-                ghRequest.addPoint( new GHPoint( takwaypoint.getLatitude() , takwaypoint.getLongitude() ) );
-
-            }
-        } else if ( _waypoints.size() >0 ) {
-            _waypoints.add( 0 , origin);
-            _waypoints.add( dest); // append
-            for (GeoPoint extrawaypoint : _waypoints ) {
-                Log.d(TAG , extrawaypoint.toString() );
-                ghRequest.addPoint( new GHPoint( extrawaypoint.getLatitude() , extrawaypoint.getLongitude() ) );
-            }
-        }
-
-        ghRequest.setProfile (takRequest.getProfile().getName() );
-
-        // GET ROUTEAROUDN REGIONS
-        RouteAroundRegionManager regionManager = RouteAroundRegionManager.getInstance();
-        ArrayList<Shape> shapelist =regionManager.getRegions();
-        if ( ! shapelist.isEmpty()) {
-            if ( takRequest.getProfile().getWeighting().equals("custom") ) {
-                ghRequest.setCustomModel(createRaModel(shapelist));
-            }
-            else {
-                String[] areaBlcoks = createRaBlockArea( shapelist );
-                String tmparea="";
-                for (String area : areaBlcoks) {
-                    tmparea = tmparea + area;
-                }
-                Log.d(TAG,"adding ra hint" + tmparea );
-                ghRequest.putHint(Parameters.Routing.BLOCK_AREA , tmparea );
-
-            }
-        }
-
-        String lang = prefs.getString (OTNMapComponent.INSTRUCTION_LANG , "en_us" );
-        Locale local;
-
         try {
-            local = new Locale(lang);
-        }catch ( Exception e){
-            local = Locale.ENGLISH;
-        }
+            if (isCancelled()) return new RoutePointPackage("Route generation cancelled");
+            GraphHopperConfig config = graph.getConfigGH();
+            config.putObject("graph.dataaccess", prefs.getBoolean(OTNMapComponent.GRAPH_MEMORY_MAP, false)
+                    ? "RAM_STORE" : "MMAP");
+            hopper.init(config);
+            if (!hopper.load()) return new RoutePointPackage("OTN graph could not be loaded");
 
-        ghRequest.setLocale (  local );
-
-
-        if ( ! takRequest.isChCapable() | takRequest.getProfileType() == OTNrequest.ProfileType.BESTFLEXIBLE  | ! shapelist.isEmpty() ) {
-            ghRequest.putHint(Parameters.CH.DISABLE , true);
-            Log.d(TAG , "ch disabled");
-        }
-
-        if(!takRequest.isLmCapable()){
-            ghRequest.putHint(Parameters.Landmark.DISABLE , true);
-            Log.d(TAG , "lm disabled");
-        }
-
-
-
-
-        GHResponse  hopResponse = hopper.route ( ghRequest ) ;
-        if ( hopResponse.hasErrors() ) {
-            Log.e(TAG , hopResponse.getErrors ( ).toString ( ) );
-            return new RoutePointPackage( hopResponse.getErrors ( ).toString( ) );
-        }
-
-        ResponsePath  bestResponse = hopResponse.getBest();
-
-        hopper.close( );
-        Log.d(TAG,"hopper closed");
-
-
-        final InstructionList instructionList = bestResponse.getInstructions();
-        final Translation translation = instructionList.getTr();
-
-        for ( int pointIndex = 0 ; pointIndex < bestResponse.getPoints().size() ; pointIndex ++) {
-            tmpPoint = new GeoPoint( bestResponse.getPoints().getLat ( pointIndex ) , bestResponse.getPoints().getLon ( pointIndex ) );
-            point = new GeoPoint( tmpPoint.getLatitude() , tmpPoint.getLongitude() , ElevationManager.getElevation( tmpPoint , null ) );
-
-            if ( bestResponse.getPoints().getLat ( pointIndex ) == instructionList.get( cueIndex ).getPoints().getLat(0) &&
-                    bestResponse.getPoints().getLon ( pointIndex ) == instructionList.get( cueIndex ).getPoints().getLon(0) ) {
-                // set point as waypoint
-                Marker waypoint =  Route.createWayPoint( new GeoPointMetaData() , UUID.randomUUID().toString() );
-                cue = instructionList.get( cueIndex ).getTurnDescription(translation);
-                navCue = new NavigationCue( UUID.randomUUID().toString() , cue , cue ) ;
-                navCue.addCue( NavigationCue.TriggerMode.DISTANCE , 50 );
-                waycue.put(  waypoint.getUID() , navCue );
-                cueIndex ++;
-            } else {
-                Route.ControlPointMapItem tmpCP = new Route.ControlPointMapItem( point , UUID.randomUUID().toString() );
-                waypointList.add ( tmpCP );
-
+            // ATAK's supplied via points take precedence over the phone's planner options.
+            // Never modify either list: ATAK reuses these during rerouting.
+            List<GeoPoint> intermediate = via == null || via.isEmpty() ? waypoints : copyPoints(via);
+            GHRequest request = new GHRequest();
+            request.addPoint(new GHPoint(origin.getLatitude(), origin.getLongitude()));
+            for (GeoPoint point : intermediate) {
+                if (!point.isValid()) return new RoutePointPackage("Invalid intermediate route point");
+                request.addPoint(new GHPoint(point.getLatitude(), point.getLongitude()));
             }
+            request.addPoint(new GHPoint(destination.getLatitude(), destination.getLongitude()));
+            request.setProfile(takRequest.getProfile().getName());
+            String language = prefs.getString(OTNMapComponent.INSTRUCTION_LANG, "en_us");
+            request.setLocale(Locale.forLanguageTag(language == null ? "en-US" : language.replace('_', '-')));
+            request.putHint("instructions", true);
 
-        }
-        return new RoutePointPackage( waypointList , waycue );
-    }
+            List<Shape> regions = new ArrayList<>(RouteAroundRegionManager.getInstance().getRegions());
+            if (!regions.isEmpty()) {
+                // GraphHopper 6 can wrap any base profile's weighting with block_area.
+                // This also works for custom profiles, without replacing their own custom model.
+                request.putHint(Parameters.Routing.BLOCK_AREA, blockAreas(regions));
+            }
+            boolean flexible = takRequest.getProfileType() == OTNrequest.ProfileType.BESTFLEXIBLE
+                    || takRequest.getProfileType() == OTNrequest.ProfileType.STANDARD || !regions.isEmpty();
+            request.putHint(Parameters.CH.DISABLE, !takRequest.isChCapable() || flexible);
+            request.putHint(Parameters.Landmark.DISABLE, !takRequest.isLmCapable() || flexible);
+            if (isCancelled()) return new RoutePointPackage("Route generation cancelled");
+            GHResponse response = hopper.route(request);
+            if (isCancelled()) return new RoutePointPackage("Route generation cancelled");
+            if (response.hasErrors()) return new RoutePointPackage(response.getErrors().toString());
 
-    private CustomModel createRaModel (ArrayList<Shape> shapelist ){
-        CustomModel customModel = new CustomModel();
-            Log.d(TAG, "RA to custom model");
-            for (Shape takShape : shapelist ) {
-                Log.d(TAG,takShape.toString()  );
-                Log.d(TAG, takShape.getType() );
-
-                GeoPoint[] bordePoints= takShape.getPoints();
-                double[] latArray = new double[bordePoints.length];
-                double[] longArray = new double[bordePoints.length];
-                Coordinate[] cordsArray = new Coordinate[bordePoints.length];
-                JsonFeature tempFeature;
-                String areaname;
-                int index =0;
-
-                switch ( takShape.getType( ) ){
-
-                    case( "u-d-r"): // rectangle
-                        Log.i(TAG," RA Cm rectangle");
-                        for ( GeoPoint bordedpoint : bordePoints ){
-                            //latArray[index] = bordedpoint.getLatitude();
-                            //longArray[index] = bordedpoint.getLongitude();
-                            cordsArray[index] = new Coordinate( bordedpoint.getLatitude() , bordedpoint.getLongitude() );
-                            Log.d(TAG, "border point " + Double.toString( latArray[index] ) + " "  + Double.toString( longArray[index] ) );
-                        }
-                        tempFeature = new JsonFeature();
-                        tempFeature.setGeometry( new GeometryFactory( ).createPolygon( cordsArray ) );
-                        areaname = "RA"+"rect"+ Integer.toString( index);
-                        customModel.getAreas().put( areaname , tempFeature );
-                        customModel.addToPriority(Statement.If("in_" + areaname , Statement.Op.MULTIPLY , "0"));
-
-
-                        break;
-
-                    case( "u-d-f")://polyline
-                        Log.i(TAG," RA Cm poly");
-                        for ( GeoPoint bordedpoint : bordePoints ){
-                            latArray[index] = bordedpoint.getLatitude();
-                            longArray[index] = bordedpoint.getLongitude();
-                            cordsArray[index] = new Coordinate( bordedpoint.getLatitude() , bordedpoint.getLongitude() );
-                            Log.d(TAG, "border point " + Double.toString( latArray[index] ) + " "  + Double.toString( longArray[index] ) );
-                        }
-
-                        tempFeature = new JsonFeature();
-                        tempFeature.setGeometry( new GeometryFactory( ).createPolygon( cordsArray ) );
-                        areaname = "RA"+"poly"+ Integer.toString( index);
-                        customModel.getAreas().put( areaname , tempFeature );
-                        customModel.addToPriority(Statement.If("in_" + areaname , Statement.Op.MULTIPLY , "0"));
-
-                        break;
-
-                    case("u-d-c-c"):// circle
-                        Log.i(TAG," RA Cm poly");
-                        DrawingCircle takCircle = (DrawingCircle) takShape;
-                        tempFeature = new JsonFeature();
-                        //tempFeature.setGeometry( new GeometryFactory( ).createPolygon()
-                        //blockArea.add(new Circle( takCircle.getCenterPoint().getLatitude() , takCircle.getCenterPoint().getLongitude() , takCircle.getRadius() ) );
-                        Log.d( TAG, "center point " + Double.toString( takCircle.getCenterPoint().getLatitude() ) + " "  + Double.toString( takCircle.getCenterPoint().getLongitude()  ) );
-                        break;
+            List<PointMapItem> routePoints = new ArrayList<>();
+            Map<String, NavigationCue> cues = new HashMap<>();
+            for (RouteGeometry.Vertex vertex : RouteGeometry.from(response.getBest())) {
+                GeoPoint point = new GeoPoint(vertex.latitude, vertex.longitude);
+                String uid = UUID.randomUUID().toString();
+                if (vertex.waypoint) {
+                    Marker waypoint = Route.createWayPoint(GeoPointMetaData.wrap(point), uid);
+                    routePoints.add(waypoint);
+                    if (vertex.cue != null && !vertex.cue.isEmpty()) {
+                        NavigationCue cue = new NavigationCue(uid, vertex.cue, vertex.cue);
+                        cue.addCue(NavigationCue.TriggerMode.DISTANCE, 50);
+                        cues.put(uid, cue);
+                    }
+                } else {
+                    routePoints.add(new Route.ControlPointMapItem(point, uid));
                 }
             }
-        return customModel;
+            return new RoutePointPackage(routePoints, cues);
+        } catch (RuntimeException error) {
+            Log.e(TAG, "Offline route generation failed", error);
+            return new RoutePointPackage("OTN could not generate this route: " + error.getMessage());
+        } finally {
+            hopper.close();
+        }
     }
 
-    private String[] createRaBlockArea (ArrayList<Shape> shapelist ){
-        Log.d(TAG, "RA to block area");
-        String[] areaBlocks = new String[shapelist.size()];
-        String tmpAreaBlock;
-        int index =0;
-
-        for (Shape takShape : shapelist ) {
-            Log.d(TAG,takShape.toString()  );
-            Log.d(TAG, takShape.getType() );
-            tmpAreaBlock ="";
-            GeoPoint[] bordePoints= takShape.getPoints();
-
-
-            switch ( takShape.getType( ) ){
-
-                case( "u-d-r"): // rectangle
-                    Log.i(TAG," RA Ba rectangle");
-                    for ( GeoPoint bordedpoint : bordePoints ){
-                        tmpAreaBlock = tmpAreaBlock + "," + Double.toString(  bordedpoint.getLatitude()) + "," +  Double.toString(  bordedpoint.getLongitude());
-                        //Log.d(TAG, "borber point " + Double.toString( latArray[index] ) + " "  + Double.toString( longArray[index] ) );
-                    }
-                    tmpAreaBlock = tmpAreaBlock.replaceFirst(",","");
-                    tmpAreaBlock = tmpAreaBlock + ";";
-                    areaBlocks[index] =tmpAreaBlock;
-                    tmpAreaBlock = "";
-
-                    break;
-
-                case( "u-d-f")://polyline
-                    Log.i(TAG," RA Ba polyline");
-                    for ( GeoPoint bordedpoint : bordePoints ){
-                        tmpAreaBlock = tmpAreaBlock + "," + Double.toString(  bordedpoint.getLatitude()) + "," +  Double.toString(  bordedpoint.getLongitude());
-                        //Log.d(TAG, "border point " + Double.toString( latArray[index] ) + " "  + Double.toString( longArray[index] ) );
-                    }
-                    tmpAreaBlock = tmpAreaBlock.replaceFirst(",","");
-                    tmpAreaBlock = tmpAreaBlock + ";";
-                    areaBlocks[index] =tmpAreaBlock;
-                    tmpAreaBlock = "";
-
-
-                    break;
-
-                case("u-d-c-c"):// circle
-                    Log.i(TAG," RA Ba circle");
-                    DrawingCircle takCircle = (DrawingCircle) takShape;
-                    tmpAreaBlock =  Double.toString( takCircle.getCenterPoint().getLatitude() ) + "," +  Double.toString(  takCircle.getCenterPoint().getLongitude() ) + "," + Integer.toString( (int) takCircle.getRadius() );
-                    Log.d( TAG, "center point " + Double.toString( takCircle.getCenterPoint().getLatitude() ) + " "  + Double.toString( takCircle.getCenterPoint().getLongitude()  ) + " "  + Double.toString( takCircle.getRadius()  ) );
-                    tmpAreaBlock = tmpAreaBlock + ";";
-                    areaBlocks[index] =tmpAreaBlock;
-                    tmpAreaBlock = "";
-                    break;
+    private static String blockAreas(List<Shape> shapes) {
+        List<String> areas = new ArrayList<>();
+        for (Shape shape : shapes) {
+            if (shape instanceof DrawingCircle) {
+                DrawingCircle circle = (DrawingCircle) shape;
+                GeoPoint center = circle.getCenterPoint();
+                if (!center.isValid() || !Double.isFinite(circle.getRadius()) || circle.getRadius() <= 0)
+                    throw new IllegalArgumentException("Invalid circle in route avoidance regions");
+                areas.add(center.getLatitude() + "," + center.getLongitude() + "," + (long) Math.ceil(circle.getRadius()));
+            } else if ("u-d-r".equals(shape.getType()) || "u-d-f".equals(shape.getType())) {
+                GeoPoint[] points = shape.getPoints();
+                if (points.length < 3) throw new IllegalArgumentException("Route avoidance region needs at least three vertices");
+                StringBuilder area = new StringBuilder();
+                for (GeoPoint point : points) {
+                    if (!point.isValid()) throw new IllegalArgumentException("Invalid route avoidance region coordinate");
+                    if (area.length() > 0) area.append(',');
+                    area.append(point.getLatitude()).append(',').append(point.getLongitude());
+                }
+                areas.add(area.toString());
+            } else {
+                throw new IllegalArgumentException("Unsupported route avoidance region: " + shape.getType());
             }
-            index++;
         }
-        return areaBlocks;
+        return String.join(";", areas);
     }
 }

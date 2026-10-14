@@ -23,7 +23,7 @@ import com.atakmap.android.OTN.plugin.R;
 import com.atakmap.android.dropdown.DropDownManager;
 import com.atakmap.android.gui.PluginSpinner;
 import com.atakmap.android.ipc.AtakBroadcast;
-import com.atakmap.android.routes.RoutePlannerInterface;
+import com.atakmap.android.routes.RoutePlannerInterface2;
 import com.atakmap.android.routes.RouteGenerationTask;
 import com.atakmap.android.routes.RoutePlannerOptionsView;
 
@@ -39,7 +39,7 @@ import java.util.List;
 
 import com.atakmap.coremap.maps.coords.GeoPoint;
 
-public class OTNOfflineRouter implements RoutePlannerInterface, AdapterView.OnItemSelectedListener  {
+public class OTNOfflineRouter implements RoutePlannerInterface2, AdapterView.OnItemSelectedListener  {
     private final String TAG = "OTNOfflineRouter";
     private int selectedProfile = 0;
     private OTNrequest.ProfileType selectedType ;
@@ -47,6 +47,7 @@ public class OTNOfflineRouter implements RoutePlannerInterface, AdapterView.OnIt
     private  final OTNGraph graph;
     private final List<GeoPoint> waypoints = new LinkedList<>();
     private AlertDialog _parent;
+    private BroadcastReceiver mapClickReceiver;
     private final ArrayAdapter<GeoPoint> _waypointAdapter;
     private static final String MAP_CLICK = "com.atakmap.android.OTN.MAP_CLICK";
 
@@ -69,6 +70,8 @@ public class OTNOfflineRouter implements RoutePlannerInterface, AdapterView.OnIt
      *
      * @return the descriptive name of the planner
      */
+    @Override public String getUniqueIdenfier() { return "OTNOFFlineFast"; }
+
     public String getDescriptiveName(){
         return "OTN OFFline router";
     }
@@ -90,7 +93,7 @@ public class OTNOfflineRouter implements RoutePlannerInterface, AdapterView.OnIt
     public RouteGenerationTask getRouteGenerationTask(
             RouteGenerationTask.RouteGenerationEventListener routeGenerationEventListener){
         Log.d(TAG , "get gen task");
-     return new OTNOfflineroutingTask( routeGenerationEventListener, graph  ,  new OTNrequest(graph.getConfigGH(), selectedProfile , selectedType) , waypoints );
+     return new OTNOfflineroutingTask( routeGenerationEventListener, graph  ,  graph == null ? null : new OTNrequest(graph.getConfigGH(), selectedProfile , selectedType) , waypoints );
     }
 
     /**
@@ -100,7 +103,9 @@ public class OTNOfflineRouter implements RoutePlannerInterface, AdapterView.OnIt
     public RoutePlannerOptionsView getOptionsView(AlertDialog parent){
 
         RoutePlannerOptionsView view= (RoutePlannerOptionsView) LayoutInflater.from(pluginContext).inflate(R.layout.otnplanneroption, null);
-        _parent=parent;
+        dispose();
+        _parent = parent;
+        if (graph == null) return view;
 
         // current graph textview
 
@@ -118,7 +123,8 @@ public class OTNOfflineRouter implements RoutePlannerInterface, AdapterView.OnIt
             profileAdapter.add( item.getName() );
         }
         profileSpinner.setAdapter(profileAdapter);
-        profileSpinner.setOnItemSelectedListener( this );
+        profileSpinner.setSelection(Math.min(selectedProfile, profileAdapter.getCount() - 1));
+        profileSpinner.setOnItemSelectedListener(this);
 
         // way point UI
         ListView waypointLayout = view.findViewById(R.id.waypoint_list);
@@ -134,7 +140,7 @@ public class OTNOfflineRouter implements RoutePlannerInterface, AdapterView.OnIt
                 toolBundle.putParcelable("callback" , new Intent( MAP_CLICK ).putExtra("wayPointNumber" , waypoints.size() ) );
                 ToolManagerBroadcastReceiver.getInstance().startTool(MapClickTool.TOOL_NAME , toolBundle);
                 DropDownManager.getInstance().hidePane();
-                _parent.hide();
+                if (_parent != null) _parent.hide();
                 if ( ToolManagerBroadcastReceiver.getInstance().getActiveTool() instanceof MapClickTool) {
 
                 } else {
@@ -144,11 +150,12 @@ public class OTNOfflineRouter implements RoutePlannerInterface, AdapterView.OnIt
         });
 
         // if more brodcast are need move to dedicated reciver ? maybe...
-        AtakBroadcast.getInstance().registerReceiver ( new BroadcastReceiver( ) {
+        mapClickReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 Log.d(TAG , "brodcast recived");
                 if ( intent.getAction().equals(MAP_CLICK) ){
+                    if (_parent == null) return;
                     _parent.show();
                     DropDownManager.getInstance().unHidePane();
                     GeoPoint waypointNew = GeoPoint.parseGeoPoint( intent.getStringExtra("point") );
@@ -165,7 +172,15 @@ public class OTNOfflineRouter implements RoutePlannerInterface, AdapterView.OnIt
                     Log.d(TAG , waypoints.toString() );
                 }
             }
-        } , new AtakBroadcast.DocumentedIntentFilter( MAP_CLICK ) );
+        };
+        AtakBroadcast.getInstance().registerReceiver(mapClickReceiver, new AtakBroadcast.DocumentedIntentFilter(MAP_CLICK));
+        view.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
+            @Override public void onViewAttachedToWindow(View ignored) {}
+            @Override public void onViewDetachedFromWindow(View ignored) {
+                // hide() during waypoint picking keeps the dialog alive; cleanup occurs on dismissal.
+                if (_parent == null || !_parent.isShowing()) dispose();
+            }
+        });
         return view;
     }
 
@@ -202,6 +217,14 @@ public class OTNOfflineRouter implements RoutePlannerInterface, AdapterView.OnIt
 
 
 
+
+    public void dispose() {
+        if (mapClickReceiver != null) {
+            AtakBroadcast.getInstance().unregisterReceiver(mapClickReceiver);
+            mapClickReceiver = null;
+        }
+        _parent = null;
+    }
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int position, long iD) {

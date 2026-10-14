@@ -1,0 +1,508 @@
+Source-header copyright/terms preservation from exact Maven source archives.
+Full source/build distribution review remains separate.
+
+Referenced source entries:
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/math/MathUtil.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/math/Vector2D.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/math/Vector3D.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/math/DD.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/math/Plane3D.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/math/Matrix.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geom/util/GeometryMapper.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/precision/GeometryPrecisionReducer.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/precision/PrecisionReducerCoordinateOperation.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/precision/SimpleMinimumClearance.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/precision/MinimumClearance.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/index/strtree/GeometryItemDistance.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/index/strtree/ItemDistance.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/index/strtree/BoundablePair.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/shape/GeometricShapeBuilder.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/shape/fractal/KochSnowflakeBuilder.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/shape/fractal/SierpinskiCarpetBuilder.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/shape/random/RandomPointsInGridBuilder.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/shape/random/RandomPointsBuilder.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/io/WKBHexFileReader.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/operation/distance/FacetSequenceTreeBuilder.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/operation/distance/IndexedFacetDistance.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/operation/distance/FacetSequence.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/operation/buffer/OffsetSegmentGenerator.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/operation/buffer/OffsetSegmentString.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/operation/distance3d/PlanarPolygon3D.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/operation/distance3d/Distance3DOp.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/operation/distance3d/AxisPlaneCoordinateSequence.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/triangulate/quadedge/TrianglePredicate.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/algorithm/RectangleLineIntersector.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/algorithm/CGAlgorithmsDD.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/algorithm/CGAlgorithms3D.java
+/*
+ * Copyright (c) 2016 Martin Davis.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * and Eclipse Distribution License v. 1.0 which accompanies this distribution.
+ * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
+ * and the Eclipse Distribution License is available at
+ *
+ * http://www.eclipse.org/org/documents/edl-v10.php.
+ */
+
+Referenced source entries:
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/planargraph/NodeMap.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/planargraph/Subgraph.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/planargraph/DirectedEdgeStar.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/planargraph/GraphComponent.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/planargraph/Node.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/planargraph/PlanarGraph.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/planargraph/DirectedEdge.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/planargraph/Edge.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/planargraph/algorithm/ConnectedSubgraphFinder.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/JTSVersion.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/awt/ShapeCollectionPathIterator.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/awt/PointTransformation.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/awt/ShapeWriter.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/awt/PolygonShape.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/awt/GeometryCollectionShape.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/awt/ShapeReader.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/awt/PointShapeFactory.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/awt/FontGlyphReader.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/awt/IdentityPointTransformation.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/linearref/LengthIndexedLine.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/linearref/LocationIndexedLine.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/linearref/LocationIndexOfPoint.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/linearref/LengthLocationMap.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/linearref/ExtractLineByLocation.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/linearref/LocationIndexOfLine.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/linearref/LengthIndexOfPoint.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/linearref/LinearGeometryBuilder.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/linearref/LinearLocation.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/linearref/LinearIterator.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/dissolve/DissolveEdgeGraph.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/dissolve/LineDissolver.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/dissolve/DissolveHalfEdge.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geom/GeometryCollection.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geom/CoordinateFilter.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geom/Point.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geom/Coordinate.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geom/IntersectionMatrix.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geom/CoordinateSequences.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geom/LineString.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geom/CoordinateList.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geom/Dimension.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geom/GeometryCollectionIterator.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geom/GeometryFilter.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geom/GeometryFactory.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geom/Envelope.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geom/Polygonal.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geom/DefaultCoordinateSequence.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geom/Triangle.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geom/Geometry.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geom/GeometryComponentFilter.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geom/CoordinateSequenceComparator.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geom/MultiPolygon.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geom/PrecisionModel.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geom/LinearRing.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geom/MultiLineString.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geom/CoordinateSequence.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geom/Polygon.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geom/DefaultCoordinateSequenceFactory.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geom/impl/CoordinateArraySequence.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geom/impl/PackedCoordinateSequenceFactory.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geom/impl/CoordinateArraySequenceFactory.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geom/impl/PackedCoordinateSequence.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geom/prep/PreparedPolygonPredicate.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geom/prep/PreparedPolygonContainsProperly.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geom/prep/PreparedGeometryFactory.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geom/prep/PreparedPolygon.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geom/prep/PreparedGeometry.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geom/prep/PreparedPolygonCovers.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geom/prep/BasicPreparedGeometry.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geom/prep/PreparedLineStringIntersects.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geom/prep/PreparedPolygonContains.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geom/prep/PreparedPoint.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geom/prep/PreparedPolygonIntersects.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geom/prep/PreparedLineString.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geom/prep/AbstractPreparedPolygonContains.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geom/CoordinateSequenceFilter.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geom/util/GeometryTransformer.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geom/util/AffineTransformationFactory.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geom/util/AffineTransformation.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geom/util/GeometryEditor.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geom/util/GeometryCollectionMapper.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geom/util/LineStringExtracter.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geom/util/ShortCircuitedGeometryVisitor.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geom/util/ComponentCoordinateExtracter.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geom/util/PointExtracter.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geom/util/AffineTransformationBuilder.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geom/util/LinearComponentExtracter.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geom/util/GeometryCombiner.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geom/util/GeometryExtracter.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geom/util/SineStarFactory.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geom/util/NoninvertibleTransformationException.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geom/util/PolygonExtracter.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geom/OctagonalEnvelope.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geom/TopologyException.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geom/Lineal.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geom/Puntal.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geom/MultiPoint.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geom/LineSegment.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geom/CoordinateArrays.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geom/CoordinateSequenceFactory.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geom/Location.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/precision/CoordinatePrecisionReducerFilter.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/precision/EnhancedPrecisionOp.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/precision/SimpleGeometryPrecisionReducer.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/precision/CommonBitsRemover.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/precision/CommonBits.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/precision/CommonBitsOp.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/simplify/TopologyPreservingSimplifier.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/simplify/TaggedLineSegment.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/simplify/DouglasPeuckerLineSimplifier.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/simplify/DouglasPeuckerSimplifier.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/simplify/VWLineSimplifier.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/simplify/TaggedLinesSimplifier.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/simplify/TaggedLineString.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/simplify/TaggedLineStringSimplifier.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/simplify/LineSegmentIndex.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/simplify/VWSimplifier.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/edgegraph/MarkHalfEdge.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/edgegraph/EdgeGraph.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/edgegraph/EdgeGraphBuilder.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/edgegraph/HalfEdge.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geomgraph/Position.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geomgraph/NodeMap.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geomgraph/DirectedEdgeStar.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geomgraph/EdgeList.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geomgraph/EdgeIntersection.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geomgraph/EdgeEndStar.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geomgraph/GraphComponent.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geomgraph/EdgeIntersectionList.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geomgraph/Node.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geomgraph/NodeFactory.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geomgraph/EdgeNodingValidator.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geomgraph/index/MonotoneChainEdge.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geomgraph/index/MonotoneChainIndexer.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geomgraph/index/SegmentIntersector.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geomgraph/index/SimpleMCSweepLineIntersector.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geomgraph/index/SweepLineEvent.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geomgraph/index/SweepLineSegment.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geomgraph/index/MonotoneChain.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geomgraph/index/SimpleSweepLineIntersector.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geomgraph/index/SimpleEdgeSetIntersector.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geomgraph/index/EdgeSetIntersector.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geomgraph/PlanarGraph.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geomgraph/Label.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geomgraph/DirectedEdge.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geomgraph/TopologyLocation.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geomgraph/Edge.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geomgraph/EdgeEnd.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geomgraph/Quadrant.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geomgraph/Depth.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geomgraph/EdgeRing.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/geomgraph/GeometryGraph.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/noding/IntersectionFinderAdder.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/noding/SegmentStringDissolver.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/noding/ScaledNoder.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/noding/SegmentString.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/noding/IteratedNoder.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/noding/SegmentIntersectionDetector.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/noding/SegmentStringUtil.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/noding/SegmentIntersector.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/noding/OrientedCoordinateArray.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/noding/InteriorIntersectionFinderAdder.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/noding/SimpleNoder.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/noding/MCIndexNoder.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/noding/snapround/GeometryNoder.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/noding/snapround/MCIndexPointSnapper.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/noding/snapround/HotPixel.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/noding/snapround/MCIndexSnapRounder.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/noding/snapround/SimpleSnapRounder.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/noding/NodableSegmentString.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/noding/FastSegmentSetIntersectionFinder.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/noding/SegmentNodeList.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/noding/IntersectionAdder.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/noding/SinglePassNoder.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/noding/Noder.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/noding/NodedSegmentString.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/noding/BasicSegmentString.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/noding/NodingValidator.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/noding/SegmentPointComparator.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/noding/SimpleSegmentSetMutualIntersector.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/noding/SegmentSetMutualIntersector.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/noding/Octant.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/noding/SegmentNode.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/noding/FastNodingValidator.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/noding/MCIndexSegmentSetMutualIntersector.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/noding/NodingIntersectionFinder.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/index/intervalrtree/IntervalRTreeLeafNode.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/index/intervalrtree/SortedPackedIntervalRTree.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/index/intervalrtree/IntervalRTreeNode.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/index/intervalrtree/IntervalRTreeBranchNode.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/index/quadtree/Key.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/index/quadtree/NodeBase.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/index/quadtree/DoubleBits.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/index/quadtree/IntervalSize.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/index/quadtree/Node.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/index/quadtree/Root.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/index/quadtree/Quadtree.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/index/chain/MonotoneChainSelectAction.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/index/chain/MonotoneChain.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/index/chain/MonotoneChainOverlapAction.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/index/chain/MonotoneChainBuilder.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/index/ArrayListVisitor.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/index/SpatialIndex.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/index/bintree/Interval.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/index/bintree/Key.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/index/bintree/NodeBase.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/index/bintree/Node.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/index/bintree/Root.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/index/bintree/Bintree.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/index/sweepline/SweepLineEvent.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/index/sweepline/SweepLineInterval.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/index/sweepline/SweepLineIndex.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/index/sweepline/SweepLineOverlapAction.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/index/strtree/AbstractNode.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/index/strtree/Interval.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/index/strtree/ItemBoundable.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/index/strtree/STRtree.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/index/strtree/AbstractSTRtree.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/index/strtree/SIRtree.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/index/strtree/Boundable.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/index/kdtree/KdNodeVisitor.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/index/kdtree/KdNode.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/index/kdtree/KdTree.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/index/ItemVisitor.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/densify/Densifier.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/util/UniqueCoordinateArrayFilter.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/util/Debug.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/util/Stopwatch.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/util/StringUtil.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/util/Memory.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/util/CollectionUtil.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/util/NumberUtil.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/util/AssertionFailedException.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/util/CoordinateArrayFilter.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/util/CoordinateCountFilter.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/util/GeometricShapeFactory.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/util/Assert.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/util/PriorityQueue.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/util/ObjectCounter.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/io/ByteArrayInStream.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/io/ByteOrderValues.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/io/WKTWriter.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/io/OutputStreamOutStream.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/io/gml2/GeometryStrategies.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/io/gml2/GMLReader.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/io/gml2/GMLWriter.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/io/gml2/GMLConstants.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/io/gml2/GMLHandler.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/io/InStream.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/io/ByteOrderDataInStream.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/io/kml/KMLWriter.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/io/WKBConstants.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/io/ParseException.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/io/WKTFileReader.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/io/OutStream.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/io/WKBReader.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/io/WKTReader.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/io/WKBWriter.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/io/InputStreamInStream.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/operation/linemerge/LineMergeGraph.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/operation/linemerge/EdgeString.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/operation/linemerge/LineMergeEdge.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/operation/linemerge/LineSequencer.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/operation/linemerge/LineMerger.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/operation/linemerge/LineMergeDirectedEdge.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/operation/IsSimpleOp.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/operation/distance/DistanceOp.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/operation/distance/GeometryLocation.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/operation/distance/ConnectedElementLocationFilter.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/operation/distance/ConnectedElementPointFilter.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/operation/union/PointGeometryUnion.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/operation/union/CascadedPolygonUnion.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/operation/union/UnionInteracting.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/operation/union/UnaryUnionOp.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/operation/buffer/BufferOp.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/operation/buffer/BufferInputLineSimplifier.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/operation/buffer/RightmostEdgeFinder.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/operation/buffer/OffsetCurveSetBuilder.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/operation/buffer/BufferParameters.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/operation/buffer/OffsetCurveBuilder.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/operation/buffer/SubgraphDepthLocater.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/operation/buffer/BufferSubgraph.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/operation/buffer/validate/BufferResultValidator.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/operation/buffer/validate/DistanceToPointFinder.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/operation/buffer/validate/BufferDistanceValidator.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/operation/buffer/validate/PointPairDistance.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/operation/buffer/validate/BufferCurveMaximumDistanceFinder.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/operation/buffer/BufferBuilder.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/operation/valid/TopologyValidationError.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/operation/valid/RepeatedPointTester.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/operation/valid/ConnectedInteriorTester.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/operation/valid/IsValidOp.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/operation/valid/IndexedNestedRingTester.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/operation/valid/ConsistentAreaTester.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/operation/polygonize/PolygonizeEdge.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/operation/polygonize/PolygonizeGraph.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/operation/polygonize/Polygonizer.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/operation/polygonize/EdgeRing.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/operation/polygonize/PolygonizeDirectedEdge.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/operation/overlay/MaximalEdgeRing.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/operation/overlay/PolygonBuilder.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/operation/overlay/OverlayNodeFactory.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/operation/overlay/ConsistentPolygonRingChecker.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/operation/overlay/OverlayOp.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/operation/overlay/MinimalEdgeRing.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/operation/overlay/PointBuilder.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/operation/overlay/EdgeSetNoder.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/operation/overlay/validate/FuzzyPointLocator.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/operation/overlay/validate/OverlayResultValidator.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/operation/overlay/validate/OffsetPointGenerator.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/operation/overlay/snap/GeometrySnapper.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/operation/overlay/snap/SnapIfNeededOverlayOp.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/operation/overlay/snap/LineStringSnapper.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/operation/overlay/snap/SnapOverlayOp.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/operation/overlay/LineBuilder.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/operation/relate/EdgeEndBundleStar.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/operation/relate/RelateNodeFactory.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/operation/relate/RelateComputer.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/operation/relate/RelateOp.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/operation/relate/RelateNode.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/operation/relate/EdgeEndBundle.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/operation/relate/RelateNodeGraph.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/operation/relate/EdgeEndBuilder.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/operation/predicate/RectangleContains.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/operation/predicate/RectangleIntersects.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/operation/GeometryGraphOperation.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/operation/BoundaryOp.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/triangulate/ConformingDelaunayTriangulationBuilder.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/triangulate/MidpointSplitPointFinder.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/triangulate/VertexTaggedGeometryDataMapper.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/triangulate/quadedge/TriangleVisitor.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/triangulate/quadedge/QuadEdgeTriangle.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/triangulate/quadedge/QuadEdgeLocator.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/triangulate/quadedge/LastFoundQuadEdgeLocator.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/triangulate/quadedge/QuadEdge.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/triangulate/quadedge/Vertex.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/triangulate/quadedge/QuadEdgeSubdivision.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/triangulate/quadedge/QuadEdgeUtil.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/triangulate/quadedge/TraversalVisitor.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/triangulate/quadedge/LocateFailureException.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/triangulate/quadedge/EdgeConnectedTriangleTraversal.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/triangulate/ConstraintVertex.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/triangulate/ConstraintEnforcementException.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/triangulate/ConstraintVertexFactory.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/triangulate/SplitSegment.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/triangulate/VoronoiDiagramBuilder.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/triangulate/NonEncroachingSplitPointFinder.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/triangulate/IncrementalDelaunayTriangulator.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/triangulate/DelaunayTriangulationBuilder.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/triangulate/Segment.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/triangulate/ConformingDelaunayTriangulator.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/triangulate/ConstraintSplitPointFinder.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/algorithm/MinimumDiameter.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/algorithm/Centroid.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/algorithm/PointLocator.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/algorithm/Area.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/algorithm/locate/SimplePointInAreaLocator.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/algorithm/locate/PointOnGeometryLocator.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/algorithm/locate/IndexedPointInAreaLocator.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/algorithm/distance/PointPairDistance.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/algorithm/distance/DistanceToPoint.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/algorithm/distance/DiscreteHausdorffDistance.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/algorithm/InteriorPointArea.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/algorithm/BoundaryNodeRule.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/algorithm/Length.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/algorithm/Distance.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/algorithm/PointLocation.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/algorithm/RobustDeterminant.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/algorithm/NotRepresentableException.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/algorithm/match/HausdorffSimilarityMeasure.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/algorithm/match/AreaSimilarityMeasure.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/algorithm/match/SimilarityMeasure.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/algorithm/match/SimilarityMeasureCombiner.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/algorithm/CGAlgorithms.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/algorithm/RobustLineIntersector.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/algorithm/Angle.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/algorithm/LineIntersector.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/algorithm/ConvexHull.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/algorithm/MinimumBoundingCircle.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/algorithm/HCoordinate.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/algorithm/InteriorPointLine.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/algorithm/Orientation.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/algorithm/InteriorPointPoint.java
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/algorithm/RayCrossingCounter.java
+/*
+ * Copyright (c) 2016 Vivid Solutions.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * and Eclipse Distribution License v. 1.0 which accompanies this distribution.
+ * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
+ * and the Eclipse Distribution License is available at
+ *
+ * http://www.eclipse.org/org/documents/edl-v10.php.
+ */
+
+Referenced source entries:
+org.locationtech.jts:jts-core:1.15.1!/org/locationtech/jts/index/strtree/BoundablePairDistanceComparator.java
+/*
+ * Copyright (c) 2017 Jia Yu.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * and Eclipse Distribution License v. 1.0 which accompanies this distribution.
+ * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
+ * and the Eclipse Distribution License is available at
+ *
+ * http://www.eclipse.org/org/documents/edl-v10.php.
+ */
+
+Referenced source entries:
+org.openstreetmap.osmosis:osmosis-osm-binary:0.47.3!/org/openstreetmap/osmosis/osmbinary/StringTable.java
+/** Copyright (c) 2010 Scott A. Crosby. <scott@sacrosby.com>
+
+   This program is free software: you can redistribute it and/or modify
+   it under the terms of the GNU Lesser General Public License as
+   published by the Free Software Foundation, either version 3 of the
+   License, or (at your option) any later version.
+
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+*/
+
+Referenced source entries:
+org.openstreetmap.osmosis:osmosis-osm-binary:0.47.3!/org/openstreetmap/osmosis/osmbinary/BinaryParser.java
+org.openstreetmap.osmosis:osmosis-osm-binary:0.47.3!/org/openstreetmap/osmosis/osmbinary/test/BuildTestFile.java
+org.openstreetmap.osmosis:osmosis-osm-binary:0.47.3!/org/openstreetmap/osmosis/osmbinary/file/FileFormatException.java
+org.openstreetmap.osmosis:osmosis-osm-binary:0.47.3!/org/openstreetmap/osmosis/osmbinary/file/FileBlockHead.java
+org.openstreetmap.osmosis:osmosis-osm-binary:0.47.3!/org/openstreetmap/osmosis/osmbinary/file/BlockOutputStream.java
+org.openstreetmap.osmosis:osmosis-osm-binary:0.47.3!/org/openstreetmap/osmosis/osmbinary/file/BlockReaderAdapter.java
+org.openstreetmap.osmosis:osmosis-osm-binary:0.47.3!/org/openstreetmap/osmosis/osmbinary/file/BlockInputStream.java
+org.openstreetmap.osmosis:osmosis-osm-binary:0.47.3!/org/openstreetmap/osmosis/osmbinary/file/FileBlockReference.java
+org.openstreetmap.osmosis:osmosis-osm-binary:0.47.3!/org/openstreetmap/osmosis/osmbinary/file/FileBlockBase.java
+org.openstreetmap.osmosis:osmosis-osm-binary:0.47.3!/org/openstreetmap/osmosis/osmbinary/file/FileBlockPosition.java
+org.openstreetmap.osmosis:osmosis-osm-binary:0.47.3!/org/openstreetmap/osmosis/osmbinary/file/FileBlock.java
+org.openstreetmap.osmosis:osmosis-osm-binary:0.47.3!/org/openstreetmap/osmosis/osmbinary/BinarySerializer.java
+/** Copyright (c) 2010 Scott A. Crosby. <scott@sacrosby.com>
+
+   This program is free software: you can redistribute it and/or modify
+   it under the terms of the GNU Lesser General Public License as 
+   published by the Free Software Foundation, either version 3 of the 
+   License, or (at your option) any later version.
+
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+*/
+

@@ -1,0 +1,69 @@
+{
+  "scope": "Version-anchored upstream license/notice/source identification; not full distribution compliance proof.",
+  "components": [
+    {
+      "component": "org.openstreetmap.osmosis:osmosis-osm-binary:0.47.3",
+      "sourceUrl": "https://repo.maven.apache.org/maven2/org/openstreetmap/osmosis/osmosis-osm-binary/0.47.3/osmosis-osm-binary-0.47.3-sources.jar",
+      "sourceJar": "osmosis-osm-binary-0.47.3-sources.jar",
+      "sha256": "f4e9f5e3ad44137ab67c3f9eb7faacb980312c6c5fc6d52394a7242133ae68d7",
+      "noticeEntries": [],
+      "javaSources": 15
+    },
+    {
+      "component": "org.locationtech.jts:jts-core:1.15.1",
+      "sourceUrl": "https://repo.maven.apache.org/maven2/org/locationtech/jts/jts-core/1.15.1/jts-core-1.15.1-sources.jar",
+      "sourceJar": "jts-core-1.15.1-sources.jar",
+      "sha256": "57de44e89d89776707a7b80917cff985fbded18bb032b3d70498088d7cdc2a7a",
+      "noticeEntries": [],
+      "javaSources": 417
+    }
+  ],
+  "upstreamFiles": [
+    {
+      "repo": "openstreetmap/osmosis",
+      "commit": "38bb04b9a445e538950ca1fc52ec034c43973cae",
+      "path": "osmosis-osm-binary/COPYING.osmpbf",
+      "sourceUrl": "https://raw.githubusercontent.com/openstreetmap/osmosis/38bb04b9a445e538950ca1fc52ec034c43973cae/osmosis-osm-binary/COPYING.osmpbf",
+      "file": "osmosis-COPYING.osmpbf",
+      "sha256": "da7eabb7bafdf7d3ae5e9f223aa5bdc1eece45ac569dc21b3b037520b4464768"
+    },
+    {
+      "repo": "locationtech/jts",
+      "commit": "bac855f9fe3a75af523b43f95f4b9a09b4ab5359",
+      "path": "LICENSE_EDLv1.txt",
+      "sourceUrl": "https://raw.githubusercontent.com/locationtech/jts/bac855f9fe3a75af523b43f95f4b9a09b4ab5359/LICENSE_EDLv1.txt",
+      "file": "jts-LICENSE_EDLv1.txt",
+      "sha256": "e67a91b5489cd78292d2654f1b587fe68296e28df7c766b9b675614fbdce4fd1"
+    },
+    {
+      "repo": "locationtech/jts",
+      "commit": "bac855f9fe3a75af523b43f95f4b9a09b4ab5359",
+      "path": "LICENSE_EPLv1.txt",
+      "sourceUrl": "https://raw.githubusercontent.com/locationtech/jts/bac855f9fe3a75af523b43f95f4b9a09b4ab5359/LICENSE_EPLv1.txt",
+      "file": "jts-LICENSE_EPLv1.txt",
+      "sha256": "0dba9cd5bc833d6a40f5f5a34db70e37b6ce1cd337dbc2f06ccf1dbc521d2079"
+    },
+    {
+      "repo": "locationtech/jts",
+      "commit": "bac855f9fe3a75af523b43f95f4b9a09b4ab5359",
+      "path": "OSGEO_LICENSE.txt",
+      "sourceUrl": "https://raw.githubusercontent.com/locationtech/jts/bac855f9fe3a75af523b43f95f4b9a09b4ab5359/OSGEO_LICENSE.txt",
+      "file": "jts-OSGEO_LICENSE.txt",
+      "sha256": "a215d9af48d7ec9b9d72328cde3b6d6a22ee45d4b9d246962ccdbe62511f0acc"
+    },
+    {
+      "repo": "locationtech/jts",
+      "commit": "bac855f9fe3a75af523b43f95f4b9a09b4ab5359",
+      "path": "LICENSES.md",
+      "sourceUrl": "https://raw.githubusercontent.com/locationtech/jts/bac855f9fe3a75af523b43f95f4b9a09b4ab5359/LICENSES.md",
+      "file": "jts-LICENSES.md",
+      "sha256": "d6dec172868c82d30a6109de33f6f98136bf202e51e228ec0ede33ab075e43f0"
+    }
+  ],
+  "jtsLicenseOption": "EDL1 option selected for OTN packaging as explicitly permitted by version-tag LICENSES.md; EPL and OSGeo BSD texts also retained.",
+  "osmosisLicense": "Source headers: LGPL version3 or later; full LGPL3 text preserved with existing OTN GPL3 text as referenced base license.",
+  "sourceHeaderFile": "SOURCE-COPYRIGHT-HEADERS.txt",
+  "sourceHeaderSha256": "9b3db5bde4a4a242b1ec874d65fe0212f4dd1986331d0a37d3796cfc2d710de4",
+  "sourceHeaderBlocks": 5,
+  "remaining": "Prepare corresponding source/build and applicable installation/relink materials, complete all runtime/native/data/SDK provenance review before distribution."
+}

@@ -1,0 +1,7 @@
+# OTN reads desktop-generated config.json using Gson. JSON field names, including
+# nested graph properties and profile hints, must survive release obfuscation.
+-keep class com.graphhopper.GraphHopperConfig { <fields>; }
+-keep class com.graphhopper.config.Profile { <fields>; }
+-keep class com.graphhopper.config.CHProfile { <fields>; }
+-keep class com.graphhopper.config.LMProfile { <fields>; }
+-keepclassmembers class com.graphhopper.util.PMap { <fields>; }

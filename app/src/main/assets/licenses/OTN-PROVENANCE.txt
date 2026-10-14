@@ -1,0 +1,14 @@
+Open TAK Navigation (OTN)
+
+Upstream source: https://github.com/L-Belluomini/OTN
+Recovered upstream checkpoint: 9f35f1ff99eb01b892df412c5c86701bfd248e9e
+License: GNU General Public License version 3; exact upstream license text
+is packaged alongside this file as OTN-GPL-3.0.txt and retained at repository root.
+
+This plugin is modified for ATAK CIV 5.8. Development build instructions and
+validation limits are in PORTING.md. Dependency notices remain inside this APK.
+
+Distribution preparation must identify the exact modified source checkpoint and
+provide the corresponding source and build instructions. The upstream URL identifies
+upstream provenance, not availability of these modifications. TAK SDK binaries,
+development signing keys and device-private data are not part of source delivery.

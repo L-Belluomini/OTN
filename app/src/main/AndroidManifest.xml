@@ -1,6 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.atakmap.android.OTN.plugin"
     tools:ignore="GoogleAppIndexingWarning">
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -18,8 +17,9 @@
         <meta-data android:name="plugin-api" android:value="${atakApiVersion}"/>
         <meta-data android:name="app_desc" android:value="@string/app_desc"/>
 
-
-
+        <activity android:name="com.atakmap.app.component" android:exported="true" tools:ignore="MissingClass">
+            <intent-filter android:label="@string/app_name"><action android:name="com.atakmap.app.component" /></intent-filter>
+        </activity>
     </application>
 
 </manifest>

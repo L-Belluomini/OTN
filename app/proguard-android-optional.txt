@@ -1,0 +1,81 @@
+# Individually scoped exclusions for optional desktop/OEM dependency paths.
+# No -ignorewarnings or unqualified -dontwarn. Keep future missing classes fatal.
+# Runtime graph loading, standard routing and Android networking need device gates.
+
+# Optional OEM window extensions, guarded by AndroidX availability checks.
+-dontwarn androidx.window.extensions.WindowExtensions
+-dontwarn androidx.window.extensions.WindowExtensionsProvider
+-dontwarn androidx.window.extensions.embedding.ActivityEmbeddingComponent
+-dontwarn androidx.window.extensions.embedding.ActivityRule$Builder
+-dontwarn androidx.window.extensions.embedding.ActivityRule
+-dontwarn androidx.window.extensions.embedding.ActivityStack
+-dontwarn androidx.window.extensions.embedding.EmbeddingRule
+-dontwarn androidx.window.extensions.embedding.SplitInfo
+-dontwarn androidx.window.extensions.embedding.SplitPairRule$Builder
+-dontwarn androidx.window.extensions.embedding.SplitPairRule
+-dontwarn androidx.window.extensions.embedding.SplitPlaceholderRule$Builder
+-dontwarn androidx.window.extensions.embedding.SplitPlaceholderRule
+-dontwarn androidx.window.extensions.layout.DisplayFeature
+-dontwarn androidx.window.extensions.layout.FoldingFeature
+-dontwarn androidx.window.extensions.layout.WindowLayoutComponent
+-dontwarn androidx.window.extensions.layout.WindowLayoutInfo
+-dontwarn androidx.window.sidecar.SidecarDeviceState
+-dontwarn androidx.window.sidecar.SidecarDisplayFeature
+-dontwarn androidx.window.sidecar.SidecarInterface$SidecarCallback
+-dontwarn androidx.window.sidecar.SidecarInterface
+-dontwarn androidx.window.sidecar.SidecarProvider
+-dontwarn androidx.window.sidecar.SidecarWindowLayoutInfo
+
+# Unused GPX XML annotation; the Android plugin loads graphs and uses JSON.
+-dontwarn com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper
+
+# Desktop GraphHopper elevation import/JTS drawing; graphs are prepared on desktop.
+-dontwarn java.awt.Color
+-dontwarn java.awt.Font
+-dontwarn java.awt.Graphics
+-dontwarn java.awt.Rectangle
+-dontwarn java.awt.Shape
+-dontwarn java.awt.font.FontRenderContext
+-dontwarn java.awt.font.GlyphVector
+-dontwarn java.awt.geom.AffineTransform
+-dontwarn java.awt.geom.Ellipse2D$Double
+-dontwarn java.awt.geom.GeneralPath
+-dontwarn java.awt.geom.Line2D$Double
+-dontwarn java.awt.geom.PathIterator
+-dontwarn java.awt.geom.Point2D$Double
+-dontwarn java.awt.geom.Point2D
+-dontwarn java.awt.geom.Rectangle2D$Double
+-dontwarn java.awt.geom.Rectangle2D
+-dontwarn java.awt.image.BufferedImage
+-dontwarn java.awt.image.Raster
+-dontwarn java.awt.image.RenderedImage
+-dontwarn javax.imageio.ImageIO
+-dontwarn org.apache.xmlgraphics.image.codec.tiff.TIFFDecodeParam
+-dontwarn org.apache.xmlgraphics.image.codec.tiff.TIFFImageDecoder
+-dontwarn org.apache.xmlgraphics.image.codec.util.SeekableStream
+
+# Jackson optional JavaBeans annotations and DOM serializer; graph config uses Gson.
+-dontwarn java.beans.ConstructorProperties
+-dontwarn java.beans.Transient
+-dontwarn org.w3c.dom.bootstrap.DOMImplementationRegistry
+
+# GraphHopper desktop OSM XML importer; Android uses load(), never importOrLoad().
+-dontwarn javax.xml.stream.XMLInputFactory
+-dontwarn javax.xml.stream.XMLStreamException
+-dontwarn javax.xml.stream.XMLStreamReader
+
+# Janino Ant build adapter; Android never runs an Ant compilation task.
+-dontwarn org.apache.tools.ant.taskdefs.Javac
+-dontwarn org.apache.tools.ant.taskdefs.compilers.DefaultCompilerAdapter
+-dontwarn org.apache.tools.ant.types.Path
+
+# Optional OkHttp JVM TLS providers; Android uses its own platform/provider detection.
+-dontwarn org.bouncycastle.jsse.BCSSLParameters
+-dontwarn org.bouncycastle.jsse.BCSSLSocket
+-dontwarn org.bouncycastle.jsse.provider.BouncyCastleJsseProvider
+-dontwarn org.conscrypt.Conscrypt$Version
+-dontwarn org.conscrypt.Conscrypt
+-dontwarn org.conscrypt.ConscryptHostnameVerifier
+-dontwarn org.openjsse.javax.net.ssl.SSLParameters
+-dontwarn org.openjsse.javax.net.ssl.SSLSocket
+-dontwarn org.openjsse.net.ssl.OpenJSSE

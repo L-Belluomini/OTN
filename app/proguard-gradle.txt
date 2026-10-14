@@ -13,8 +13,6 @@
 -keepattributes *Annotation*
 -keepattributes Signature, InnerClasses
 
-# for testing
--printmapping proguardamppingtest
 
 -keep class * implements android.os.Parcelable {
   public static final android.os.Parcelable$Creator *;
@@ -55,6 +53,13 @@
 -keep class * implements transapps.maps.plugin.lifecycle.Lifecycle {
 }
 
+# The port now uses the modern host entry point, rather than only legacy tools.
+-keep class * implements gov.tak.api.plugin.IPlugin { *; }
+-keep @gov.tak.api.annotation.DontObfuscate class * { *; }
+-keepclassmembers class * {
+    @gov.tak.api.annotation.DontObfuscate *;
+}
+
 #-keep @com.fasterxml.jackson.annotation.JsonIgnoreProperties class * { *; }
 #-keep class com.fasterxml.** { *; }
 #-keep class org.codehaus.** { *; }
@@ -69,7 +74,8 @@
 
 # projectspecific
 
--ignorewarnings
+# Missing dependency checks must remain enabled. Add only individually justified
+# optional JVM-only exclusions after inspecting the release dependency graph.
 
 # androidx
 
@@ -92,11 +98,8 @@
 # -dontwarn sun.misc.** buld break test
 -keep class com.google.gson.stream.** { *; }
 
-# Application classes that will be serialized/deserialized over Gson
--keep class com.graphhopper.GraphHopperConfig  { <fields>; }
--keep class com.graphhopper.config.Profile  { <fields>; }
--keep class com.graphhopper.config.CHProfile  { <fields>; }
--keep class com.graphhopper.config.LMProfile  { <fields>; }
+# Graph configuration's Gson field contract is in proguard-gson-config.txt,
+# shared with the executable minified-configuration regression.
 
 # Prevent proguard from stripping interface information from TypeAdapter, TypeAdapterFactory,
 # JsonSerializer, JsonDeserializer instances (so they can be used in @JsonAdapter)
