@@ -1,0 +1,46 @@
+plugins { id 'application' }
+repositories { mavenCentral() }
+java { sourceCompatibility = JavaVersion.VERSION_17; targetCompatibility = JavaVersion.VERSION_17 }
+dependencies {
+    implementation 'com.graphhopper:graphhopper-core:6.0'
+    implementation 'com.google.code.gson:gson:2.10.1'
+    runtimeOnly 'org.slf4j:slf4j-simple:1.7.36'
+    testImplementation 'junit:junit:4.13.2'
+}
+sourceSets.main.java {
+    srcDir '../../app/src/main/java'
+    include 'fixture/**', 'com/atakmap/android/OTN/router/RouteGeometry.java'
+}
+application { mainClass = 'fixture.TestGraph' }
+tasks.register('realRoadGraph', JavaExec) {
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'fixture.RoadGraph'
+    maxHeapSize = '2g'
+}
+
+// Build data using desktop import dependencies, then exercise the Android load
+// path in a separate JVM with the excluded XML/elevation stack absent.
+def androidFixture = layout.buildDirectory.dir('android-runtime-fixture')
+tasks.register('prepareAndroidRuntimeFixture', JavaExec) {
+    dependsOn classes
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'fixture.TestGraph'
+    args androidFixture.get().asFile.absolutePath
+}
+tasks.register('verifyAndroidRuntimeRouting', JavaExec) {
+    dependsOn 'prepareAndroidRuntimeFixture'
+    classpath = sourceSets.main.runtimeClasspath.filter { f ->
+        !['xmlgraphics-commons-', 'commons-io-', 'jackson-dataformat-xml-',
+          'jackson-module-jaxb-annotations-', 'jakarta.xml.bind-api-',
+          'jakarta.activation-api-', 'woodstox-core-', 'stax2-api-'].any { f.name.startsWith(it) }
+    }
+    mainClass = 'fixture.AndroidRuntimeRouting'
+    args androidFixture.get().asFile.absolutePath
+}
+tasks.register('writeRuntimeClasspath') {
+    dependsOn classes
+    doLast {
+        layout.buildDirectory.file('runtime-classpath.txt').get().asFile.text =
+                sourceSets.main.runtimeClasspath.files.findAll { it.isFile() }.collect { it.absolutePath }.join('\n') + '\n'
+    }
+}

@@ -45,7 +45,7 @@ public class OTNGraph implements Serializable {
 
 
     public  OTNGraph ( String graphPath , GraphHopperConfig jconfig ) {
-        this.configGH = jconfig;
+        this.configGH = new GraphHopperConfig(jconfig);
         this.graphPath = graphPath;
 
         this.configGH.putObject( "graph.location" , FileSystemUtils.getItem( FileSystemUtils.TOOL_DATA_DIRECTORY + graphPath ).getPath() );
@@ -62,13 +62,13 @@ public class OTNGraph implements Serializable {
         return graphPath;
     }
 
-    public GraphHopperConfig getConfigGH() { return this.configGH; }
+    public GraphHopperConfig getConfigGH() { return new GraphHopperConfig(this.configGH); }
 
     public  String getEdgeHash () {
-        if (_hash.length() == 0 ){
+        if (_hash == null || _hash.isEmpty()){
             String val = HashingUtils.sha256sum( FileSystemUtils.getItem(FileSystemUtils.TOOL_DATA_DIRECTORY  + graphPath + "/edges" ) );
-            _hash = val;
-            return val;
+            _hash = val == null ? "" : val;
+            return _hash;
         } else {
             return _hash;
         }
@@ -125,8 +125,7 @@ public class OTNGraph implements Serializable {
         Log.d(TAG,polyLoader.loadPolygon().toArray()[1].toString());
          */
 
-        GeoPoint[] tmp = new GeoPoint[ polyLoader.loadPolygon().size()];
-        polyLoader.loadPolygon().toArray(tmp);
+        GeoPoint[] tmp = polyLoader.loadPolygon().toArray(new GeoPoint[0]);
 
         borderPoly.setPoints( tmp );
         area = AreaUtilities.calcShapeArea( borderPoly.getPoints() );
@@ -137,22 +136,20 @@ public class OTNGraph implements Serializable {
 
     private void getNodesAndEdges()  { //todo rename
         GraphHopper hopper = new GraphHopper();
-        configGH.putObject( "graph.dataaccess" , "MMAP");
-        hopper.init( configGH );
-        hopper.load();
-        BaseGraph baseGraph =  hopper.getBaseGraph();
-        hopper.close();
-        configGH.putObject("graph.dataacess" , "");
-        edges = baseGraph.getEdges();
-        nodes = baseGraph.getNodes();
-        boundBox = baseGraph.getBounds();
         try {
-            size =  Files.size(FileSystemUtils.getItem(FileSystemUtils.TOOL_DATA_DIRECTORY + graphPath + "/edges").toPath());
-        } catch ( Exception e ) {
-            Log.e( TAG , e.toString() ) ;
-
+            GraphHopperConfig config = getConfigGH().putObject("graph.dataaccess", "MMAP");
+            hopper.init(config);
+            if (!hopper.load()) throw new IllegalStateException("OTN graph could not be loaded");
+            BaseGraph baseGraph = hopper.getBaseGraph();
+            edges = baseGraph.getEdges();
+            nodes = baseGraph.getNodes();
+            BBox box = baseGraph.getBounds();
+            boundBox = new BBox(box.minLon, box.maxLon, box.minLat, box.maxLat);
+            size = FileSystemUtils.getItem(FileSystemUtils.TOOL_DATA_DIRECTORY + graphPath + "/edges").length();
+            isInit = true;
+        } finally {
+            hopper.close();
         }
-
 
     }
 

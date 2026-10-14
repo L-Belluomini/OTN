@@ -1,0 +1,65 @@
+{
+  "scope": "Exact embedded license/notice texts from resolved runtime artifacts; incomplete distribution review, not a compliance declaration.",
+  "texts": [
+    {
+      "component": "androidx.constraintlayout:constraintlayout:2.2.1",
+      "originalEntry": "META-INF/androidx/constraintlayout/constraintlayout/LICENSE.txt",
+      "sha256": "809fa1ed21450f59827d1e9aec720bbc4b687434fa22283c6cb5dd82a47ab9c0",
+      "file": "809fa1ed21450f59827d1e9aec720bbc4b687434fa22283c6cb5dd82a47ab9c0.txt"
+    },
+    {
+      "component": "androidx.constraintlayout:constraintlayout-core:1.1.1",
+      "originalEntry": "META-INF/androidx/constraintlayout/constraintlayout-core/LICENSE.txt",
+      "sha256": "809fa1ed21450f59827d1e9aec720bbc4b687434fa22283c6cb5dd82a47ab9c0",
+      "file": "809fa1ed21450f59827d1e9aec720bbc4b687434fa22283c6cb5dd82a47ab9c0.txt"
+    },
+    {
+      "component": "androidx.profileinstaller:profileinstaller:1.4.0",
+      "originalEntry": "META-INF/androidx/profileinstaller/profileinstaller/LICENSE.txt",
+      "sha256": "809fa1ed21450f59827d1e9aec720bbc4b687434fa22283c6cb5dd82a47ab9c0",
+      "file": "809fa1ed21450f59827d1e9aec720bbc4b687434fa22283c6cb5dd82a47ab9c0.txt"
+    },
+    {
+      "component": "com.fasterxml.jackson.core:jackson-annotations:2.10.5",
+      "originalEntry": "META-INF/LICENSE",
+      "sha256": "42e5c0211418c291f9dfbdf995deafbf11e99fc50e64b37bcf0ac770add16a7d",
+      "file": "42e5c0211418c291f9dfbdf995deafbf11e99fc50e64b37bcf0ac770add16a7d.txt"
+    },
+    {
+      "component": "com.fasterxml.jackson.core:jackson-core:2.10.5",
+      "originalEntry": "META-INF/LICENSE",
+      "sha256": "ad819feaca26ebefb84db3be5de18acdb20b3b41d5652aadee0c7c150fa32d89",
+      "file": "ad819feaca26ebefb84db3be5de18acdb20b3b41d5652aadee0c7c150fa32d89.txt"
+    },
+    {
+      "component": "com.fasterxml.jackson.core:jackson-core:2.10.5",
+      "originalEntry": "META-INF/NOTICE",
+      "sha256": "a91bdf9a76f27b157f0c4952f66739af7d37a9bab9bca757518777cf8cbeb1c0",
+      "file": "a91bdf9a76f27b157f0c4952f66739af7d37a9bab9bca757518777cf8cbeb1c0.txt"
+    },
+    {
+      "component": "com.fasterxml.jackson.core:jackson-databind:2.10.5.1",
+      "originalEntry": "META-INF/LICENSE",
+      "sha256": "d2706a35658d83c27d7d5f357f5ba63877fd8694a3f6aee48b87036a41118c8a",
+      "file": "d2706a35658d83c27d7d5f357f5ba63877fd8694a3f6aee48b87036a41118c8a.txt"
+    },
+    {
+      "component": "com.fasterxml.jackson.core:jackson-databind:2.10.5.1",
+      "originalEntry": "META-INF/NOTICE",
+      "sha256": "41c338db0adac3ea540c53845bd4cec40d437e843b22c84ae08375a4d6442543",
+      "file": "41c338db0adac3ea540c53845bd4cec40d437e843b22c84ae08375a4d6442543.txt"
+    },
+    {
+      "component": "com.graphhopper.external:jackson-datatype-jts:0.12-2.5-1",
+      "originalEntry": "META-INF/LICENSE",
+      "sha256": "1e368b615517d9b3e12dfe66cf68898fcb4c73b92e6483094908c52ccedcf10c",
+      "file": "1e368b615517d9b3e12dfe66cf68898fcb4c73b92e6483094908c52ccedcf10c.txt"
+    },
+    {
+      "component": "com.squareup.okhttp3:okhttp:4.9.3",
+      "originalEntry": "okhttp3/internal/publicsuffix/NOTICE",
+      "sha256": "8a9c58fbded5ea3474315e4a9824ca8b1486098a1a03e897e0b19419d5e1876a",
+      "file": "8a9c58fbded5ea3474315e4a9824ca8b1486098a1a03e897e0b19419d5e1876a.txt"
+    }
+  ]
+}

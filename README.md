@@ -1,3 +1,5 @@
+> ATAK CIV 5.8 development port: see [PORTING.md](PORTING.md) for changes, build instructions, evidence and limitations. The upstream README below describes the original release.
+
 <p align="center">
   <img src= https://github.com/L-Belluomini/OTN/blob/main/app/src/main/res/drawable/otn_logo_shield.png width="200" height="200">
    

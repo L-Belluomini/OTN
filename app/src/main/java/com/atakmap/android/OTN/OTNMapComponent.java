@@ -31,7 +31,7 @@ import com.atakmap.android.maps.Shape;
 import com.atakmap.android.overlay.AbstractMapOverlay2;
 import com.atakmap.android.overlay.DefaultMapGroupOverlay;
 import com.atakmap.android.preference.AtakPreferences;
-import com.atakmap.android.routes.RoutePlannerInterface;
+import com.atakmap.android.routes.RoutePlannerInterface2;
 import com.atakmap.android.user.FocusBroadcastReceiver;
 import com.atakmap.coremap.filesystem.FileSystemUtils;
 import com.atakmap.coremap.io.IOProvider;
@@ -75,7 +75,8 @@ public class OTNMapComponent extends DropDownMapComponent implements SharedPrefe
     private Context pluginContext;
     private Context _context;
     private RoutePlannerManager _routeManager ;
-    private LinkedList<String> registeredRouters = new LinkedList<>();
+    private final Set<String> registeredRouters = new HashSet<>();
+    private BroadcastReceiver selectedGraphReceiver;
     private Map< String , OTNGraph > graphs = new ConcurrentHashMap< String , OTNGraph>();
     private final Map< String , String > bordersMap = new HashMap<>();
     private OTNGraph selectdeGraph;
@@ -135,7 +136,7 @@ public class OTNMapComponent extends DropDownMapComponent implements SharedPrefe
                 :null;
         assert _routeManager != null;
 
-        _prefs = new AtakPreferences(view);
+        _prefs = new AtakPreferences(view.getContext());
 
         //fillColor = _prefs.get ( ID_COLOR_FILL, Color.BLUE );
 
@@ -168,13 +169,11 @@ public class OTNMapComponent extends DropDownMapComponent implements SharedPrefe
 
 
 
-        final BroadcastReceiver selectegraphReciver = new BroadcastReceiver() {
+        selectedGraphReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context pluginContext, Intent intent) {
-            Log.w(TAG,"failled setting bundle");
-            final String action = intent.getAction();
-            if (action == null)
-                return;
+                final String action = intent.getAction();
+                if (action == null) return;
 
                 switch (action) {
                     case (SET_SELECTED_GRAPH):
@@ -222,7 +221,7 @@ public class OTNMapComponent extends DropDownMapComponent implements SharedPrefe
         mcFilter.addAction(FIND_GRAPHS);
         mcFilter.addAction(SET_SELECTED_GRAPH);
         mcFilter.addAction(FOCUS_BRODER);
-        AtakBroadcast.getInstance().registerReceiver(selectegraphReciver, mcFilter );
+        AtakBroadcast.getInstance().registerReceiver(selectedGraphReceiver, mcFilter );
 
         // map overlay
         //overlay = new OTNGraphOverlay(view , pluginContext);
@@ -278,7 +277,8 @@ public class OTNMapComponent extends DropDownMapComponent implements SharedPrefe
 
         _routeManager.registerPlanner ( "OTNOFFlineFast", new OTNOfflineRouter( pluginContext , selectdeGraph , OTNrequest.ProfileType.BEST ) );
         _prefs.set( "OTNSelectedGraph" , selectdeGraph.getEdgeHash() );
-        registeredRouters.add( "OTNOFFlineFast" );
+        registeredRouters.add("OTNOFFlineFast");
+        DeviceProbe.maybeRun(_context, _routeManager, selectdeGraph);
         Log.d(TAG, "registered route planner: " + "OTNOFFlineFast" + selectdeGraph.toString() );
         // register other route planners
         // querry serivce db and create realtive routers
@@ -293,18 +293,35 @@ public class OTNMapComponent extends DropDownMapComponent implements SharedPrefe
     @Override
     protected void onDestroyImpl(Context context, MapView view) {
         super.onDestroyImpl(context, view);
-        for ( String router : registeredRouters) {
-            _routeManager.unregisterPlanner(router);
+        ToolsPreferenceFragment.unregister("OTNPreference");
+        if (_prefs != null) _prefs.unregisterListener(this);
+        ClearContentRegistry.getInstance().unregisterListener(this);
+        if (selectedGraphReceiver != null) AtakBroadcast.getInstance().unregisterReceiver(selectedGraphReceiver);
+        if (_routeManager != null) for (String router : registeredRouters) {
+            RoutePlannerInterface2 planner = plannerById(_routeManager, router);
+            if (planner instanceof OTNOfflineRouter) {
+                ((OTNOfflineRouter) planner).dispose();
+                _routeManager.unregisterPlanner(router);
+            }
         }
-        view.getMapOverlayManager().removeOverlay( overlay );
+        registeredRouters.clear();
+        if (overlay != null) view.getMapOverlayManager().removeOverlay(overlay);
 
+    }
+
+    public static RoutePlannerInterface2 plannerById(RoutePlannerManager manager, String id) {
+        for (RoutePlannerInterface2 planner : manager.getRoutePlanners2()) {
+            if (id.equals(planner.getUniqueIdenfier())) return planner;
+        }
+        return null;
     }
 
     protected void updateRouters() {
         Log.d(TAG,"updating router");
         for (String routerUID : registeredRouters ) {
-            RoutePlannerInterface tmpPlanner = _routeManager.getPlanner( routerUID );
+            RoutePlannerInterface2 tmpPlanner = plannerById(_routeManager, routerUID);
             if ( tmpPlanner instanceof OTNOfflineRouter  ) {
+                ((OTNOfflineRouter) tmpPlanner).dispose();
                 _routeManager.unregisterPlanner(routerUID);
             }
         }
@@ -313,7 +330,8 @@ public class OTNMapComponent extends DropDownMapComponent implements SharedPrefe
         tmpGraph = null;
         // add routr/routers
         _routeManager.registerPlanner ( "OTNOFFlineFast", new OTNOfflineRouter( pluginContext , selectdeGraph , OTNrequest.ProfileType.BEST ) );
-        registeredRouters.add( "OTNOFFlineFast" );
+        registeredRouters.add("OTNOFFlineFast");
+        DeviceProbe.maybeRun(_context, _routeManager, selectdeGraph);
         pushGraphs();
     }
 
@@ -335,23 +353,19 @@ public class OTNMapComponent extends DropDownMapComponent implements SharedPrefe
         IOProvider provider = IOProviderFactory.getProvider();
         String [] grapfsFolder = provider.list ( FileSystemUtils.getItem (FileSystemUtils.TOOL_DATA_DIRECTORY  + "/OTN" + "/graphs" ) );
         Log.d ( TAG , "array dirs: " + Arrays.toString(grapfsFolder));
-        if (grapfsFolder == null ){
-            return;
-        }
-        if ( grapfsFolder.length == 0 ){
-            return;
-        }
+        if (grapfsFolder == null) grapfsFolder = new String[0];
         OTNGraph tmp ;
         Set<String> oldKeySet= new HashSet<>();
         oldKeySet.addAll( graphs.keySet());
         Log.d ( TAG , "old key set size: " + Integer.toString( oldKeySet.size() ) );
         for (String dir : grapfsFolder ) {
-            tmp = getGraphFromDir( dir );
-              if ( graphs.containsKey( tmp.getEdgeHash() ) ) {
-                  oldKeySet.remove( tmp.getEdgeHash() );
-              } else {
-                  graphs.put(tmp.getEdgeHash(), tmp);
-              }
+            tmp = getGraphFromDir(dir);
+            if (tmp == null || tmp.getEdgeHash().isEmpty()) continue;
+            if (graphs.containsKey(tmp.getEdgeHash())) {
+                oldKeySet.remove(tmp.getEdgeHash());
+            } else {
+                graphs.put(tmp.getEdgeHash(), tmp);
+            }
         }
         Log.d ( TAG , "old key set size 2 : " + Integer.toString( oldKeySet.size() ) );
         if (! oldKeySet.isEmpty() ) {
@@ -411,12 +425,11 @@ public class OTNMapComponent extends DropDownMapComponent implements SharedPrefe
 
     protected OTNGraph getGraphFromDir (String dir){
         GraphHopperConfig tmpConfig = null;
-        try {
-            Gson ason = new Gson();
-            FileReader fReader =  new FileReader( FileSystemUtils.getItem(FileSystemUtils.TOOL_DATA_DIRECTORY  + "/OTN/graphs/" + dir + "/config.json") );
-            JsonReader reader = new JsonReader(fReader);
-            tmpConfig = ason.fromJson (reader , GraphHopperConfig.class );
-            if ( tmpConfig == null ) {
+        File folder = FileSystemUtils.getItem(FileSystemUtils.TOOL_DATA_DIRECTORY + "/OTN/graphs/" + dir);
+        if (!new File(folder, "edges").isFile()) return null;
+        try (JsonReader reader = new JsonReader(new FileReader(new File(folder, "config.json")))) {
+            tmpConfig = new Gson().fromJson(reader, GraphHopperConfig.class);
+            if (tmpConfig == null || tmpConfig.getProfiles().isEmpty()) {
                 Log.w(TAG , "reading j config failed");
                return null;
             }
@@ -442,24 +455,8 @@ public class OTNMapComponent extends DropDownMapComponent implements SharedPrefe
     }
 
     protected void setNewUp( ) {
-        IOProvider provider = IOProviderFactory.getProvider();
-        Log.d(TAG,"setting up new folder");
-
-        if (! provider.exists( FileSystemUtils.getItem (FileSystemUtils.TOOL_DATA_DIRECTORY  + "/OTN") ) ) {
-            if ( provider.mkdir( new File(FileSystemUtils.TOOL_DATA_DIRECTORY  + "/OTN" ) ) ) {
-                provider.mkdir( new File(FileSystemUtils.TOOL_DATA_DIRECTORY  + "/OTN/graphs" ) );
-            } else {
-                Log.e(TAG,"impossible to create OTN folder");
-                if ( new File(FileSystemUtils.TOOL_DATA_DIRECTORY  + "/OTN").mkdir() )
-                {
-                    Log.i(TAG,"creation test worked");
-                } else {
-                    Log.w(TAG,"otn dir creation test failed");
-                }
-            }
-        } else {
-        Log.w(TAG,"otn dir already exist");
-        }
+        File folder = FileSystemUtils.getItem(FileSystemUtils.TOOL_DATA_DIRECTORY + "/OTN/graphs");
+        if (!folder.isDirectory() && !folder.mkdirs()) Log.e(TAG, "Could not create OTN graph directory");
     }
 
     @Override

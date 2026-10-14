@@ -23,6 +23,8 @@ public class OTNrequest {
     }
 
     public OTNrequest ( GraphHopperConfig jConfing , int selectedProfileIndex , ProfileType selectedType ) {
+        if (jConfing == null || selectedProfileIndex < 0 || selectedProfileIndex >= jConfing.getProfiles().size())
+            throw new IllegalArgumentException("Select a valid OTN routing profile");
         List<Profile> profilesList = jConfing.getProfiles();
         List<CHProfile> profilesChList = jConfing.getCHProfiles();
         List<LMProfile> profilesLmList = jConfing.getLMProfiles();

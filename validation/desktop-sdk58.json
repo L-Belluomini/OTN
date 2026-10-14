@@ -1,0 +1,50 @@
+{
+  "sourceCommit": "818815672e7ff60850f8c0afa326fe4819bd84ae",
+  "date": "2026-10-14",
+  "sdk": "ATAK CIV 5.8.0.5 SDK / API 5.8.0",
+  "java": "Android Studio JBR 21.0.8",
+  "deviceTestsRun": false,
+  "artifacts": [
+    {
+      "variant": "debug",
+      "file": "ATAK-Plugin-otn-1.9-dev-81881567-5.8.0-civ-debug.apk",
+      "sha256": "d3d9a421f8ec2220e9cfe06e403491256010a0045bf1a1414a68ee82e778c952",
+      "signatureVerified": true,
+      "noticeAssetsMatchSource": true,
+      "deviceProbeFlagPresent": true
+    },
+    {
+      "variant": "release",
+      "file": "ATAK-Plugin-otn-1.9-dev-81881567-5.8.0-civ-release.apk",
+      "sha256": "98e79565d5223183fef68f0b678b1e6dca928dbc816572c4deb0030779e096b9",
+      "signatureVerified": true,
+      "noticeAssetsMatchSource": true,
+      "deviceProbeFlagPresent": false
+    }
+  ],
+  "routingTests": {
+    "tests": 5,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "lint": "0 errors, 118 warnings",
+  "r8ConfigurationRegression": {
+    "scope": "R8 classfile/Gson graph configuration contract on JVM, not Android engine qualification",
+    "r8Version": "R8 9.0.3-dev (build 750a21b4f4281b1f453b649e0b84f1ba9c04f4fc from go/r8bot (luci-r8-custom-ci-jammy-10-f6w9))",
+    "results": [
+      {
+        "policy": "legacy",
+        "compileExit": 0,
+        "runtimeExit": 1,
+        "configurationPreserved": false
+      },
+      {
+        "policy": "fixed",
+        "compileExit": 0,
+        "runtimeExit": 0,
+        "configurationPreserved": true
+      }
+    ]
+  }
+}

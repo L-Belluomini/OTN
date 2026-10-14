@@ -1,0 +1,2 @@
+# Preserve vendored license/notice text verbatim, including its whitespace.
+app/src/main/assets/licenses/** -whitespace

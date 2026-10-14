@@ -8,11 +8,11 @@ import android.widget.AdapterView;
 
 import com.atakmap.android.OTN.plugin.R;
 import com.atakmap.android.routes.RouteGenerationTask;
-import com.atakmap.android.routes.RoutePlannerInterface;
+import com.atakmap.android.routes.RoutePlannerInterface2;
 import com.atakmap.android.routes.RoutePlannerOptionsView;
 import com.atakmap.coremap.log.Log;
 
-public class OTNOnlineRouter implements RoutePlannerInterface, AdapterView.OnItemSelectedListener {
+public class OTNOnlineRouter implements RoutePlannerInterface2, AdapterView.OnItemSelectedListener {
     private final Context pluginContext;
 
 
@@ -26,6 +26,8 @@ public class OTNOnlineRouter implements RoutePlannerInterface, AdapterView.OnIte
      *
      * @return the descriptive name of the planner
      */
+    @Override public String getUniqueIdenfier() { return "OTNOnline"; }
+
     public String getDescriptiveName(){
         return "OTN ONline router";
     }
