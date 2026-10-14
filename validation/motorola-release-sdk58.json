@@ -1,0 +1,49 @@
+{
+  "date": "2026-10-14",
+  "result": "PASS scoped stationary release journey",
+  "sourceCommit": "818815672e7ff60850f8c0afa326fe4819bd84ae",
+  "device": "Motorola moto g play (2024), Android 14",
+  "host": "ATAK CIV 5.8.0.3 SDK (4f67063)",
+  "variant": "civRelease (obfuscated, development SDK signature)",
+  "installedOtnSha256": "98e79565d5223183fef68f0b678b1e6dca928dbc816572c4deb0030779e096b9",
+  "hostApkSha256BeforeAndAfter": "7d8f96856c0f36e7218a295ef5f0ecd710f1160ca77a2fd87d32b36077210b7d",
+  "externalBridgeHarnessApkSha256": "b157f5fe9f9c0894d92a1320b48e368de0cc5c24d5a730a44a2c289cb64f6c46",
+  "planner": "OTNOFFlineFast",
+  "route": {
+    "lengthMeters": 2567.7028141975147,
+    "geometryPoints": 32,
+    "cueCount": 7,
+    "cueReferencesValid": true,
+    "coordinateEndpointAbsentFromMap": true
+  },
+  "checks": {
+    "normalPackageUpdate": true,
+    "hostLoadsUpdatedPlugin": true,
+    "sharedPlannerRegistered": true,
+    "realOfflineRouteGeneration": true,
+    "previewDoesNotStartNavigation": true,
+    "explicitStart": true,
+    "sameSessionAfterConsumerReconnect": true,
+    "textCueObserved": true,
+    "stopReturnsIdle": true,
+    "ownedRouteRemoved": true,
+    "originalRoutesRetained": true,
+    "ownedGraphRemoved": true,
+    "originalGraphSelectionRestored": true,
+    "unrelatedPreferencesPreservedByRestore": true,
+    "hostApkUnchanged": true,
+    "updatedOtnRemainsInstalled": true,
+    "finalNavigationIdle": true,
+    "finalCarConsumerReleased": true,
+    "finalAtakForeground": true
+  },
+  "navigationStateDuringStationaryTest": "OFF_ROUTE; no driven or automatic rerouting qualification",
+  "privateRawReportSha256": "5fc578a2ce70de75b19318aaae5423e44352bc4072c7c64da8b5e072a013abb7",
+  "limits": [
+    "Stationary bridge-command journey; no native car-template UI or physical vehicle test",
+    "No normal audio, driven arrival, automatic rerouting or endurance test",
+    "SDK host and development signature; official release signing remains open",
+    "Debug APK was desktop-tested, not installed in this run"
+  ],
+  "method": "Existing external Android Auto debug bridge engine-probe.py --coordinates; calls the registered production OTN planner and actual ATAK preview/start/stop APIs. OTN release contains no device probe."
+}

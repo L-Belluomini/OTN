@@ -27,7 +27,7 @@ The local SDK's `android_keystore` and its standard development alias/password s
 
 See [VALIDATION.md](VALIDATION.md) for checks performed in this standalone checkout. Desktop tests import a fictional 6x6 grid near 0,0 and use real GraphHopper routing. The grid must never be used for navigation.
 
-Earlier development-host testing in the recovered project exercised OTN route generation on Samsung Android 13 and Motorola Android 14 running ATAK 5.8.0.3 SDK, including stationary Android Auto integration. Those historical results do not qualify this branch's fresh APKs. This checkout's validation does not install APKs or interrupt devices used by other work.
+Earlier development-host testing in the recovered project exercised OTN route generation on Samsung Android 13 and Motorola Android 14 running ATAK 5.8.0.3 SDK, including stationary Android Auto integration. Those historical results do not qualify this branch's fresh APKs. A subsequent stationary Motorola check of this branch's exact obfuscated release APK passed generation, preview, Start, same-session reconnect and Stop; see VALIDATION.md. The Samsung and other chats' checkouts were left untouched.
 
 ## Optional device probe
 

@@ -18,4 +18,17 @@ python3 tools/verify-release-config.py \
   --output /tmp/otn-release-config
 ```
 
-The recorded R8 fixture version is from build-tools 36.1.0. The Android release uses AGP's R8 pipeline separately. No device install, navigation session or phone settings were changed in this validation. Official signing, device runtime for these exact APKs and the remaining qualification limits in [PORTING.md](PORTING.md) are open.
+The recorded R8 fixture version is from build-tools 36.1.0. The Android release uses AGP's R8 pipeline separately. The desktop checks above did not modify a phone. Subsequent physical-device results are recorded below.
+
+
+## Physical-device release check
+
+On October 14, 2026, the exact obfuscated `81881567` release APK above was installed with `adb install -r` on a Motorola moto g play (2024), Android 14, running ATAK CIV 5.8.0.3 SDK. The installed APK hash matches the desktop artifact. The existing host and bridge APKs were retained. See [sanitized device results](validation/motorola-release-sdk58.json).
+
+The updated OTN plugin loaded and registered `OTNOFFlineFast`. An existing external Android Auto debug bridge harness called the production OTN planner on a temporary real-road GraphHopper 6 graph, then exercised actual ATAK route preview, explicit Start, consumer disconnect/reconnect and Stop. The roughly 2.57 km route had 32 geometry points and seven valid cue associations. Preview left navigation idle; Start activated the route, text guidance was observed, reconnect retained the same session, and Stop returned to idle.
+
+This was a stationary command-level test. The observed active state was `OFF_ROUTE`; this result does not establish driven guidance, automatic rerouting, audio, native car-template UI or vehicle compatibility. The harness is external to this standalone OTN repository; its installed APK hash is recorded for identification. Its raw report remains private, with only a digest and sanitized checks committed here. OTN's release APK has no active device probe.
+
+The generated route and temporary graph were removed, original routes were retained, and the original OTN graph preference was restored while preserving unrelated preferences. After restart, ATAK was foreground and idle, with the car consumer released. The tested OTN release remains installed, and the preceding OTN APK is backed up locally. The Samsung and the other chat's checkout were not modified.
+
+Official signing, large graphs, earlier hosts and the other qualification limits in [PORTING.md](PORTING.md) remain open. The exact debug APK was not installed in this run.
